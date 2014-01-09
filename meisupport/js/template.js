@@ -43,6 +43,35 @@
 		});
 		/*schubert modifications*/
 
+
+
+
+		/* multi select support for file upload*/
+		var check = jQuery('body.com_meiadmin.view-file.task-edit form#adminForm');
+		if (check.length === 1) remakeSubmit();
+		function trickSelect() {
+			var chanVal = jQuery('select#channel').val(), regVal = jQuery('select#region').val();
+			chanVal = chanVal.toString().split(',').join('',''), regVal = regVal.toString().split(',').join('','');
+			jQuery('select#channel').attr('id','channel2');
+			jQuery('select#region').attr('id','region2');
+
+			check.append('<input type="hidden" id="channel" value="'+chanVal+'"><input type="hidden" id="region" value="'+regVal+'">');
+		}
+		function remakeSubmit() {
+			Joomla.submitform = function (a,b){
+				var chanVal = jQuery('select#channel').val(), regVal = jQuery('select#region').val();
+				chanVal = chanVal.toString().split(',').join('',''), regVal = regVal.toString().split(',').join('','');
+				jQuery('select#channel').attr({'id':'channel2','name':'channel2[]'});
+				jQuery('select#region').attr({'id':'region2','name':'region2[]'});
+
+				check.append('<input type="hidden" id="channel" value="'+chanVal+'" name="channel"><input type="hidden" id="region" value="'+regVal+'" name="region">');
+
+				"undefined"===typeof b&&(b=document.getElementById("adminForm")); 
+				"undefined"!==typeof a&&(b.task.value=a); 
+				if("function"==typeof b.onsubmit)b.onsubmit();
+				"function"==typeof b.fireEvent&&b.fireEvent("submit");b.submit();
+			} 
+		}
 		/*homepage - login, hide unwanted elements*/
 		if (jQuery('#body-login form').length > 0) { 
       	jQuery('.posttext').appendTo('.userdata');
