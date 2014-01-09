@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form
+	lessfiles="media://com_mei/css/frontend.less||media://com_mei/css/frontend.css"
+	type="browse"
+	show_header="0"
+	show_filters="0"
+	show_pagination="1"
+	norows_placeholder="COM_MEI_COMMON_NORECORDS"
+>
+	<headerset>
+		<header name="title" type="fieldsearchable" sortable="false"
+			buttons="false"
+		/>
+		<header name="due" type="field" sortable="false" tdwidth="20%" />
+	</headerset>
+
+	<fieldset name="items">
+		<field name="title" type="text"
+			show_link="true"
+			url="index.php?option=com_mei&amp;view=product&amp;fid=[ITEM:ID]"
+			class="meiitem"
+			empty_replacement="(no title)"
+		 />
+
+		<field name="due" type="duedate" />
+	</fieldset>
+</form>

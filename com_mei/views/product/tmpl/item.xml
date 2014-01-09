@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<metadata>
+    <layout title="COM_MEI_VIEW_PRODUCT_TITLE">
+        <message>COM_MEI_VIEW_PRODUCT_MSG</message>
+    </layout>
+    <fields name="request">
+        <fieldset name="request">
+            <field
+                    name="id"
+                    type="sql"
+                    label="COM_MEI_FIELD_PRODUCT_LABEL"
+                    description="COM_MEI_FIELD_PRODUCT_DESC"
+                    default="1"
+                    query="SELECT meiadmin_product_id, title FROM #__meiadmin_products"
+                    key_field="meiadmin_product_id"
+                    value_field="title"
+                    >
+            </field>
+    </fieldset>
+</fields>
+</metadata>

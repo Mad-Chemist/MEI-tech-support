@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form
+    lessfiles="media://com_meiadmin/css/backend.less||media://com_meiadmin/css/backend.css"
+    type="browse"
+    show_header="1"
+    show_filters="1"
+    show_pagination="1"
+    norows_placeholder="COM_MEIADMIN_COMMON_NORECORDS"
+>
+    <headerset>
+        <header name="ordering" type="ordering" sortable="true" tdwidth="1%" />
+        <header name="id" type="rowselect" tdwidth="20" />
+        <header name="title" type="fieldsearchable" sortable="true"
+            buttons="yes" buttonclass="btn"
+        />
+        <header name="Category" type="field" sortable="true" tdwidth="12%" />
+        <header name="version" type="field" sortable="true" tdwidth="12%" />
+        <header name="enabled" type="published" sortable="true" tdwidth="8%" />
+    </headerset>
+
+    <fieldset name="items">
+        <field name="ordering" type="ordering" labelclass="order"/>
+
+        <field name="meiadmin_product_id" type="selectrow"/>
+         <field name="title" type="text"
+            show_link="true"
+            url="index.php?option=com_meiadmin&amp;view=products&amp;task=edit&amp;cid[]=[ITEM:ID]"
+            class="maiadminitem"
+            empty_replacement="(no title)"
+         />
+
+        <field name="cat_id" type="cat_id" />
+
+        <field name="initial_version" type="initial_version" />
+
+        <field name="enabled" type="published"/>
+    </fieldset>
+</form>

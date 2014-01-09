@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<metadata>
+    <layout title="COM_MEI_VIEW_PRODUCTS_EDIT_TITLE">
+        <message>COM_MEI_VIEW_PRODUCTS_EDIT_MSG</message>
+    </layout>
+    <fields name="request">
+        <fieldset name="request">
+            <field
+                    name="cat_id"
+                    type="sql"
+                    label="COM_MEI_FIELD_FAMILY_LABEL"
+                    description="COM_MEI_FIELD_FAMILY_DESC"
+                    default="1"
+                    query="SELECT meiadmin_category_id, title FROM #__meiadmin_categories"
+                    key_field="meiadmin_category_id"
+                    value_field="title"
+                    >
+            </field>
+        </fieldset>
+    </fields>
+</metadata>

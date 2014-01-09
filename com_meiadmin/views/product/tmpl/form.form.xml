@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form
+    lessfiles="media://com_meiadmin/css/product.less||media://com_meiadmin/css/product.css"
+    cssfiles="media://com_meiadmin/css/product.css"
+    jsfiles="media://com_meiadmin/js/product.js"
+    validate="true"
+    type="edit"
+>
+    <fieldset name="product" class="span6 form-vertical" label="COM_MEIADMIN_PRODUCT">
+        <field name="title" type="text"
+            label="COM_MEIADMIN_PRODUCTS_FIELD_TITLE"
+            class="meiadmin-title-field"
+            size="50"
+	        required="true"
+            filter="safehtml"
+         />
+        <field name="cat_id" type="sql"
+            label="COM_MEIADMIN_PRODUCTS_FIELD_FAMILY"
+            class="meiadmin-field"
+	        query="SELECT meiadmin_category_id, title FROM #__meiadmin_categories WHERE 1"
+            required="true"
+            key_field="meiadmin_category_id"
+            value_field="title"
+            filter="int"
+         />
+        <field type="radio" name="enabled" default="1" class="radio btn-group" label="COM_MEIADMIN_ENABLED">
+            <option value="1">COM_MEIADMIN_YES</option>
+            <option value="0">COM_MEIADMIN_NO</option>
+        </field>
+        <field name="language" type="language"
+            label="COM_MEIADMIN_PRODUCTS_FIELD_LANGUAGE"
+            class="meiadmin-field"
+            required="true"
+         />
+        <field name="description" type="editor"
+            label="COM_MEIADMIN_PRODUCTS_FIELD_DESCRIPTION"
+            buttons="0"
+            rows="6"
+            cols="15"
+            filter="safehtml"
+        />
+        <field type="menuitem" />
+    </fieldset>
+    <fieldset name="productImage" label="COM_MEIADMIN_PRODUCT_THUMB" class="span5 pull-right form-vertical">
+        <field name="images" type="media"
+            label="COM_MEIADMIN_PRODUCTS_FIELD_FILE"
+            size="50"
+	        directory="com_meiadmin/images"
+	        preview="true"
+            filter="path"
+         />
+    </fieldset>
+</form>

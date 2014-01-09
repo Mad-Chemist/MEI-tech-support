@@ -1,0 +1,113 @@
+<?php
+
+defined('_JEXEC') or die();
+
+//$this->_loadFiles();
+
+//test:
+
+
+if (array_key_exists('documentation', $this->items)) {
+    ?>
+    <h2>Documentation</h2>
+
+<<<<<<< HEAD
+    <ul>
+        <?php
+        foreach ($this->items['documentation'] AS $file): ?>
+
+=======
+<ul>
+<?php   
+          foreach($this->items['documentation'] AS $type=>$file_temp): 
+            foreach($file_temp AS $file): ?>
+>>>>>>> dejan
+
+            <li><?php echo $file->title . ' Version: ' . $file->current_version . ' Type: ' . $file->type; ?></li>
+
+
+<<<<<<< HEAD
+        <?php endforeach; ?>
+
+    </ul>
+<?php
+}
+if (array_key_exists('tools', $this->items)) {
+    ?>
+    <h2>Tools</h2>
+=======
+<?php     endforeach;
+          endforeach; ?>
+      
+</ul>
+<?php  }
+      if (array_key_exists ( 'tools' , $this->items ))
+      {
+?>
+<h2>Tools</h2>
+
+<ul>
+<?php   
+          foreach($this->items['tools'] AS $type=>$file_temp): 
+          foreach($file_temp AS $file): ?>
+>>>>>>> dejan
+
+    <ul>
+        <?php
+        foreach ($this->items['tools'] AS $file): ?>
+
+
+            <li><?php echo $file->title . ' Version: ' . $file->current_version . ' Type: ' . $file->type; ?></li>
+
+<<<<<<< HEAD
+
+        <?php endforeach; ?>
+
+    </ul>
+<?php
+}
+if (array_key_exists('firmware', $this->items)) {
+    ?>
+    <h2>Firmware</h2>
+
+    <ul>
+        <?php
+        foreach ($this->items['firmware'] AS $file): ?>
+
+=======
+<?php     endforeach;
+          endforeach; ?>
+      
+</ul>
+<?php  }
+      if (array_key_exists ( 'firmware' , $this->items ))
+      {
+?>
+<h2>Firmware</h2>
+
+<ul>
+<?php     
+          foreach($this->items['firmware'] AS $type=>$file_temp): 
+          foreach($file_temp AS $file): ?>
+>>>>>>> dejan
+
+            <li><?php echo $file->title . ' Version: ' . $file->current_version . ' Type: ' . $file->type; ?></li>
+
+
+        <?php endforeach; ?>
+
+<<<<<<< HEAD
+    </ul>
+<?php
+}
+?>
+=======
+<?php     endforeach;
+          endforeach; ?>
+      
+</ul>
+<?php  }
+      ?>
+>>>>>>> dejan
+
+

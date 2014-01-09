@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form
+    cssfiles="media://com_meiadmin/css/browse.css"
+    type="browse"
+    show_header="1"
+    show_filters="1"
+    show_pagination="1"
+    norows_placeholder="COM_MEIADMIN_COMMON_NORECORDS"
+>
+    <headerset>
+        <header name="ordering" type="ordering" sortable="true" tdwidth="1%" />
+        <header name="id" type="rowselect" tdwidth="20" />
+        <header name="title" type="fieldsearchable" sortable="true"
+            buttons="yes" buttonclass="btn"
+        />
+        <header name="Alias" type="field" sortable="true" tdwidth="12%" />
+    </headerset>
+
+    <fieldset name="items">
+        <field name="ordering" type="ordering" labelclass="order"/>
+
+        <field name="meiadmin_category_id" type="selectrow"/>
+        <field name="title" type="text"
+            show_link="true"
+            url="index.php?option=com_meiadmin&amp;view=products&amp;cat_id=[ITEM:ID][MENU:ITEMID]"
+            class="maiadminitem"
+            empty_replacement="(no title)"
+         />
+
+        <field name="slug" type="slug" />
+
+    </fieldset>
+</form>

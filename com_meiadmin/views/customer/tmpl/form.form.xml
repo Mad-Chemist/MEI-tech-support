@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form
+    lessfiles="media://com_meiadmin/css/product.less||media://com_meiadmin/css/product.css"
+    validate="true"
+    type="edit"
+    jsfiles="media://system/js/mootools-more.js"
+>
+    <fieldset name="customerAttributes" class="span4" label="COM_MEIADMIN_CUSTOMER">
+        <field name="name" type="text"
+            label="COM_MEIADMIN_CUSTOMER_FIELD_NAME"
+            class="meiadmin-title-field"
+            size="50"
+	    required="true"
+         />
+        <field name="username" type="text"
+               label="COM_MEIADMIN_CUSTOMER_FIELD_USERNAME"
+               class="meiadmin-title-field"
+               size="50"
+               required="true"
+               filter="username"
+         />
+        <field name="password" type="password"
+               label="COM_MEIADMIN_CUSTOMER_FIELD_PASSWORD"
+               class="meiadmin-title-field"
+               size="50"
+               required="false"
+                />
+        <field name="password_expiration" type="text" readonly="true" disabled="true"
+               label="COM_MEIADMIN_CUSTOMER_FIELD_PASSWORD_EXPIRATION"
+               />
+        <field name="password_expiration_interval" type="radio"
+               label="COM_MEIADMIN_CUSTOMER_FIELD_PASSWORD_EXPIRATION_INTERVAL"
+               class="meiadmin-title-field"
+               default="0"
+               filter="int">
+            <option value="30">30 days</option>
+            <option value="60">60 days</option>
+            <option value="120">120 days</option>
+        </field>
+        <field name="email" type="email"
+               label="COM_MEIADMIN_CUSTOMER_FIELD_EMAIL"
+               class="meiadmin-title-field"
+               size="50"
+               required="true"
+                />
+        <field name="telephone" type="tel"
+               label="COM_MEIADMIN_CUSTOMER_FIELD_TELEPHONE"
+               class="meiadmin-title-field"
+                filter="tel"
+                />
+        <field name="address1" type="text"
+               label="COM_MEIADMIN_CUSTOMER_FIELD_ADDRESS1"
+               class="meiadmin-title-field"
+                />
+        <field name="address2" type="text"
+               label="COM_MEIADMIN_CUSTOMER_FIELD_ADDRESS2"
+               class="meiadmin-title-field"
+                />
+        <field name="city" type="text"
+               label="COM_MEIADMIN_CUSTOMER_FIELD_CITY"
+               class="meiadmin-title-field"
+                />
+        <field name="state" type="text"
+               label="COM_MEIADMIN_CUSTOMER_FIELD_STATE"
+               class="meiadmin-title-field"
+                />
+        <field name="country" type="text"
+               label="COM_MEIADMIN_CUSTOMER_FIELD_COUNTRY"
+               class="meiadmin-title-field"
+                />
+        <field name="postcode" type="text"
+               label="COM_MEIADMIN_CUSTOMER_FIELD_POSTALCODE"
+               class="meiadmin-title-field"
+                />
+        <field name="fk_channel_id" type="sql"
+               label="COM_MEIADMIN_CHANNEL"
+               key_field="id"
+               value_field="value"
+               query="SELECT meiadmin_channel_id AS id, title AS value FROM #__meiadmin_channels WHERE 1"
+               required="true"
+                />
+        <field name="fk_region_id" type="sql"
+               label="COM_MEIADMIN_REGION"
+               key_field="id"
+               value_field="value"
+               query="SELECT meiadmin_region_id AS id, title AS value FROM #__meiadmin_regions WHERE 1"
+               required="true"
+                />
+        <field type="radio" name="enabled" default="1" class="radio btn-group" label="COM_MEIADMIN_ENABLED">
+            <option value="1">COM_MEIADMIN_YES</option>
+            <option value="0">COM_MEIADMIN_NO</option>
+        </field>
+        <field type="multiselectlist" name="products"
+               multiple="true"
+               label="COM_MEIADMIN_CUSTOMER_PRODUCTS"
+               source_file="site://components/com_meiadmin/helpers/products.php"
+               source_class="MeiadminHelperProducts"
+               source_key="meiadmin_product_id"
+               source_value="title"
+               source_method="getAll"
+               />
+        <field type="menuitem" />
+        <field type="hidden" name="fk_user_id" default="0"/>
+    </fieldset>
+    <fieldset name="fileAccessFields" description="FileAccess" label="COM_MEIADMIN_CUSTOMER_ACCESS" class="span6 pull-right">
+        <field type="radio" name="access_nda" default="0" class="radio btn-group" label="COM_MEIADMIN_ACCESS_NDA">
+            <option value="1">COM_MEIADMIN_YES</option>
+            <option value="0">COM_MEIADMIN_NO</option>
+        </field>
+        <field name="nda_expiration" type="calendar"
+               label="COM_MEIADMIN_CUSTOMER_FIELD_NDA_EXPIRATION"
+               class="meiadmin-title-field"
+               size="50"
+               required="false"
+                />
+        <field type="radio" name="access_level2" default="0" class="radio btn-group" label="COM_MEIADMIN_ACCESS_LEVEL2" filter="int">
+            <option value="1">COM_MEIADMIN_YES</option>
+            <option value="0">COM_MEIADMIN_NO</option>
+        </field>
+        <field type="radio" name="access_oem" default="0" class="radio btn-group" label="COM_MEIADMIN_ACCESS_OEM" filter="int">
+            <option value="1">COM_MEIADMIN_YES</option>
+            <option value="0">COM_MEIADMIN_NO</option>
+        </field>
+        <field type="radio" name="access_asc" default="0" class="radio btn-group" label="COM_MEIADMIN_ACCESS_ASC" finter="int">
+            <option value="1">COM_MEIADMIN_YES</option>
+            <option value="0">COM_MEIADMIN_NO</option>
+        </field>
+        <field type="radio" name="access_dist" default="0" class="radio btn-group" label="COM_MEIADMIN_ACCESS_DISTRIBUTOR" filter="int">
+            <option value="1">COM_MEIADMIN_YES</option>
+            <option value="0">COM_MEIADMIN_NO</option>
+        </field>
+        <field name="access_account" type="text"
+               label="COM_MEIADMIN_ACCESS_ACCOUNT"
+               size="50"
+               required="false"
+               readonly="true"
+                />
+    </fieldset>
+</form>
