@@ -127,6 +127,7 @@ display: none;
     }
 
     .bttn, #body-login button, #Submit {
+    outline: none !important;
     position:relative;
     background: #00539b;
     color: #fff !important;
