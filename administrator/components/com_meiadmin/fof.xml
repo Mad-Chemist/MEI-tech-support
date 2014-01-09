@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<fof>
+    <!-- Component back-end options -->
+    <backend>
+        <!-- Dispatcher options -->
+        <dispatcher>
+            <option name="default_view"></option>
+        </dispatcher>
+    </backend>
+</fof>

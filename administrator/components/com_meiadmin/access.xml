@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<access component="com_meiadmin">
+	<section name="component">
+		<action name="core.admin" title="JACTION_ADMIN" description="JACTION_ADMIN_COMPONENT_DESC" />
+		<action name="core.manage" title="JACTION_MANAGE" description="JACTION_MANAGE_COMPONENT_DESC" />
+		<action name="core.create" title="JACTION_CREATE" description="JACTION_CREATE_COMPONENT_DESC" />
+		<action name="core.delete" title="JACTION_DELETE" description="JACTION_DELETE_COMPONENT_DESC" />
+		<action name="core.edit" title="JACTION_EDIT" description="JACTION_EDIT_COMPONENT_DESC" />
+		<action name="core.edit.state" title="JACTION_EDITSTATE" description="JACTION_EDITSTATE_COMPONENT_DESC" />
+        <action name="customer.admin" title="COM_MEIADMIN_CUSTOMER_ADMIN" description="COM_MEIADMIN_CUSTOMER_ADMIN_DESC" />
+        <action name="product.admin" title="COM_MEIADMIN_PRODUCT_ADMIN" description="COM_MEIADMIN_PRODUCT_ADMIN_DESC" />
+        <action name="file.promote" title="COM_MEIADMIN_FILE_PROMOTE" description="COM_MEIADMIN_FILE_PROMOTE_DESC" />
+	</section>
+</access>
