@@ -19,7 +19,6 @@
             class="meiadmin-field"
 	        query="SELECT meiadmin_category_id, title FROM #__meiadmin_categories WHERE 1"
             required="true"
-            multiple="true"
             key_field="meiadmin_category_id"
             value_field="title"
             filter="int"
