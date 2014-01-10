@@ -1,4 +1,4 @@
-<?php
+<?php 
 /**
  * @package    FrameworkOnFramework
  * @copyright  Copyright (C) 2010 - 2012 Akeeba Ltd. All rights reserved.
