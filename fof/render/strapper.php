@@ -8,87 +8,79 @@ defined('_JEXEC') or die;
 
 /**
  * Akeeba Strapper view renderer class.
- *
- * @package  FrameworkOnFramework
- * @since    2.0
  */
-class FOFRenderStrapper extends FOFRenderAbstract
+class BBDFOFRenderStrapper extends BBDFOFRenderAbstract
 {
+
 	/**
 	 * Public constructor. Determines the priority of this class and if it should be enabled
 	 */
 	public function __construct()
 	{
-		$this->priority	 = 60;
-		$this->enabled	 = class_exists('AkeebaStrapper');
+		$this->priority = 60;
+		$this->enabled = class_exists('AkeebaStrapper');
 	}
 
 	/**
 	 * Echoes any HTML to show before the view template
 	 *
-	 * @param   string    $view    The current view
-	 * @param   string    $task    The current task
-	 * @param   FOFInput  $input   The input array (request parameters)
-	 * @param   array     $config  The view configuration array
-	 *
-	 * @return  void
+	 * @param   string  $view   The current view
+	 * @param   string  $task   The current task
+	 * @param   array   $input  The input array (request parameters)
 	 */
 	public function preRender($view, $task, $input, $config = array())
 	{
-		$format	 = $input->getCmd('format', 'html');
-
+		$format = $input->getCmd('format', 'html');
 		if (empty($format))
-		{
-			$format	 = 'html';
-		}
-
+			$format = 'html';
 		if ($format != 'html')
-		{
 			return;
-		}
 
-		if (!FOFPlatform::getInstance()->isCli())
+		list($isCli, ) = BBDFOFDispatcher::isCliAdmin();
+		if(!$isCli)
 		{
 			// Wrap output in a Joomla-versioned div
 			$version = new JVersion;
 			$version = str_replace('.', '', $version->RELEASE);
-			echo "<div class=\"joomla-version-$version\">\n";
+			echo "<div class=\"mei-$version\">\n";
 
 			// Wrap output in an akeeba-bootstrap class div
 			echo "<div class=\"akeeba-bootstrap\">\n";
 		}
+		$this->renderButtons($view, $task, $input, $config);
+		$this->renderLinkbar($view, $task, $input, $config);
 
-		// Render submenu and toolbar (only if asked to)
-		if ($input->getBool('render_toolbar', true))
+		if (!$isCli && version_compare(JVERSION, '3.0.0', 'ge'))
 		{
-			$this->renderButtons($view, $task, $input, $config);
-			$this->renderLinkbar($view, $task, $input, $config);
+			$sidebarEntries = JHtmlSidebar::getEntries();
+			if (!empty($sidebarEntries))
+			{
+				$html = '<div id="j-sidebar-container" class="span2">' . "\n";
+				$html .= "\t" . JHtmlSidebar::render() ."\n";
+				$html .= "</div>\n";
+				$html .= '<div id="j-main-container" class="span10">' . "\n";
+				echo $html;
+			}
 		}
 	}
 
 	/**
 	 * Echoes any HTML to show after the view template
 	 *
-	 * @param   string    $view    The current view
-	 * @param   string    $task    The current task
-	 * @param   FOFInput  $input   The input array (request parameters)
-	 * @param   array     $config  The view configuration array
-	 *
-	 * @return  void
+	 * @param   string  $view   The current view
+	 * @param   string  $task   The current task
+	 * @param   array   $input  The input array (request parameters)
 	 */
 	public function postRender($view, $task, $input, $config = array())
 	{
+		list($isCli, ) = BBDFOFDispatcher::isCliAdmin();
 		$format = $input->getCmd('format', 'html');
-
-		if ($format != 'html' || FOFPlatform::getInstance()->isCli())
-		{
+		if ($format != 'html' || $isCli)
 			return;
-		}
 
-		if (!FOFPlatform::getInstance()->isCli() && FOFPlatform::getInstance()->checkVersion(JVERSION, '3.0', 'ge'))
+		if (!$isCli && version_compare(JVERSION, '3.0.0', 'ge'))
 		{
 			$sidebarEntries = JHtmlSidebar::getEntries();
-
 			if (!empty($sidebarEntries))
 			{
 				echo '</div>';
@@ -100,35 +92,26 @@ class FOFRenderStrapper extends FOFRenderAbstract
 	}
 
 	/**
-	 * Loads the validation script for an edit form
-	 *
-	 * @param   FOFForm  &$form  The form we are rendering
-	 *
-	 * @return  void
-	 */
-	protected function loadValidationScript(FOFForm &$form)
+     * Loads the validation script for edit form
+     *
+     * @return void
+     */
+	protected function loadValidationScript(BBDFOFForm &$form)
 	{
 		$message = $form->getView()->escape(JText::_('JGLOBAL_VALIDATION_FORM_FAILED'));
 
 		$js = <<<ENDJAVASCRIPT
 		Joomla.submitbutton = function(task)
-		{
-			if (task == 'cancel' || document.formvalidator.isValid(document.id('adminForm')))
-			{
-				Joomla.submitform(task, document.getElementById('adminForm'));
-			}
-			else {
-				alert('$message');
-			}
-		}
+        {
+            if (task == 'cancel' || document.formvalidator.isValid(document.id('adminForm'))) {
+                Joomla.submitform(task, document.getElementById('adminForm'));
+            } else {
+                alert('$message');
+            }
+        }
 ENDJAVASCRIPT;
 
-		$document = FOFPlatform::getInstance()->getDocument();
-
-		if ($document instanceof JDocument)
-		{
-			$document->addScriptDeclaration($js);
-		}
+		JFactory::getDocument()->addScriptDeclaration($js);
 	}
 
 	/**
@@ -136,21 +119,19 @@ ENDJAVASCRIPT;
 	 *
 	 * @param   string    $view    The active view name
 	 * @param   string    $task    The current task
-	 * @param   FOFInput  $input   The input object
+	 * @param   BBDFOFInput  $input   The input object
 	 * @param   array     $config  Extra configuration variables for the toolbar
-	 *
-	 * @return  void
 	 */
 	protected function renderLinkbar($view, $task, $input, $config = array())
 	{
 		$style = 'classic';
 
-		if (array_key_exists('linkbar_style', $config))
+		if(array_key_exists('linkbar_style', $config))
 		{
 			$style = $config['linkbar_style'];
 		}
 
-		if (!FOFPlatform::getInstance()->checkVersion(JVERSION, '3.0', 'ge'))
+		if (!version_compare(JVERSION, '3.0.0', 'ge'))
 		{
 			$style = 'classic';
 		}
@@ -169,42 +150,36 @@ ENDJAVASCRIPT;
 	}
 
 	/**
-	 * Renders the submenu (link bar) in FOF's classic style, using a Bootstrapped
-	 * tab bar.
+	 * Renders the submenu (link bar)
 	 *
 	 * @param   string    $view    The active view name
 	 * @param   string    $task    The current task
-	 * @param   FOFInput  $input   The input object
+	 * @param   BBDFOFInput  $input   The input object
 	 * @param   array     $config  Extra configuration variables for the toolbar
-	 *
-	 * @return  void
 	 */
 	protected function renderLinkbar_classic($view, $task, $input, $config = array())
 	{
-		if (FOFPlatform::getInstance()->isCli())
+		list($isCli, ) = BBDFOFDispatcher::isCliAdmin();
+		if($isCli)
 		{
 			return;
 		}
 
 		// Do not render a submenu unless we are in the the admin area
-		$toolbar				 = FOFToolbar::getAnInstance($input->getCmd('option', 'com_foobar'), $config);
-		$renderFrontendSubmenu	 = $toolbar->getRenderFrontendSubmenu();
+		$toolbar = BBDFOFToolbar::getAnInstance($input->getCmd('option', 'com_foobar'), $config);
+		$renderFrontendSubmenu = $toolbar->getRenderFrontendSubmenu();
 
-		if (!FOFPlatform::getInstance()->isBackend() && !$renderFrontendSubmenu)
-		{
+		list($isCli, $isAdmin) = BBDFOFDispatcher::isCliAdmin();
+		if (!$isAdmin && !$renderFrontendSubmenu)
 			return;
-		}
 
 		$links = $toolbar->getLinks();
-
 		if (!empty($links))
 		{
 			echo "<ul class=\"nav nav-tabs\">\n";
-
 			foreach ($links as $link)
 			{
 				$dropdown = false;
-
 				if (array_key_exists('dropdown', $link))
 				{
 					$dropdown = $link['dropdown'];
@@ -214,43 +189,31 @@ ENDJAVASCRIPT;
 				{
 					echo "<li";
 					$class = 'dropdown';
-
 					if ($link['active'])
-					{
 						$class .= ' active';
-					}
-
 					echo ' class="' . $class . '">';
 
 					echo '<a class="dropdown-toggle" data-toggle="dropdown" href="#">';
-
 					if ($link['icon'])
 					{
 						echo "<i class=\"icon icon-" . $link['icon'] . "\"></i>";
 					}
-
 					echo $link['name'];
 					echo '<b class="caret"></b>';
 					echo '</a>';
 
 					echo "\n<ul class=\"dropdown-menu\">";
-
 					foreach ($link['items'] as $item)
 					{
+
 						echo "<li";
-
 						if ($item['active'])
-						{
 							echo ' class="active"';
-						}
-
 						echo ">";
-
 						if ($item['icon'])
 						{
 							echo "<i class=\"icon icon-" . $item['icon'] . "\"></i>";
 						}
-
 						if ($item['link'])
 						{
 							echo "<a tabindex=\"-1\" href=\"" . $item['link'] . "\">" . $item['name'] . "</a>";
@@ -259,28 +222,20 @@ ENDJAVASCRIPT;
 						{
 							echo $item['name'];
 						}
-
 						echo "</li>";
 					}
-
 					echo "</ul>\n";
 				}
 				else
 				{
 					echo "<li";
-
 					if ($link['active'])
-					{
 						echo ' class="active"';
-					}
-
 					echo ">";
-
 					if ($link['icon'])
 					{
 						echo "<i class=\"icon icon-" . $link['icon'] . "\"></i>";
 					}
-
 					if ($link['link'])
 					{
 						echo "<a href=\"" . $link['link'] . "\">" . $link['name'] . "</a>";
@@ -293,74 +248,41 @@ ENDJAVASCRIPT;
 
 				echo "</li>\n";
 			}
-
 			echo "</ul>\n";
 		}
 	}
 
 	/**
-	 * Renders the submenu (link bar) using Joomla!'s style. On Joomla! 2.5 this
-	 * is a list of bar separated links, on Joomla! 3 it's a sidebar at the
-	 * left-hand side of the page.
+	 * Renders the submenu (link bar) using Joomla!'s style
 	 *
 	 * @param   string    $view    The active view name
 	 * @param   string    $task    The current task
-	 * @param   FOFInput  $input   The input object
+	 * @param   BBDFOFInput  $input   The input object
 	 * @param   array     $config  Extra configuration variables for the toolbar
-	 *
-	 * @return  void
 	 */
 	protected function renderLinkbar_joomla($view, $task, $input, $config = array())
 	{
+		list($isCli, $isAdmin) = BBDFOFDispatcher::isCliAdmin();
+
 		// On command line don't do anything
-		if (FOFPlatform::getInstance()->isCli())
+		if($isCli)
 		{
 			return;
 		}
 
 		// Do not render a submenu unless we are in the the admin area
-		$toolbar				 = FOFToolbar::getAnInstance($input->getCmd('option', 'com_foobar'), $config);
-		$renderFrontendSubmenu	 = $toolbar->getRenderFrontendSubmenu();
+		$toolbar = BBDFOFToolbar::getAnInstance($input->getCmd('option', 'com_foobar'), $config);
+		$renderFrontendSubmenu = $toolbar->getRenderFrontendSubmenu();
 
-		if (!FOFPlatform::getInstance()->isBackend() && !$renderFrontendSubmenu)
-		{
+		if (!$isAdmin && !$renderFrontendSubmenu)
 			return;
-		}
 
-		$this->renderLinkbarItems($toolbar);
-	}
-
-	/**
-	 * do the rendering job for the linkbar
-	 *
-	 * @param   FOFToolbar  $toolbar  A toolbar object
-	 *
-	 * @return  void
-	 */
-	protected function renderLinkbarItems($toolbar)
-	{
 		$links = $toolbar->getLinks();
-
 		if (!empty($links))
 		{
 			foreach ($links as $link)
 			{
 				JHtmlSidebar::addEntry($link['name'], $link['link'], $link['active']);
-
-				$dropdown = false;
-
-				if (array_key_exists('dropdown', $link))
-				{
-					$dropdown = $link['dropdown'];
-				}
-
-				if ($dropdown)
-				{
-					foreach ($link['items'] as $item)
-					{
-						JHtmlSidebar::addEntry('– ' . $item['name'], $item['link'], $item['active']);
-					}
-				}
 			}
 		}
 	}
@@ -370,32 +292,30 @@ ENDJAVASCRIPT;
 	 *
 	 * @param   string    $view    The active view name
 	 * @param   string    $task    The current task
-	 * @param   FOFInput  $input   The input object
+	 * @param   BBDFOFInput  $input   The input object
 	 * @param   array     $config  Extra configuration variables for the toolbar
-	 *
-	 * @return  void
 	 */
 	protected function renderButtons($view, $task, $input, $config = array())
 	{
-		if (FOFPlatform::getInstance()->isCli())
+		list($isCli, ) = BBDFOFDispatcher::isCliAdmin();
+		if($isCli)
 		{
 			return;
 		}
-
 		// Do not render buttons unless we are in the the frontend area and we are asked to do so
-		$toolbar				 = FOFToolbar::getAnInstance($input->getCmd('option', 'com_foobar'), $config);
-		$renderFrontendButtons	 = $toolbar->getRenderFrontendButtons();
+		$toolbar = BBDFOFToolbar::getAnInstance($input->getCmd('option', 'com_foobar'), $config);
+		$renderFrontendButtons = $toolbar->getRenderFrontendButtons();
 
-		if (FOFPlatform::getInstance()->isBackend() || !$renderFrontendButtons)
-		{
+		list($isCli, $isAdmin) = BBDFOFDispatcher::isCliAdmin();
+		if ($isAdmin || !$renderFrontendButtons)
 			return;
-		}
 
-		$bar	 = JToolBar::getInstance('toolbar');
-		$items	 = $bar->getItems();
+		$bar = JToolBar::getInstance('toolbar');
+		$items = $bar->getItems();
 
 		$substitutions = array(
 			'icon-32-new'		 => 'icon-plus',
+			'icon-32-edit'		 => 'icon-pencil',
 			'icon-32-publish'	 => 'icon-eye-open',
 			'icon-32-unpublish'	 => 'icon-eye-close',
 			'icon-32-delete'	 => 'icon-trash',
@@ -408,14 +328,12 @@ ENDJAVASCRIPT;
 			'icon-32-save-new'	 => 'icon-repeat',
 		);
 
-		$html	 = array();
-		$html[]	 = '<div class="well" id="' . $bar->getName() . '">';
-
+		$html = array();
+		$html[] = '<div class="well" id="' . $bar->getName() . '">';
 		foreach ($items as $node)
 		{
-			$type	 = $node[0];
-			$button	 = $bar->loadButtonType($type);
-
+			$type = $node[0];
+			$button = $bar->loadButtonType($type);
 			if ($button !== false)
 			{
 				if (method_exists($button, 'fetchId'))
@@ -426,58 +344,59 @@ ENDJAVASCRIPT;
 				{
 					$id = null;
 				}
-
-				$action	 = call_user_func_array(array(&$button, 'fetchButton'), $node);
-				$action	 = str_replace('class="toolbar"', 'class="toolbar btn"', $action);
-				$action	 = str_replace('<span ', '<i ', $action);
-				$action	 = str_replace('</span>', '</i>', $action);
-				$action	 = str_replace(array_keys($substitutions), array_values($substitutions), $action);
-				$html[]	 = $action;
+				$action = call_user_func_array(array(&$button, 'fetchButton'), $node);
+				$action = str_replace('class="toolbar"', 'class="toolbar btn"', $action);
+				$action = str_replace('<span ', '<i ', $action);
+				$action = str_replace('</span>', '</i>', $action);
+				$action = str_replace(array_keys($substitutions), array_values($substitutions), $action);
+				$html[] = $action;
 			}
 		}
-
 		$html[] = '</div>';
 
 		echo implode("\n", $html);
 	}
 
 	/**
-	 * Renders a FOFForm for a Browse view and returns the corresponding HTML
+	 * Renders a BBDFOFForm for a Browse view and returns the corresponding HTML
 	 *
-	 * @param   FOFForm   &$form  The form to render
-	 * @param   FOFModel  $model  The model providing our data
-	 * @param   FOFInput  $input  The input object
+	 * @param   BBDFOFForm   $form      The form to render
+	 * @param   BBDFOFModel  $model     The model providing our data
+	 * @param   BBDFOFInput  $input     The input object
 	 *
 	 * @return  string    The HTML rendering of the form
 	 */
-	protected function renderFormBrowse(FOFForm &$form, FOFModel $model, FOFInput $input)
+	protected function renderFormBrowse(BBDFOFForm &$form, BBDFOFModel $model, BBDFOFInput $input)
 	{
+		static $isCli = null, $isAdmin = null;
+		if (is_null($isCli))
+		{
+			list($isCli, $isAdmin) = BBDFOFDispatcher::isCliAdmin();
+		}
+
 		$html = '';
 
-		JHtml::_('behavior.multiselect');
-
 		// Joomla! 3.0+ support
-		if (FOFPlatform::getInstance()->checkVersion(JVERSION, '3.0', 'ge'))
+		if (version_compare(JVERSION, '3.0', 'ge'))
 		{
 			JHtml::_('bootstrap.tooltip');
+			JHtml::_('behavior.multiselect');
 			JHtml::_('dropdown.init');
 			JHtml::_('formbehavior.chosen', 'select');
-			$view	 = $form->getView();
-			$order	 = $view->escape($view->getLists()->order);
+			$view = $form->getView();
+			$order = $view->escape($view->getLists()->order);
 			$html .= <<<ENDJS
 <script type="text/javascript">
 	Joomla.orderTable = function() {
 		table = document.getElementById("sortTable");
 		direction = document.getElementById("directionTable");
 		order = table.options[table.selectedIndex].value;
-		if (order != '$order')
-		{
+		if (order != '$order') {
 			dirn = 'asc';
-		}
-		else {
+		} else {
 			dirn = direction.options[direction.selectedIndex].value;
 		}
-		Joomla.tableOrdering(order, dirn);
+		Joomla.tableOrdering(order, dirn, '');
 	}
 </script>
 
@@ -488,78 +407,49 @@ ENDJS;
 		$headerFields = $form->getHeaderset();
 
 		// Get form parameters
-		$show_header		 = $form->getAttribute('show_header', 1);
-		$show_filters		 = $form->getAttribute('show_filters', 1);
-		$show_pagination	 = $form->getAttribute('show_pagination', 1);
-		$norows_placeholder	 = $form->getAttribute('norows_placeholder', '');
+		$show_header = $form->getAttribute('show_header', 1);
+		$show_filters = $form->getAttribute('show_filters', 1);
+		$show_pagination = $form->getAttribute('show_pagination', 1);
+		$norows_placeholder = $form->getAttribute('norows_placeholder', '');
 
 		// Joomla! 3.0 sidebar support
-
-		if (FOFPlatform::getInstance()->checkVersion(JVERSION, '3.0', 'gt'))
+		if (version_compare(JVERSION, '3.0', 'gt') && $show_filters)
 		{
-			if ($show_filters)
-			{
-				JHtmlSidebar::setAction("index.php?option=" .
-					$input->getCmd('option') . "&view=" .
-					FOFInflector::pluralize($input->getCmd('view'))
-				);
-			}
-
-			// Reorder the fields with ordering first
-			$tmpFields = array();
-			$i = 1;
-
-			foreach ($headerFields as $tmpField)
-			{
-				if ($tmpField instanceof FOFFormHeaderOrdering)
-				{
-					$tmpFields[0] = $tmpField;
-				}
-
-				else
-				{
-					$tmpFields[$i] = $tmpField;
-				}
-
-				$i++;
-			}
-
-			$headerFields = $tmpFields;
-			ksort($headerFields, SORT_NUMERIC);
+			JHtmlSidebar::setAction("index.php?option=" .
+				$input->getCmd('option') . "&view=" .
+				BBDFOFInflector::pluralize($input->getCmd('view'))
+			);
 		}
 
 		// Pre-render the header and filter rows
 		$header_html = '';
 		$filter_html = '';
-		$sortFields	 = array();
+		$sortFields = array();
 
 		if ($show_header || $show_filters)
 		{
 			foreach ($headerFields as $headerField)
 			{
-				$header		 = $headerField->header;
-				$filter		 = $headerField->filter;
-				$buttons	 = $headerField->buttons;
-				$options	 = $headerField->options;
-				$sortable	 = $headerField->sortable;
-				$tdwidth	 = $headerField->tdwidth;
+				$header = $headerField->header;
+				$filter = $headerField->filter;
+				$buttons = $headerField->buttons;
+				$options = $headerField->options;
+				$sortable = $headerField->sortable;
+				$tdwidth = $headerField->tdwidth;
 
 				// Under Joomla! < 3.0 we can't have filter-only fields
-
-				if (FOFPlatform::getInstance()->checkVersion(JVERSION, '3.0', 'lt') && empty($header))
+				if (version_compare(JVERSION, '3.0', 'lt') && empty($header))
 				{
 					continue;
 				}
 
 				// If it's a sortable field, add to the list of sortable fields
-
 				if ($sortable)
 				{
 					$sortFields[$headerField->name] = JText::_($headerField->label);
 				}
 
 				// Get the table data width, if set
-
 				if (!empty($tdwidth))
 				{
 					$tdwidth = 'width="' . $tdwidth . '"';
@@ -569,21 +459,18 @@ ENDJS;
 					$tdwidth = '';
 				}
 
-				if (!empty($header))
-				{
-					$header_html .= "\t\t\t\t\t<th $tdwidth>" . PHP_EOL;
-					$header_html .= "\t\t\t\t\t\t" . $header;
-					$header_html .= "\t\t\t\t\t</th>" . PHP_EOL;
-				}
+				$header_html .= "\t\t\t\t\t<th $tdwidth>" . PHP_EOL;
+				$header_html .= "\t\t\t\t\t\t" . $header;
+				$header_html .= "\t\t\t\t\t</th>" . PHP_EOL;
 
-				if (FOFPlatform::getInstance()->checkVersion(JVERSION, '3.0', 'ge'))
+				if (version_compare(JVERSION, '3.0', 'ge'))
 				{
 					// Joomla! 3.0 or later
 					if (!empty($filter))
 					{
 						$filter_html .= '<div class="filter-search btn-group pull-left">' . "\n";
 						$filter_html .= "\t" . '<label for="title" class="element-invisible">';
-						$filter_html .= JText::_($headerField->label);
+						$filter_html .= $headerField->label;
 						$filter_html .= "</label>\n";
 						$filter_html .= "\t$filter\n";
 						$filter_html .= "</div>\n";
@@ -600,14 +487,7 @@ ENDJS;
 						$label = $headerField->label;
 
 						JHtmlSidebar::addFilter(
-							'- ' . JText::_($label) . ' -', (string) $headerField->name,
-							JHtml::_(
-								'select.options',
-								$options,
-								'value',
-								'text',
-								$model->getState($headerField->name, ''), true
-							)
+							'- ' . JText::_($label) . ' -', (string) $headerField->name, JHtml::_('select.options', $options, 'value', 'text', $form->getModel()->getState($headerField->name, ''), true)
 						);
 					}
 				}
@@ -615,47 +495,61 @@ ENDJS;
 				{
 					// Joomla! 2.5
 					$filter_html .= "\t\t\t\t\t<td>" . PHP_EOL;
-
 					if (!empty($filter))
 					{
 						$filter_html .= "\t\t\t\t\t\t$filter" . PHP_EOL;
-
 						if (!empty($buttons))
 						{
-							$filter_html .= '<div class="btn-group pull-left hidden-phone">' . PHP_EOL;
-							$filter_html .= "\t\t\t\t\t\t$buttons" . PHP_EOL;
-							$filter_html .= '</div>' . PHP_EOL;
+							$filter_html .= "\t\t\t\t\t\t<nobr>$buttons</nobr>" . PHP_EOL;
 						}
 					}
 					elseif (!empty($options))
 					{
-						$label		 = $headerField->label;
+						$label = $headerField->label;
 						$emptyOption = JHtml::_('select.option', '', '- ' . JText::_($label) . ' -');
 						array_unshift($options, $emptyOption);
-						$attribs	 = array(
-							'onchange' => 'document.adminForm.submit();'
+						$attribs = array(
+							'onchange'	 => 'document.adminForm.submit();'
 						);
-						$filter		 = JHtml::_('select.genericlist', $options, $headerField->name, $attribs, 'value', 'text', $headerField->value, false, true);
+						$filter = JHtml::_('select.genericlist', $options, $headerField->name, $attribs, 'value', 'text', $headerField->value, false, true);
 						$filter_html .= "\t\t\t\t\t\t$filter" . PHP_EOL;
 					}
-
 					$filter_html .= "\t\t\t\t\t</td>" . PHP_EOL;
 				}
 			}
 		}
 
 		// Start the form
-		$filter_order		 = $form->getView()->getLists()->order;
-		$filter_order_Dir	 = $form->getView()->getLists()->order_Dir;
+		$filter_order = $form->getView()->getLists()->order;
+		$filter_order_Dir = $form->getView()->getLists()->order_Dir;
 
 		$html .= '<form action="index.php" method="post" name="adminForm" id="adminForm">' . PHP_EOL;
+		$html .= "\t" . '<input type="hidden" name="option" value="' . $input->getCmd('option') . '" />' . PHP_EOL;
+		$html .= "\t" . '<input type="hidden" name="view" value="' . BBDFOFInflector::pluralize($input->getCmd('view')) . '" />' . PHP_EOL;
+		$html .= "\t" . '<input type="hidden" name="task" value="' . $input->getCmd('task', 'browse') . '" />' . PHP_EOL;
+		// The id field is required in Joomla! 3 front-end to prevent the pagination limit box from screwing it up. Huh!!
+		if (version_compare(JVERSION, '3.0', 'ge') && !$isAdmin && !$isCli)
+		{
+			$html .= "\t" . '<input type="hidden" name="id" value="' . $input->getCmd('id', '') . '" />' . PHP_EOL;
+		}
+		$html .= "\t" . '<input type="hidden" name="boxchecked" value="" />' . PHP_EOL;
+		$html .= "\t" . '<input type="hidden" name="hidemainmenu" value="" />' . PHP_EOL;
+		$html .= "\t" . '<input type="hidden" name="filter_order" value="' . $filter_order . '" />' . PHP_EOL;
+		$html .= "\t" . '<input type="hidden" name="filter_order_Dir" value="' . $filter_order_Dir . '" />' . PHP_EOL;
+		$html .= "\t" . '<input type="hidden" name="' . JFactory::getSession()->getFormToken() . '" value="1" />' . PHP_EOL;
 
-		if (FOFPlatform::getInstance()->checkVersion(JVERSION, '3.0', 'ge'))
+        //Itemid added
+        $Itemid = $input->getAlnum('Itemid', '0');
+        if($Itemid){
+            $html .= "\t" . '<input type="hidden" name="Itemid" value="' . $Itemid . '" />' . PHP_EOL;
+        }
+
+
+		if (version_compare(JVERSION, '3.0', 'ge'))
 		{
 			// Joomla! 3.0+
 			// Get and output the sidebar, if present
 			$sidebar = JHtmlSidebar::render();
-
 			if ($show_filters && !empty($sidebar))
 			{
 				$html .= '<div id="j-sidebar-container" class="span2">' . "\n";
@@ -669,7 +563,6 @@ ENDJS;
 			}
 
 			// Render header search fields, if the header is enabled
-
 			if ($show_header)
 			{
 				$html .= "\t" . '<div id="filter-bar" class="btn-toolbar">' . "\n";
@@ -687,8 +580,8 @@ ENDJS;
 				if (!empty($sortFields))
 				{
 					// Display the field sort order
-					$asc_sel	 = ($view->getLists()->order_Dir == 'asc') ? 'selected="selected"' : '';
-					$desc_sel	 = ($view->getLists()->order_Dir == 'desc') ? 'selected="selected"' : '';
+					$asc_sel = ($view->getLists()->order_Dir == 'asc') ? 'selected="selected"' : '';
+					$desc_sel = ($view->getLists()->order_Dir == 'desc') ? 'selected="selected"' : '';
 					$html .= "\t" . '<div class="btn-group pull-right hidden-phone">' . "\n";
 					$html .= "\t\t" . '<label for="directionTable" class="element-invisible">' . JText::_('JFIELD_ORDERING_DESC') . '</label>' . "\n";
 					$html .= "\t\t" . '<select name="directionTable" id="directionTable" class="input-medium" onchange="Joomla.orderTable()">' . "\n";
@@ -717,14 +610,12 @@ ENDJS;
 		$html .= "\t\t" . '<table class="table table-striped" id="itemsList">' . PHP_EOL;
 
 		// Open the table header region if required
-
-		if ($show_header || ($show_filters && FOFPlatform::getInstance()->checkVersion(JVERSION, '3.0', 'lt')))
+		if ($show_header || ($show_filters && version_compare(JVERSION, '3.0', 'lt')))
 		{
 			$html .= "\t\t\t<thead>" . PHP_EOL;
 		}
 
 		// Render the header row, if enabled
-
 		if ($show_header)
 		{
 			$html .= "\t\t\t\t<tr>" . PHP_EOL;
@@ -733,8 +624,7 @@ ENDJS;
 		}
 
 		// Render filter row if enabled
-
-		if ($show_filters && FOFPlatform::getInstance()->checkVersion(JVERSION, '3.0', 'lt'))
+		if ($show_filters && version_compare(JVERSION, '3.0', 'lt'))
 		{
 			$html .= "\t\t\t\t<tr>";
 			$html .= $filter_html;
@@ -742,67 +632,37 @@ ENDJS;
 		}
 
 		// Close the table header region if required
-
-		if ($show_header || ($show_filters && FOFPlatform::getInstance()->checkVersion(JVERSION, '3.0', 'lt')))
+		if ($show_header || ($show_filters && version_compare(JVERSION, '3.0', 'lt')))
 		{
 			$html .= "\t\t\t</thead>" . PHP_EOL;
 		}
 
 		// Loop through rows and fields, or show placeholder for no rows
 		$html .= "\t\t\t<tbody>" . PHP_EOL;
-		$fields		 = $form->getFieldset('items');
+		$fields = $form->getFieldset('items');
 		$num_columns = count($fields);
-		$items		 = $model->getItemList();
-
+		$items = $form->getModel()->getItemList();
 		if ($count = count($items))
 		{
 			$m = 1;
-
 			foreach ($items as $i => $item)
 			{
-				$table_item = $model->getTable();
-				$table_item->reset();
+				$table_item = $form->getModel()->getTable();
 				$table_item->bind($item);
 
 				$form->bind($item);
 
-				$m		 = 1 - $m;
-				$class	 = 'row' . $m;
+				$m = 1 - $m;
+				$class = 'row' . $m;
 
 				$html .= "\t\t\t\t<tr class=\"$class\">" . PHP_EOL;
 
 				$fields = $form->getFieldset('items');
-
-				// Reorder the fields to have ordering first
-				if (FOFPlatform::getInstance()->checkVersion(JVERSION, '3.0', 'gt'))
-				{
-					$tmpFields = array();
-					$j = 1;
-
-					foreach ($fields as $tmpField)
-					{
-						if ($tmpField instanceof FOFFormFieldOrdering)
-						{
-							$tmpFields[0] = $tmpField;
-						}
-
-						else
-						{
-							$tmpFields[$j] = $tmpField;
-						}
-
-						$j++;
-					}
-
-					$fields = $tmpFields;
-					ksort($fields, SORT_NUMERIC);
-				}
-
 				foreach ($fields as $field)
 				{
-					$field->rowid	 = $i;
-					$field->item	 = $table_item;
-					$class			 = $field->labelClass ? 'class ="' . $field->labelClass . '"' : '';
+					$field->rowid = $i;
+					$field->item = $table_item;
+					$class = $field->labelClass ? 'class ="' . $field->labelClass . '"' : '';
 					$html .= "\t\t\t\t\t<td $class>" . $field->getRepeatable() . '</td>' . PHP_EOL;
 				}
 
@@ -815,21 +675,18 @@ ENDJS;
 			$html .= JText::_($norows_placeholder);
 			$html .= "</td></tr>\n";
 		}
-
 		$html .= "\t\t\t</tbody>" . PHP_EOL;
 
 		// Render the pagination bar, if enabled, on J! 2.5
-		if ($show_pagination && FOFPlatform::getInstance()->checkVersion(JVERSION, '3.0', 'lt'))
+		if ($show_pagination && version_compare(JVERSION, '3.0', 'lt'))
 		{
-			$pagination = $model->getPagination();
+			$pagination = $form->getModel()->getPagination();
 			$html .= "\t\t\t<tfoot>" . PHP_EOL;
 			$html .= "\t\t\t\t<tr><td colspan=\"$num_columns\">";
-
 			if (($pagination->total > 0))
 			{
 				$html .= $pagination->getListFooter();
 			}
-
 			$html .= "</td></tr>\n";
 			$html .= "\t\t\t</tfoot>" . PHP_EOL;
 		}
@@ -838,35 +695,17 @@ ENDJS;
 		$html .= "\t\t" . '</table>' . PHP_EOL;
 
 		// Render the pagination bar, if enabled, on J! 3.0+
-
-		if ($show_pagination && FOFPlatform::getInstance()->checkVersion(JVERSION, '3.0', 'ge'))
+		if ($show_pagination && version_compare(JVERSION, '3.0', 'ge'))
 		{
 			$html .= $model->getPagination()->getListFooter();
+			;
 		}
 
 		// Close the wrapper element div on Joomla! 3.0+
-
-		if (FOFPlatform::getInstance()->checkVersion(JVERSION, '3.0', 'ge'))
+		if (version_compare(JVERSION, '3.0', 'ge'))
 		{
 			$html .= "</div>\n";
 		}
-
-		$html .= "\t" . '<input type="hidden" name="option" value="' . $input->getCmd('option') . '" />' . PHP_EOL;
-		$html .= "\t" . '<input type="hidden" name="view" value="' . FOFInflector::pluralize($input->getCmd('view')) . '" />' . PHP_EOL;
-		$html .= "\t" . '<input type="hidden" name="task" value="' . $input->getCmd('task', 'browse') . '" />' . PHP_EOL;
-
-		// The id field is required in Joomla! 3 front-end to prevent the pagination limit box from screwing it up. Huh!!
-
-		if (FOFPlatform::getInstance()->checkVersion(JVERSION, '3.0', 'ge') && FOFPlatform::getInstance()->isFrontend())
-		{
-			$html .= "\t" . '<input type="hidden" name="id" value="' . $input->getCmd('id', '') . '" />' . PHP_EOL;
-		}
-
-		$html .= "\t" . '<input type="hidden" name="boxchecked" value="" />' . PHP_EOL;
-		$html .= "\t" . '<input type="hidden" name="hidemainmenu" value="" />' . PHP_EOL;
-		$html .= "\t" . '<input type="hidden" name="filter_order" value="' . $filter_order . '" />' . PHP_EOL;
-		$html .= "\t" . '<input type="hidden" name="filter_order_Dir" value="' . $filter_order_Dir . '" />' . PHP_EOL;
-		$html .= "\t" . '<input type="hidden" name="' . JFactory::getSession()->getFormToken() . '" value="1" />' . PHP_EOL;
 
 		// End the form
 		$html .= '</form>' . PHP_EOL;
@@ -875,107 +714,20 @@ ENDJS;
 	}
 
 	/**
-	 * Renders a FOFForm for a Read view and returns the corresponding HTML
+	 * Renders a BBDFOFForm for a Browse view and returns the corresponding HTML
 	 *
-	 * @param   FOFForm   &$form  The form to render
-	 * @param   FOFModel  $model  The model providing our data
-	 * @param   FOFInput  $input  The input object
-	 *
-	 * @return  string    The HTML rendering of the form
-	 */
-	protected function renderFormRead(FOFForm &$form, FOFModel $model, FOFInput $input)
-	{
-		$html = $this->renderFormRaw($form, $model, $input, 'read');
-
-		return $html;
-	}
-
-	/**
-	 * Renders a FOFForm for an Edit view and returns the corresponding HTML
-	 *
-	 * @param   FOFForm   &$form  The form to render
-	 * @param   FOFModel  $model  The model providing our data
-	 * @param   FOFInput  $input  The input object
+	 * @param   BBDFOFForm   $form      The form to render
+	 * @param   BBDFOFModel  $model     The model providing our data
+	 * @param   BBDFOFInput  $input     The input object
 	 *
 	 * @return  string    The HTML rendering of the form
 	 */
-	protected function renderFormEdit(FOFForm &$form, FOFModel $model, FOFInput $input)
+	protected function renderFormRead(BBDFOFForm &$form, BBDFOFModel $model, BBDFOFInput $input)
 	{
 		// Get the key for this model's table
-		$key		 = $model->getTable()->getKeyName();
-		$keyValue	 = $model->getId();
+		$key = $model->getTable()->getKeyName();
+		$keyValue = $model->getId();
 
-		$html = '';
-
-		$validate	 = strtolower($form->getAttribute('validate'));
-
-		if (in_array($validate, array('true', 'yes', '1', 'on')))
-		{
-			JHTML::_('behavior.framework', true);
-			JHTML::_('behavior.formvalidation');
-			$class = ' form-validate';
-			$this->loadValidationScript($form);
-		}
-		else
-		{
-			$class = '';
-		}
-
-		// Check form enctype. Use enctype="multipart/form-data" to upload binary files in your form.
-		$template_form_enctype = $form->getAttribute('enctype');
-
-		if (!empty($template_form_enctype))
-		{
-			$enctype = ' enctype="' . $form->getAttribute('enctype') . '" ';
-		}
-		else
-		{
-			$enctype = '';
-		}
-
-		// Check form name. Use name="yourformname" to modify the name of your form.
-		$formname = $form->getAttribute('name');
-
-		if (empty($formname))
-		{
-			$formname = 'adminForm';
-		}
-
-		// Check form ID. Use id="yourformname" to modify the id of your form.
-		$formid = $form->getAttribute('name');
-
-		if (empty($formid))
-		{
-			$formid = 'adminForm';
-		}
-
-		$html .= '<form action="index.php" method="post" name="' . $formname .
-			'" id="' . $formid . '"' . $enctype . ' class="form-horizontal' .
-			$class . '">' . PHP_EOL;
-		$html .= "\t" . '<input type="hidden" name="option" value="' . $input->getCmd('option') . '" />' . PHP_EOL;
-		$html .= "\t" . '<input type="hidden" name="view" value="' . $input->getCmd('view', 'edit') . '" />' . PHP_EOL;
-		$html .= "\t" . '<input type="hidden" name="task" value="" />' . PHP_EOL;
-		$html .= "\t" . '<input type="hidden" name="' . $key . '" value="' . $keyValue . '" />' . PHP_EOL;
-		$html .= "\t" . '<input type="hidden" name="' . JFactory::getSession()->getFormToken() . '" value="1" />' . PHP_EOL;
-
-		$html .= $this->renderFormRaw($form, $model, $input, 'edit');
-		$html .= '</form>';
-
-		return $html;
-	}
-
-	/**
-	 * Renders a raw FOFForm and returns the corresponding HTML
-	 *
-	 * @param   FOFForm   &$form     The form to render
-	 * @param   FOFModel  $model     The model providing our data
-	 * @param   FOFInput  $input     The input object
-	 * @param   string    $formType  The form type e.g. 'edit' or 'read'
-	 *
-	 * @return  string    The HTML rendering of the form
-	 */
-	protected function renderFormRaw(FOFForm &$form, FOFModel $model, FOFInput $input, $formType)
-	{
 		$html = '';
 
 		foreach ($form->getFieldsets() as $fieldset)
@@ -1000,50 +752,17 @@ ENDJS;
 
 			foreach ($fields as $field)
 			{
-				$required	 = $field->required;
-				$labelClass	 = $field->labelClass;
-				$groupClass	 = $form->getFieldAttribute($field->fieldname, 'groupclass', '', $field->group);
+				$title = $field->title;
+				$required = $field->required;
+				$labelClass = $field->labelClass;
+				$description = $field->description;
 
-				// Auto-generate label and description if needed
-				// Field label
-				$title 		 = $form->getFieldAttribute($field->fieldname, 'label', '', $field->group);
-				$emptylabel  = $form->getFieldAttribute($field->fieldname, 'emptylabel', false, $field->group);
-
-				if (empty($title) && !$emptylabel)
-				{
-					$model->getName();
-					$title = strtoupper($input->get('option') . '_' . $model->getName() . '_' . $field->id . '_LABEL');
-				}
-
-				// Field description
-				$description = $form->getFieldAttribute($field->fieldname, 'description', '', $field->group);
-
-				/**
-				 * The following code is backwards incompatible. Most forms don't require a description in their form
-				 * fields. Having to use emptydescription="1" on each one of them is an overkill. Removed.
-				 */
-				/*
-				$emptydescription   = $form->getFieldAttribute($field->fieldname, 'emptydescription', false, $field->group);
-				if (empty($description) && !$emptydescription)
-				{
-					$description = strtoupper($input->get('option') . '_' . $model->getName() . '_' . $field->id . '_DESC');
-				}
-				*/
-
-				if ($formType == 'read')
-				{
-					$inputField = $field->static;
-				}
-				elseif ($formType == 'edit')
-				{
-					$inputField = $field->input;
-				}
+				$input = $field->static;
 
 				if (empty($title))
 				{
-					$html .= "\t\t\t" . $inputField . PHP_EOL;
-
-					if (!empty($description) && $formType == 'edit')
+					$html .= "\t\t\t" . $input . PHP_EOL;
+					if (!empty($description))
 					{
 						$html .= "\t\t\t\t" . '<span class="help-block">';
 						$html .= JText::_($description) . '</span>' . PHP_EOL;
@@ -1051,25 +770,21 @@ ENDJS;
 				}
 				else
 				{
-					$html .= "\t\t\t" . '<div class="control-group ' . $groupClass . '">' . PHP_EOL;
+					$html .= "\t\t\t" . '<div class="control-group">' . PHP_EOL;
 					$html .= "\t\t\t\t" . '<label class="control-label ' . $labelClass . '" for="' . $field->id . '">' . PHP_EOL;
 					$html .= "\t\t\t\t" . JText::_($title) . PHP_EOL;
-
 					if ($required)
 					{
 						$html .= ' *';
 					}
-
 					$html .= "\t\t\t\t" . '</label>' . PHP_EOL;
 					$html .= "\t\t\t\t" . '<div class="controls">' . PHP_EOL;
-					$html .= "\t\t\t\t" . $inputField . PHP_EOL;
-
+					$html .= "\t\t\t\t" . $input . PHP_EOL;
 					if (!empty($description))
 					{
 						$html .= "\t\t\t\t" . '<span class="help-block">';
 						$html .= JText::_($description) . '</span>' . PHP_EOL;
 					}
-
 					$html .= "\t\t\t\t" . '</div>' . PHP_EOL;
 					$html .= "\t\t\t" . '</div>' . PHP_EOL;
 				}
@@ -1077,6 +792,112 @@ ENDJS;
 
 			$html .= "\t" . '</div>' . PHP_EOL;
 		}
+
+		return $html;
+	}
+
+	/**
+	 * Renders a BBDFOFForm for a Browse view and returns the corresponding HTML
+	 *
+	 * @param   BBDFOFForm   $form      The form to render
+	 * @param   BBDFOFModel  $model     The model providing our data
+	 * @param   BBDFOFInput  $input     The input object
+	 *
+	 * @return  string    The HTML rendering of the form
+	 */
+	protected function renderFormEdit(BBDFOFForm &$form, BBDFOFModel $model, BBDFOFInput $input)
+	{
+		// Get the key for this model's table
+		$key = $model->getTable()->getKeyName();
+		$keyValue = $model->getId();
+
+		$html = '';
+
+        $enctype = '';
+
+        if ($form->getAttribute('enctype') === 'multipart/form-data') {
+              $enctype = 'enctype="multipart/form-data"';
+        }
+
+
+		if ($validate = $form->getAttribute('validate'))
+		{
+			JHTML::_('behavior.formvalidation');
+			$class = ' form-validate';
+			$this->loadValidationScript($form);
+		}
+		else
+		{
+			$class = '';
+		}
+
+        $html .= '<form action="index.php" method="post" name="adminForm" id="adminForm"' . $enctype . ' class="form-horizontal' . $class . '">' . PHP_EOL;
+		$html .= "\t" . '<input type="hidden" name="option" value="' . $input->getCmd('option') . '" />' . PHP_EOL;
+		$html .= "\t" . '<input type="hidden" name="view" value="' . $input->getCmd('view', 'edit') . '" />' . PHP_EOL;
+		$html .= "\t" . '<input type="hidden" name="task" value="" />' . PHP_EOL;
+
+		$html .= "\t" . '<input type="hidden" name="' . $key . '" value="' . $keyValue . '" />' . PHP_EOL;
+		$html .= "\t" . '<input type="hidden" name="' . JFactory::getSession()->getFormToken() . '" value="1" />' . PHP_EOL;
+
+        //Itemid added
+        $Itemid = $input->getAlnum('Itemid', '0');
+        if($Itemid){
+            $html .= "\t" . '<input type="hidden" name="Itemid" value="' . $Itemid . '" />' . PHP_EOL;
+        }
+
+
+        foreach ($form->getFieldsets() as $fieldset)
+		{
+			$fields = $form->getFieldset($fieldset->name);
+
+			if (isset($fieldset->class))
+			{
+				$class = 'class="' . $fieldset->class . '"';
+			}
+			else
+			{
+				$class = '';
+			}
+
+			$html .= "\t" . '<div id="' . $fieldset->name . '" ' . $class . '>' . PHP_EOL;
+
+			if (isset($fieldset->label) && !empty($fieldset->label))
+			{
+				$html .= "\t\t" . '<h3>' . JText::_($fieldset->label) . '</h3>' . PHP_EOL;
+			}
+
+			foreach ($fields as $field)
+			{
+				$title = $field->title;
+				$required = $field->required;
+				$labelClass = $field->labelClass;
+				$description = $field->description;
+
+				$input = $field->input;
+
+				$html .= "\t\t\t" . '<div class="control-group">' . PHP_EOL;
+				$html .= "\t\t\t\t" . '<label class="control-label ' . $labelClass . '" for="' . $field->id . '">' . PHP_EOL;
+				$html .= "\t\t\t\t" . JText::_($title) . PHP_EOL;
+				if ($required)
+				{
+					$html .= ' *';
+				}
+				$html .= "\t\t\t\t" . '</label>' . PHP_EOL;
+				$html .= "\t\t\t\t" . '<div class="controls">' . PHP_EOL;
+				$html .= "\t\t\t\t" . $input . PHP_EOL;
+				if (!empty($description))
+				{
+					$html .= "\t\t\t\t" . '<span class="help-block">';
+					$html .= JText::_($description) . '</span>' . PHP_EOL;
+				}
+				$html .= "\t\t\t\t" . '</div>' . PHP_EOL;
+				$html .= "\t\t\t" . '</div>' . PHP_EOL;
+			}
+
+			$html .= "\t" . '</div>' . PHP_EOL;
+		}
+
+		$html .= '</form>';
 
 		return $html;
 	}
