@@ -5,7 +5,7 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 // Protect from unauthorized access
-defined('_JEXEC') or die;
+defined('_JEXEC') or die();
 
 if (!class_exists('JFormFieldList'))
 {
@@ -13,21 +13,19 @@ if (!class_exists('JFormFieldList'))
 }
 
 /**
- * Form Field class for FOF
+ * Form Field class for BBDFOF
  * Supports a generic list of options.
  *
  * @package  FrameworkOnFramework
  * @since    2.0
  */
-class FOFFormFieldPublished extends JFormFieldList implements FOFFormField
+class BBDFOFFormFieldPublished extends JFormFieldList implements BBDFOFFormField
 {
+
 	protected $static;
 
 	protected $repeatable;
 
-	/** @var   FOFTable  The item being rendered in a repeatable form field */
-	public $item;
-	
 	/** @var int A monotonically increasing number, denoting the row number in a repeatable view */
 	public $rowid;
 
@@ -96,35 +94,32 @@ class FOFFormFieldPublished extends JFormFieldList implements FOFFormField
 
 		$stack = array();
 
-		// We are no longer using jgrid.publishedOptions as it's returning
-		// untranslated strings, unsuitable for our purposes.
-
 		if ($this->element['show_published'] == 'false')
 		{
-			$stack[] = JHtml::_('select.option', '1', JText::_('JPUBLISHED'));
+			$config['published'] = 0;
 		}
 
 		if ($this->element['show_unpublished'] == 'false')
 		{
-			$stack[] = JHtml::_('select.option', '0', JText::_('JUNPUBLISHED'));
+			$config['unpublished'] = 0;
 		}
 
 		if ($this->element['show_archived'] == 'true')
 		{
-			$stack[] = JHtml::_('select.option', '2', JText::_('JARCHIVED'));
+			$config['archived'] = 1;
 		}
 
 		if ($this->element['show_trash'] == 'true')
 		{
-			$stack[] = JHtml::_('select.option', '-2', JText::_('JTRASHED'));
+			$config['trash'] = 1;
 		}
 
 		if ($this->element['show_all'] == 'true')
 		{
-			$stack[] = JHtml::_('select.option', '*', JText::_('JALL'));
+			$config['all'] = 1;
 		}
 
-		return $stack;
+		return JHtml::_('jgrid.publishedOptions', $config);
 	}
 
 	/**
@@ -140,7 +135,7 @@ class FOFFormFieldPublished extends JFormFieldList implements FOFFormField
 		$class = $this->element['class'] ? ' class="' . (string) $this->element['class'] . '"' : '';
 
 		return '<span id="' . $this->id . '" ' . $class . '>' .
-			htmlspecialchars(FOFFormFieldList::getOptionName($this->getOptions(), $this->value), ENT_COMPAT, 'UTF-8') .
+			htmlspecialchars(self::getOptionName($this->getOptions(), $this->value), ENT_COMPAT, 'UTF-8') .
 			'</span>';
 	}
 
@@ -154,9 +149,9 @@ class FOFFormFieldPublished extends JFormFieldList implements FOFFormField
 	 */
 	public function getRepeatable()
 	{
-		if (!($this->item instanceof FOFTable))
+		if (!($this->item instanceof BBDFOFTable))
 		{
-			throw new Exception(__CLASS__ . ' needs a FOFTable to act upon');
+			throw new Exception(__CLASS__ . ' needs a BBDFOFTable to act upon');
 		}
 
 		// Initialise
@@ -191,4 +186,5 @@ class FOFFormFieldPublished extends JFormFieldList implements FOFFormField
 		// Get the HTML
 		return JHTML::_('jgrid.published', $this->value, $this->rowid, $prefix, $enabled, $checkbox, $publish_up, $publish_down);
 	}
+
 }

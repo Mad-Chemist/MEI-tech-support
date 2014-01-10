@@ -5,25 +5,27 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 // Protect from unauthorized access
-defined('_JEXEC') or die;
+defined('_JEXEC') or die();
 
 /**
- * Form Field class for FOF
+ * Form Field class for BBDFOF
  * Renders the row ordering interface checkbox in browse views
  *
  * @package  FrameworkOnFramework
  * @since    2.0
  */
-class FOFFormFieldOrdering extends JFormField implements FOFFormField
+class BBDFOFFormFieldOrdering extends JFormField implements BBDFOFFormField
 {
+
 	protected $static;
 
 	protected $repeatable;
 
-	/** @var   FOFTable  The item being rendered in a repeatable form field */
-	public $item;
-	
-	/** @var int A monotonically increasing number, denoting the row number in a repeatable view */
+	/**
+	 * A monotonically increasing number, denoting the row number in a repeatable view
+	 *
+	 * @var  integer
+	 */
 	public $rowid;
 
 	/**
@@ -97,9 +99,9 @@ class FOFFormFieldOrdering extends JFormField implements FOFFormField
 	 */
 	public function getRepeatable()
 	{
-		if (!($this->item instanceof FOFTable))
+		if (!($this->item instanceof BBDFOFTable))
 		{
-			throw new Exception(__CLASS__ . ' needs a FOFTable to act upon');
+			throw new Exception(__CLASS__ . ' needs a BBDFOFTable to act upon');
 		}
 
 		$html = '';
@@ -115,7 +117,7 @@ class FOFFormFieldOrdering extends JFormField implements FOFFormField
 			$html .= '<span>';
 			$html .= $viewObject->pagination->orderUpIcon($this->rowid, true, 'orderup', 'Move Up', $ordering);
 			$html .= '</span><span>';
-			$html .= $viewObject->pagination->orderDownIcon($this->rowid, $viewObject->pagination->total, true, 'orderdown', 'Move Down', $ordering);
+			$html .= $viewObject->pagination->orderDownIcon($this->rowid,$viewObject->pagination->total, true, 'orderdown', 'Move Down', $ordering);
 			$html .= '</span>';
 			$html .= '<input type="text" name="order[]" size="5" value="' . $this->value . '" ' . $disabled;
 			$html .= 'class="text_area" style="text-align: center" />';
@@ -152,4 +154,5 @@ class FOFFormFieldOrdering extends JFormField implements FOFFormField
 
 		return $html;
 	}
+
 }

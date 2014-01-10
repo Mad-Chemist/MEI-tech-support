@@ -4,7 +4,7 @@
  * @copyright  Copyright (C) 2010 - 2012 Akeeba Ltd. All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-defined('_JEXEC') or die;
+defined('_JEXEC') or die();
 
 /**
  * This class provides an RFC6238-compliant Time-based One Time Passwords,
@@ -13,8 +13,9 @@ defined('_JEXEC') or die;
  * @package  FrameworkOnFramework
  * @since    1.0
  */
-class FOFEncryptTotp
+class BBDFOFEncryptTotp
 {
+
 	private $_passCodeLength = 6;
 
 	private $_pinModulo;
@@ -77,6 +78,7 @@ class FOFEncryptTotp
 
 		for ($i = -1; $i <= 1; $i++)
 		{
+
 			if ($this->getCode($secret, $time + $i) == $code)
 			{
 				return true;
@@ -97,8 +99,9 @@ class FOFEncryptTotp
 	 */
 	public function getCode($secret, $time = null)
 	{
+
 		$period = $this->getPeriod($time);
-		$base32 = new FOFEncryptBase32;
+		$base32 = new BBDFOFEncryptBase32;
 		$secret = $base32->decode($secret);
 
 		$time = pack("N", $period);
@@ -117,10 +120,10 @@ class FOFEncryptTotp
 	/**
 	 * Extracts a part of a hash as an integer
 	 *
-	 * @param   string  $bytes  The hash
-	 * @param   string  $start  The char to start from (0 = first char)
+	 * @param   type  $bytes  The hash
+	 * @param   type  $start  The char to start from (0 = first char)
 	 *
-	 * @return  string
+	 * @return type
 	 */
 	protected function hashToInt($bytes, $start)
 	{
@@ -137,7 +140,7 @@ class FOFEncryptTotp
 	 * @param   string  $hostname  Hostname
 	 * @param   string  $secret    Secret string
 	 *
-	 * @return  string
+	 * @return string
 	 */
 	public function getUrl($user, $hostname, $secret)
 	{
@@ -151,7 +154,7 @@ class FOFEncryptTotp
 	/**
 	 * Generates a (semi-)random Secret Key for TOTP generation
 	 *
-	 * @return  string
+	 * @return string
 	 */
 	public function generateSecret()
 	{
@@ -162,9 +165,9 @@ class FOFEncryptTotp
 			$c = rand(0, 255);
 			$secret .= pack("c", $c);
 		}
-
-		$base32 = new FOFEncryptBase32;
+		$base32 = new BBDFOFEncryptBase32;
 
 		return $base32->encode($secret);
 	}
+
 }

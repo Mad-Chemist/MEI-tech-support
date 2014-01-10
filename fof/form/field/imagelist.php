@@ -5,7 +5,7 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 // Protect from unauthorized access
-defined('_JEXEC') or die;
+defined('_JEXEC') or die();
 
 if (!class_exists('JFormFieldImagelist'))
 {
@@ -13,23 +13,18 @@ if (!class_exists('JFormFieldImagelist'))
 }
 
 /**
- * Form Field class for the FOF framework
+ * Form Field class for the BBDFOF framework
  * Media selection field.
  *
  * @package  FrameworkOnFramework
  * @since    2.0
  */
-class FOFFormFieldImagelist extends JFormFieldImageList implements FOFFormField
+class BBDFOFFormFieldImagelist extends JFormFieldImageList implements BBDFOFFormField
 {
+
 	protected $static;
 
 	protected $repeatable;
-	
-	/** @var   FOFTable  The item being rendered in a repeatable form field */
-	public $item;
-	
-	/** @var int A monotonically increasing number, denoting the row number in a repeatable view */
-	public $rowid;
 
 	/**
 	 * Method to get certain otherwise inaccessible properties from the form field object.
@@ -85,32 +80,26 @@ class FOFFormFieldImagelist extends JFormFieldImageList implements FOFFormField
 		{
 			$imgattr['class'] = (string) $this->element['class'];
 		}
-
 		if ($this->element['style'])
 		{
 			$imgattr['style'] = (string) $this->element['style'];
 		}
-
 		if ($this->element['width'])
 		{
 			$imgattr['width'] = (string) $this->element['width'];
 		}
-
 		if ($this->element['height'])
 		{
 			$imgattr['height'] = (string) $this->element['height'];
 		}
-
 		if ($this->element['align'])
 		{
 			$imgattr['align'] = (string) $this->element['align'];
 		}
-
 		if ($this->element['rel'])
 		{
 			$imgattr['rel'] = (string) $this->element['rel'];
 		}
-
 		if ($this->element['alt'])
 		{
 			$alt = JText::_((string) $this->element['alt']);
@@ -119,7 +108,6 @@ class FOFFormFieldImagelist extends JFormFieldImageList implements FOFFormField
 		{
 			$alt = null;
 		}
-
 		if ($this->element['title'])
 		{
 			$imgattr['title'] = JText::_((string) $this->element['title']);
@@ -152,4 +140,5 @@ class FOFFormFieldImagelist extends JFormFieldImageList implements FOFFormField
 	{
 		return $this->getStatic();
 	}
+
 }

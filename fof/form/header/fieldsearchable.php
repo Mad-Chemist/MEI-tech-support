@@ -5,7 +5,7 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 // Protect from unauthorized access
-defined('_JEXEC') or die;
+defined('_JEXEC') or die();
 
 /**
  * Generic field header, with text input (search) filter
@@ -13,8 +13,9 @@ defined('_JEXEC') or die;
  * @package  FrameworkOnFramework
  * @since    2.0
  */
-class FOFFormHeaderFieldsearchable extends FOFFormHeaderField
+class BBDFOFFormHeaderFieldsearchable extends BBDFOFFormHeaderField
 {
+
 	/**
 	 * Get the filter field
 	 *
@@ -50,6 +51,7 @@ class FOFFormHeaderFieldsearchable extends FOFFormHeaderField
 			$onchange = ' onchange="document.adminForm.submit();"';
 		}
 
+
 		return '<input type="text" name="' . $name . '" id="' . $this->id . '"' . ' value="'
 			. htmlspecialchars($searchvalue, ENT_COMPAT, 'UTF-8') . '"' . $filterclass . $size . $placeholder . $onchange . $maxLength . '/>';
 	}
@@ -61,9 +63,8 @@ class FOFFormHeaderFieldsearchable extends FOFFormHeaderField
 	 */
 	protected function getButtons()
 	{
-		$buttonclass = $this->element['buttonclass'] ? (string) $this->element['buttonclass'] : 'btn hasTip hasTooltip';
-		$buttonsState = strtolower($this->element['buttons']);
-		$show_buttons = !in_array($buttonsState, array('no', 'false', '0'));
+		$buttonclass = $this->element['buttonclass'] ? ' class="' . (string) $this->element['buttonclass'] . '"' : '';
+		$show_buttons = !($this->element['buttons'] == 'false');
 
 		if (!$show_buttons)
 		{
@@ -72,13 +73,14 @@ class FOFFormHeaderFieldsearchable extends FOFFormHeaderField
 
 		$html = '';
 
-		$html .= '<button class="' . $buttonclass . '" onclick="this.form.submit();" title="' . JText::_('JSEARCH_FILTER') . '" >' . "\n";
-		$html .= '<i class="icon-search"></i>';
+		$html .= '<button ' . $buttonclass . ' onclick="this.form.submit();">' . "\n";
+		$html .= "\t" . JText::_('JSEARCH_FILTER') . "\n";
 		$html .= '</button>' . "\n";
-		$html .= '<button class="' . $buttonclass . '" onclick="document.adminForm.' . $this->id . '.value=\'\';this.form.submit();" title="' . JText::_('JSEARCH_RESET') . '">' . "\n";
-		$html .= '<i class="icon-remove"></i>';
+		$html .= '<button ' . $buttonclass . ' onclick="document.adminForm.' . $this->id . '.value=\'\';this.form.submit();">' . "\n";
+		$html .= "\t" . JText::_('JSEARCH_RESET') . "\n";
 		$html .= '</button>' . "\n";
 
 		return $html;
 	}
+
 }

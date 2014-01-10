@@ -5,7 +5,7 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 // Protect from unauthorized access
-defined('_JEXEC') or die;
+defined('_JEXEC') or die();
 
 if (!class_exists('JFormFieldSql'))
 {
@@ -13,23 +13,18 @@ if (!class_exists('JFormFieldSql'))
 }
 
 /**
- * Form Field class for FOF
+ * Form Field class for BBDFOF
  * Radio selection listGeneric list from an SQL statement
  *
  * @package  FrameworkOnFramework
  * @since    2.0
  */
-class FOFFormFieldSql extends JFormFieldSql implements FOFFormField
+class BBDFOFFormFieldSql extends JFormFieldSql implements BBDFOFFormField
 {
+
 	protected $static;
 
 	protected $repeatable;
-	
-	/** @var   FOFTable  The item being rendered in a repeatable form field */
-	public $item;
-
-	/** @var int A monotonically increasing number, denoting the row number in a repeatable view */
-	public $rowid;
 
 	/**
 	 * Method to get certain otherwise inaccessible properties from the form field object.
@@ -80,7 +75,7 @@ class FOFFormFieldSql extends JFormFieldSql implements FOFFormField
 		$class = $this->element['class'] ? ' class="' . (string) $this->element['class'] . '"' : '';
 
 		return '<span id="' . $this->id . '" ' . $class . '>' .
-			htmlspecialchars(FOFFormFieldList::getOptionName($this->getOptions(), $this->value), ENT_COMPAT, 'UTF-8') .
+			htmlspecialchars(BBDFOFFormFieldList::getOptionName($this->getOptions(), $this->value), ENT_COMPAT, 'UTF-8') .
 			'</span>';
 	}
 
@@ -97,7 +92,8 @@ class FOFFormFieldSql extends JFormFieldSql implements FOFFormField
 		$class = $this->element['class'] ? (string) $this->element['class'] : '';
 
 		return '<span class="' . $this->id . ' ' . $class . '">' .
-			htmlspecialchars(FOFFormFieldList::getOptionName($this->getOptions(), $this->value), ENT_COMPAT, 'UTF-8') .
+			htmlspecialchars(BBDFOFFormFieldList::getOptionName($this->getOptions(), $this->value), ENT_COMPAT, 'UTF-8') .
 			'</span>';
 	}
+
 }

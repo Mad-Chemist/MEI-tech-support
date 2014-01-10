@@ -5,7 +5,7 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 // Protect from unauthorized access
-defined('_JEXEC') or die;
+defined('_JEXEC') or die();
 
 if (!class_exists('JFormFieldUser'))
 {
@@ -13,23 +13,18 @@ if (!class_exists('JFormFieldUser'))
 }
 
 /**
- * Form Field class for the FOF framework
+ * Form Field class for the BBDFOF framework
  * A user selection box / display field
  *
  * @package  FrameworkOnFramework
  * @since    2.0
  */
-class FOFFormFieldUser extends JFormFieldUser implements FOFFormField
+class BBDFOFFormFieldUser extends JFormFieldUser implements BBDFOFFormField
 {
+
 	protected $static;
 
 	protected $repeatable;
-	
-	/** @var   FOFTable  The item being rendered in a repeatable form field */
-	public $item;
-	
-	/** @var int A monotonically increasing number, denoting the row number in a repeatable view */
-	public $rowid;
 
 	/**
 	 * Method to get certain otherwise inaccessible properties from the form field object.
@@ -89,22 +84,18 @@ class FOFFormFieldUser extends JFormFieldUser implements FOFFormField
 		{
 			$class = ' class="' . (string) $this->element['class'] . '"';
 		}
-
 		if ($this->element['show_username'] == 'false')
 		{
 			$show_username = false;
 		}
-
 		if ($this->element['show_email'] == 'true')
 		{
 			$show_email = true;
 		}
-
 		if ($this->element['show_name'] == 'true')
 		{
 			$show_name = true;
 		}
-
 		if ($this->element['show_id'] == 'true')
 		{
 			$show_id = true;
@@ -118,24 +109,20 @@ class FOFFormFieldUser extends JFormFieldUser implements FOFFormField
 
 		if ($show_username)
 		{
-			$html .= '<span class="fof-userfield-username">' . $user->username . '</span>';
+			$html .= '<span class="BBDFOF-userfield-username">' . $user->username . '</span>';
 		}
-
 		if ($show_id)
 		{
-			$html .= '<span class="fof-userfield-id">' . $user->id . '</span>';
+			$html .= '<span class="BBDFOF-userfield-id">' . $user->id . '</span>';
 		}
-
 		if ($show_name)
 		{
-			$html .= '<span class="fof-userfield-name">' . $user->name . '</span>';
+			$html .= '<span class="BBDFOF-userfield-name">' . $user->name . '</span>';
 		}
-
 		if ($show_email)
 		{
-			$html .= '<span class="fof-userfield-email">' . $user->email . '</span>';
+			$html .= '<span class="BBDFOF-userfield-email">' . $user->email . '</span>';
 		}
-
 		$html .= '</div>';
 
 		return $html;
@@ -171,54 +158,47 @@ class FOFFormFieldUser extends JFormFieldUser implements FOFFormField
 		{
 			$class = ' class="' . (string) $this->element['class'] . '"';
 		}
-
 		if ($this->element['show_username'] == 'false')
 		{
 			$show_username = false;
 		}
-
 		if ($this->element['show_email'] == 'false')
 		{
 			$show_email = false;
 		}
-
 		if ($this->element['show_name'] == 'false')
 		{
 			$show_name = false;
 		}
-
 		if ($this->element['show_id'] == 'false')
 		{
 			$show_id = false;
 		}
-
 		if ($this->element['show_avatar'] == 'false')
 		{
 			$show_avatar = false;
 		}
-
 		if ($this->element['avatar_method'])
 		{
 			$avatar_method = strtolower($this->element['avatar_method']);
 		}
-
 		if ($this->element['avatar_size'])
 		{
 			$avatar_size = $this->element['avatar_size'];
 		}
-
 		if ($this->element['show_link'] == 'true')
 		{
 			$show_link = true;
 		}
-
 		if ($this->element['link_url'])
 		{
 			$link_url = $this->element['link_url'];
 		}
 		else
 		{
-			if (FOFPlatform::getInstance()->isBackend())
+			list($isCli, $isAdmin) = BBDFOFDispatcher::isCliAdmin();
+
+			if ($isAdmin)
 			{
 				// If no link is defined in the back-end, assume the user edit
 				// link in the User Manager component
@@ -231,7 +211,6 @@ class FOFFormFieldUser extends JFormFieldUser implements FOFFormField
 				$show_link = false;
 			}
 		}
-
 		// Post-process the link URL
 		if ($show_link)
 		{
@@ -256,8 +235,9 @@ class FOFFormFieldUser extends JFormFieldUser implements FOFFormField
 			if ($avatar_method == 'plugin')
 			{
 				// Use the user plugins to get an avatar
-				FOFPlatform::getInstance()->importPlugin('user');
-				$jResponse = FOFPlatform::getInstance()->runPlugins('onUserAvatar', array($user, $avatar_size));
+				JPluginHelper::importPlugin('user');
+				$dispatcher = JDispatcher::getInstance();
+				$jResponse  = $dispatcher->trigger('onUserAvatar', array($user, $avatar_size));
 
 				if (!empty($jResponse))
 				{
@@ -279,8 +259,9 @@ class FOFFormFieldUser extends JFormFieldUser implements FOFFormField
 			{
 				// Fall back to the Gravatar method
 				$md5 = md5($user->email);
+				list($isCLI, $isAdmin) = BBDFOFDispatcher::isCliAdmin();
 
-				if (FOFPlatform::getInstance()->isCli())
+				if ($isCLI)
 				{
 					$scheme = 'http';
 				}
@@ -291,12 +272,12 @@ class FOFFormFieldUser extends JFormFieldUser implements FOFFormField
 
 				if ($scheme == 'http')
 				{
-					$avatar_url = 'http://www.gravatar.com/avatar/' . $md5 . '.jpg?s='
+					$url = 'http://www.gravatar.com/avatar/' . $md5 . '.jpg?s='
 						. $avatar_size . '&d=mm';
 				}
 				else
 				{
-					$avatar_url = 'https://secure.gravatar.com/avatar/' . $md5 . '.jpg?s='
+					$url = 'https://secure.gravatar.com/avatar/' . $md5 . '.jpg?s='
 						. $avatar_size . '&d=mm';
 				}
 			}
@@ -307,7 +288,7 @@ class FOFFormFieldUser extends JFormFieldUser implements FOFFormField
 
 		if ($show_avatar)
 		{
-			$html .= '<img src="' . $avatar_url . '" align="left" class="fof-usersfield-avatar" />';
+			$html .= '<img src="' . $avatar_url . '" align="left" class="BBDFOF-usersfield-avatar" />';
 		}
 
 		if ($show_link)
@@ -317,25 +298,25 @@ class FOFFormFieldUser extends JFormFieldUser implements FOFFormField
 
 		if ($show_username)
 		{
-			$html .= '<span class="fof-usersfield-username">' . $user->username
+			$html .= '<span class="BBDFOF-usersfield-username">' . $user->username
 				. '</span>';
 		}
 
 		if ($show_id)
 		{
-			$html .= '<span class="fof-usersfield-id">' . $user->id
+			$html .= '<span class="BBDFOF-usersfield-id">' . $user->id
 				. '</span>';
 		}
 
 		if ($show_name)
 		{
-			$html .= '<span class="fof-usersfield-name">' . $user->name
+			$html .= '<span class="BBDFOF-usersfield-name">' . $user->name
 				. '</span>';
 		}
 
 		if ($show_email)
 		{
-			$html .= '<span class="fof-usersfield-email">' . $user->email
+			$html .= '<span class="BBDFOF-usersfield-email">' . $user->email
 				. '</span>';
 		}
 
@@ -348,4 +329,5 @@ class FOFFormFieldUser extends JFormFieldUser implements FOFFormField
 
 		return $html;
 	}
+
 }

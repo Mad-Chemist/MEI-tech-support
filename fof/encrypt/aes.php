@@ -5,7 +5,7 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 // Protect from unauthorized access
-defined('_JEXEC') or die;
+defined('_JEXEC') or die();
 
 /**
  * A simple implementation of AES-128, AES-192 and AES-256 encryption using the
@@ -14,8 +14,9 @@ defined('_JEXEC') or die;
  * @package  FrameworkOnFramework
  * @since    1.0
  */
-class FOFEncryptAES
+class BBDFOFEncryptAES
 {
+
 	/** @var string The AES cipher to use (this is an mcrypt identifier, not the bit strength) */
 	private $_cipherType = 0;
 
@@ -70,12 +71,13 @@ class FOFEncryptAES
 	 * @param   string  $stringToEncrypt  The plaintext to encrypt
 	 * @param   bool    $base64encoded    Should I Base64-encode the result?
 	 *
-	 * @return   string  The cryptotext. Please note that the first 16 bytes of
-	 *                   the raw string is the IV (initialisation vector) which
-	 *                   is necessary for decoding the string.
+	 * @return   string  The cryptotext. Please note that the first 16 bytes of the raw string is the IV (initialisation vector) which is necessary for decoding the string.
 	 */
 	public function encryptString($stringToEncrypt, $base64encoded = true)
 	{
+		// Calculate the key to use for encryption
+		$keySize = mcrypt_get_key_size($this->_cipherType, $this->_cipherMode);
+
 		if (strlen($this->_keyString) != 32)
 		{
 			$key = hash('sha256', $this->_keyString, true);
@@ -93,7 +95,6 @@ class FOFEncryptAES
 		{
 			$iv = mcrypt_create_iv($iv_size, MCRYPT_DEV_RANDOM);
 		}
-
 		if (empty($iv))
 		{
 			$iv = mcrypt_create_iv($iv_size, MCRYPT_RAND);
@@ -125,6 +126,9 @@ class FOFEncryptAES
 	 */
 	public function decryptString($stringToDecrypt, $base64encoded = true)
 	{
+		// Calculate the key to use for encryption
+		$keySize = mcrypt_get_key_size($this->_cipherType, $this->_cipherMode);
+
 		if (strlen($this->_keyString) != 32)
 		{
 			$key = hash('sha256', $this->_keyString, true);
@@ -157,82 +161,42 @@ class FOFEncryptAES
 	 *
 	 * @return boolean
 	 */
-	public static function isSupported()
+	static public function isSupported()
 	{
 		if (!function_exists('mcrypt_get_key_size'))
-		{
 			return false;
-		}
-
 		if (!function_exists('mcrypt_get_iv_size'))
-		{
 			return false;
-		}
-
 		if (!function_exists('mcrypt_create_iv'))
-		{
 			return false;
-		}
-
 		if (!function_exists('mcrypt_encrypt'))
-		{
 			return false;
-		}
-
 		if (!function_exists('mcrypt_decrypt'))
-		{
 			return false;
-		}
-
 		if (!function_exists('mcrypt_list_algorithms'))
-		{
 			return false;
-		}
-
 		if (!function_exists('hash'))
-		{
 			return false;
-		}
-
 		if (!function_exists('hash_algos'))
-		{
 			return false;
-		}
-
 		if (!function_exists('base64_encode'))
-		{
 			return false;
-		}
-
 		if (!function_exists('base64_decode'))
-		{
 			return false;
-		}
 
 		$algorightms = mcrypt_list_algorithms();
-
 		if (!in_array('rijndael-128', $algorightms))
-		{
 			return false;
-		}
-
 		if (!in_array('rijndael-192', $algorightms))
-		{
 			return false;
-		}
-
 		if (!in_array('rijndael-256', $algorightms))
-		{
 			return false;
-		}
 
 		$algorightms = hash_algos();
-
 		if (!in_array('sha256', $algorightms))
-		{
 			return false;
-		}
 
 		return true;
 	}
+
 }

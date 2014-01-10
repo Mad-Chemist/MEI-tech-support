@@ -5,15 +5,16 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 // Protect from unauthorized access
-defined('_JEXEC') or die;
+defined('_JEXEC') or die();
 
 /**
- * Form Field class for the FOF framework
+ * Form Field class for the BBDFOF framework
  * Media selection field. This is an alias of the "media" field type.
  *
  * @package  FrameworkOnFramework
  * @since    2.0
  */
-class FOFFormFieldImage extends FOFFormFieldMedia
+class BBDFOFFormFieldImage extends BBDFOFFormFieldMedia
 {
+
 }

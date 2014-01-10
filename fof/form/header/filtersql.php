@@ -5,7 +5,7 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 // Protect from unauthorized access
-defined('_JEXEC') or die;
+defined('_JEXEC') or die();
 
 /**
  * Generic filter, drop-down based on SQL query
@@ -13,15 +13,8 @@ defined('_JEXEC') or die;
  * @package  FrameworkOnFramework
  * @since    2.0
  */
-class FOFFormHeaderFiltersql extends FOFFormHeaderFieldsql
+class BBDFOFFormHeaderFiltersql extends BBDFOFFormHeaderFieldsql
 {
-	/**
-	 * Get the header
-	 *
-	 * @return  string  The header HTML
-	 */
-	protected function getHeader()
-	{
-		return '';
-	}
+
+
 }

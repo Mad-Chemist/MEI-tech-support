@@ -5,7 +5,7 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 // Protect from unauthorized access
-defined('_JEXEC') or die;
+defined('_JEXEC') or die();
 
 /**
  * Ordering field header
@@ -13,8 +13,9 @@ defined('_JEXEC') or die;
  * @package  FrameworkOnFramework
  * @since    2.0
  */
-class FOFFormHeaderOrdering extends FOFFormHeader
+class BBDFOFFormHeaderOrdering extends BBDFOFFormHeader
 {
+
 	/**
 	 * Get the header
 	 *
@@ -46,16 +47,8 @@ class FOFFormHeaderOrdering extends FOFFormHeader
 		else
 		{
 			// The new, drag'n'drop ordering support
-			return JHtml::_(
-				'grid.sort',
-				'<i class="icon-menu-2"></i>',
-				'ordering',
-				$view->getLists()->order_Dir,
-				$view->getLists()->order,
-				null,
-				'asc',
-				'JGRID_HEADING_ORDERING'
-			);
+			return JHtml::_('grid.sort', '<i class="icon-menu-2"></i>', 'ordering', $view->getLists()->order_Dir, $view->getLists()->order, null, 'asc', 'JGRID_HEADING_ORDERING');
 		}
 	}
+
 }

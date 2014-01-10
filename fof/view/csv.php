@@ -5,23 +5,23 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 // Protect from unauthorized access
-defined('_JEXEC') or die;
+defined('_JEXEC') or die();
 
 JLoader::import('joomla.application.component.view');
 
 /**
- * FrameworkOnFramework CSV View class. Automatically renders the data in CSV
- * format.
+ * FrameworkOnFramework CSV View class
  *
- * @package  FrameworkOnFramework
- * @since    1.0
+ * FrameworkOnFramework is a set of classes whcih extend Joomla! 1.5 and later's
+ * MVC framework with features making maintaining complex software much easier,
+ * without tedious repetitive copying of the same code over and over again.
  */
-class FOFViewCsv extends FOFViewHtml
+class BBDFOFViewCsv extends BBDFOFViewHtml
 {
 	/**
 	 *  Should I produce a CSV header row.
 	 *
-	 * @var  boolean
+	 *  @var  boolean
 	 */
 	protected $csvHeader = true;
 
@@ -39,19 +39,13 @@ class FOFViewCsv extends FOFViewHtml
 	 */
 	protected $csvFields = array();
 
-	/**
-	* Public constructor. Instantiates a FOFViewCsv object.
-	*
-	* @param   array  $config  The configuration data array
-	*/
-	public function __construct($config = array())
+	function __construct($config = array())
 	{
 		// Make sure $config is an array
 		if (is_object($config))
 		{
-			$config = (array) $config;
-		}
-		elseif (!is_array($config))
+			$config = (array)$config;
+		} elseif (!is_array($config))
 		{
 			$config = array();
 		}
@@ -78,8 +72,8 @@ class FOFViewCsv extends FOFViewHtml
 
 		if (empty($this->csvFilename))
 		{
-			$view              = $this->input->getCmd('view', 'cpanel');
-			$view              = FOFInflector::pluralize($view);
+			$view = $this->input->getCmd('view', 'cpanel');
+			$view = BBDFOFInflector::pluralize($view);
 			$this->csvFilename = strtolower($view);
 		}
 
@@ -89,13 +83,6 @@ class FOFViewCsv extends FOFViewHtml
 		}
 	}
 
-	/**
-	* Executes before rendering a generic page, default to actions necessary for the Browse task.
-	*
-	* @param   string  $tpl  Subtemplate to use
-	*
-	* @return  boolean  Return true to allow rendering of the page
-	*/
 	protected function onDisplay($tpl = null)
 	{
 		// Load the model
@@ -104,13 +91,8 @@ class FOFViewCsv extends FOFViewHtml
 		$items = $model->getItemList();
 		$this->assignRef('items', $items);
 
-		$document = FOFPlatform::getInstance()->getDocument();
-
-		if ($document instanceof JDocument)
-		{
-			$document->setMimeEncoding('text/csv');
-		}
-
+		$document = JFactory::getDocument();
+		$document->setMimeEncoding('text/csv');
 		JResponse::setHeader('Pragma', 'public');
 		JResponse::setHeader('Expires', '0');
 		JResponse::setHeader('Cache-Control', 'must-revalidate, post-check=0, pre-check=0');
@@ -123,58 +105,45 @@ class FOFViewCsv extends FOFViewHtml
 			$tpl = 'csv';
 		}
 
-		if (FOFPlatform::getInstance()->checkVersion(JVERSION, '3.0', 'lt'))
+		if (version_compare(JVERSION, '3.0', 'lt'))
 		{
-			FOFPlatform::getInstance()->setErrorHandling(E_ALL, 'ignore');
+			JError::setErrorHandling(E_ALL, 'ignore');
 		}
 
 		$hasFailed = false;
-
 		try
 		{
 			$result = $this->loadTemplate($tpl, true);
-
-			if ($result instanceof Exception)
-			{
-				$hasFailed = true;
-			}
 		}
 		catch (Exception $e)
 		{
 			$hasFailed = true;
 		}
 
-		if (FOFPlatform::getInstance()->checkVersion(JVERSION, '3.0', 'lt'))
+		if (version_compare(JVERSION, '3.0', 'lt'))
 		{
 			if ($result instanceof Exception)
 			{
 				$hasFailed = true;
 			}
+			JError::setErrorHandling(E_WARNING, 'callback');
 		}
 
-		if (!$hasFailed)
-		{
-			echo $result;
-		}
-		else
+		if ($hasFailed)
 		{
 			// Default CSV behaviour in case the template isn't there!
-
 			if (empty($items))
-			{
 				return;
-			}
 
-			$item    = array_pop($items);
-			$keys    = get_object_vars($item);
-			$keys    = array_keys($keys);
+			$item = array_pop($items);
+			$keys = get_object_vars($item);
+			$keys = array_keys($keys);
 			$items[] = $item;
 			reset($items);
 
 			if (!empty($this->csvFields))
 			{
 				$temp = array();
-
 				foreach ($this->csvFields as $f)
 				{
 					if (in_array($f, $keys))
@@ -182,32 +151,23 @@ class FOFViewCsv extends FOFViewHtml
 						$temp[] = $f;
 					}
 				}
-
 				$keys = $temp;
 			}
 
 			if ($this->csvHeader)
 			{
 				$csv = array();
-
 				foreach ($keys as $k)
 				{
-					$k = str_replace('"', '""', $k);
-					$k = str_replace("\r", '\\r', $k);
-					$k = str_replace("\n", '\\n', $k);
-					$k = '"' . $k . '"';
-
-					$csv[] = $k;
+					$csv[] = '"' . str_replace('"', '""', $k) . '"';
 				}
-
 				echo implode(",", $csv) . "\r\n";
 			}
 
 			foreach ($items as $item)
 			{
-				$csv  = array();
-				$item = (array) $item;
-
+				$csv = array();
+				$item = (array)$item;
 				foreach ($keys as $k)
 				{
 					if (!isset($item[$k]))
@@ -228,18 +188,12 @@ class FOFViewCsv extends FOFViewHtml
 						$v = 'Object';
 					}
 
-					$v = str_replace('"', '""', $v);
-					$v = str_replace("\r", '\\r', $v);
-					$v = str_replace("\n", '\\n', $v);
-					$v = '"' . $v . '"';
-
-					$csv[] = $v;
+					$csv[] = '"' . str_replace('"', '""', $v) . '"';
 				}
-
 				echo implode(",", $csv) . "\r\n";
 			}
+			return false;
 		}
-
-		return false;
 	}
+
 }

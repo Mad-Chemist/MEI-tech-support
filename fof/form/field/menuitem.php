@@ -2,12 +2,12 @@
 
 defined('_JEXEC') or die();
 
-if (!class_exists('FOFFormFieldHidden'))
+if (!class_exists('BBDFOFFormFieldHidden'))
 {
     require_once 'hidden.php';
 }
 
-class FOFFormFieldMenuItem extends FOFFormFieldHidden
+class BBDFOFFormFieldMenuItem extends BBDFOFFormFieldHidden
 {
 
     protected function getInput(){

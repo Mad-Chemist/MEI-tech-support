@@ -5,22 +5,22 @@
  *  @copyright   Copyright (c)2010-2012 Nicholas K. Dionysopoulos
  *  @license     GNU General Public License version 2, or later
  *
- *  Initializes FOF
+ *  Initializes BBDFOF
  */
 
 defined('_JEXEC') or die();
 
-if (!defined('FOF_INCLUDED'))
+if (!defined('BBDFOF_INCLUDED'))
 {
-    define('FOF_INCLUDED', '2.1.rc4');
+    define('BBDFOF_INCLUDED', '2.0.6');
 
 	// Register a debug log
 	if (defined('JDEBUG') && JDEBUG)
 	{
-		JLog::addLogger(array('text_file' => 'fof.log.php'), JLog::ALL, array('fof'));
+		JLog::addLogger(array('text_file' => 'BBDFOF.log.php'), JLog::ALL, array('BBDFOF'));
 	}
 
-	// Register the FOF autoloader
+	// Register the BBDFOF autoloader
     require_once __DIR__ . '/autoloader/fof.php';
-	FOFAutoloaderFof::init();
+	BBDFOFAutloaderBBDFOF::init();
 }

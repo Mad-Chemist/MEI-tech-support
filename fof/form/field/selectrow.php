@@ -5,25 +5,27 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 // Protect from unauthorized access
-defined('_JEXEC') or die;
+defined('_JEXEC') or die();
 
 /**
- * Form Field class for FOF
+ * Form Field class for BBDFOF
  * Renders the checkbox in browse views which allows you to select rows
  *
  * @package  FrameworkOnFramework
  * @since    2.0
  */
-class FOFFormFieldSelectrow extends JFormField implements FOFFormField
+class BBDFOFFormFieldSelectrow extends JFormField implements BBDFOFFormField
 {
+
 	protected $static;
 
 	protected $repeatable;
 
-	/** @var   FOFTable  The item being rendered in a repeatable form field */
-	public $item;
-	
-	/** @var int A monotonically increasing number, denoting the row number in a repeatable view */
+	/**
+	 * A monotonically increasing number, denoting the row number in a repeatable view
+	 *
+	 * @var  integer
+	 */
 	public $rowid;
 
 	/**
@@ -97,9 +99,9 @@ class FOFFormFieldSelectrow extends JFormField implements FOFFormField
 	 */
 	public function getRepeatable()
 	{
-		if (!($this->item instanceof FOFTable))
+		if (!($this->item instanceof BBDFOFTable))
 		{
-			throw new Exception(__CLASS__ . ' needs a FOFTable to act upon');
+			throw new Exception(__CLASS__ . ' needs a BBDFOFTable to act upon');
 		}
 
 		// Is this record checked out?
@@ -119,4 +121,5 @@ class FOFFormFieldSelectrow extends JFormField implements FOFFormField
 		// Get the HTML
 		return JHTML::_('grid.id', $this->rowid, $key_id, $checked_out);
 	}
+
 }

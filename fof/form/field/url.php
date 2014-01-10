@@ -5,7 +5,7 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 // Protect from unauthorized access
-defined('_JEXEC') or die;
+defined('_JEXEC') or die();
 
 if (!class_exists('JFormFieldUrl'))
 {
@@ -13,23 +13,18 @@ if (!class_exists('JFormFieldUrl'))
 }
 
 /**
- * Form Field class for the FOF framework
+ * Form Field class for the BBDFOF framework
  * Supports a URL text field.
  *
  * @package  FrameworkOnFramework
  * @since    2.0
  */
-class FOFFormFieldUrl extends JFormFieldUrl implements FOFFormField
+class BBDFOFFormFieldUrl extends JFormFieldUrl implements BBDFOFFormField
 {
+
 	protected $static;
 
 	protected $repeatable;
-	
-	/** @var   FOFTable  The item being rendered in a repeatable form field */
-	public $item;
-	
-	/** @var int A monotonically increasing number, denoting the row number in a repeatable view */
-	public $rowid;
 
 	/**
 	 * Method to get certain otherwise inaccessible properties from the form field object.
@@ -115,7 +110,7 @@ class FOFFormFieldUrl extends JFormFieldUrl implements FOFFormField
 	public function getRepeatable()
 	{
 		// Initialise
-		$class             = $this->id;
+		$class             = '$this->id';
 		$show_link         = false;
 		$empty_replacement = '';
 
@@ -126,7 +121,6 @@ class FOFFormFieldUrl extends JFormFieldUrl implements FOFFormField
 		{
 			$class .= ' ' . (string) $this->element['class'];
 		}
-
 		if ($this->element['show_link'] == 'true')
 		{
 			$show_link = true;
@@ -142,7 +136,6 @@ class FOFFormFieldUrl extends JFormFieldUrl implements FOFFormField
 		{
 			$this->value = JText::_($empty_replacement);
 		}
-
 		$value = htmlspecialchars($this->value, ENT_COMPAT, 'UTF-8');
 
 		// Create the HTML
@@ -164,4 +157,5 @@ class FOFFormFieldUrl extends JFormFieldUrl implements FOFFormField
 
 		return $html;
 	}
+
 }

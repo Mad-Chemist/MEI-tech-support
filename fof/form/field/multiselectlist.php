@@ -8,7 +8,7 @@ if (!class_exists('JFormFieldList')) {
 }
 
 
-class FOFFormFieldMultiSelectList extends FOFFormFieldList implements FOFFormField
+class BBDFOFFormFieldMultiSelectList extends BBDFOFFormFieldList implements BBDFOFFormField
 {
 
 
@@ -27,7 +27,7 @@ class FOFFormFieldMultiSelectList extends FOFFormFieldList implements FOFFormFie
         if ($source_class && $source_method) {
             // Maybe we have to load a file?
             if (!empty($source_file)) {
-                $source_file = FOFTemplateUtils::parsePath($source_file, true);
+                $source_file = BBDFOFTemplateUtils::parsePath($source_file, true);
 
                 JLoader::import('joomla.filesystem.file');
 

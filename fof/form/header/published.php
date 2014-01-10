@@ -5,7 +5,7 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 // Protect from unauthorized access
-defined('_JEXEC') or die;
+defined('_JEXEC') or die();
 
 /**
  * Field header for Published (enabled) columns
@@ -13,8 +13,9 @@ defined('_JEXEC') or die;
  * @package  FrameworkOnFramework
  * @since    2.0
  */
-class FOFFormHeaderPublished extends FOFFormHeaderFieldselectable
+class BBDFOFFormHeaderPublished extends BBDFOFFormHeaderFieldselectable
 {
+
 	/**
 	 * Create objects for the options
 	 *
@@ -63,4 +64,5 @@ class FOFFormHeaderPublished extends FOFFormHeaderFieldselectable
 
 		return $options;
 	}
+
 }

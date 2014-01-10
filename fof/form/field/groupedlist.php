@@ -5,7 +5,7 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 // Protect from unauthorized access
-defined('_JEXEC') or die;
+defined('_JEXEC') or die();
 
 if (!class_exists('JFormFieldGroupedList'))
 {
@@ -13,23 +13,18 @@ if (!class_exists('JFormFieldGroupedList'))
 }
 
 /**
- * Form Field class for FOF
+ * Form Field class for BBDFOF
  * Supports a generic list of options.
  *
  * @package  FrameworkOnFramework
  * @since    2.0
  */
-class FOFFormFieldGroupedlist extends JFormFieldGroupedList implements FOFFormField
+class BBDFOFFormFieldGroupedlist extends JFormFieldGroupedList implements BBDFOFFormField
 {
+
 	protected $static;
 
 	protected $repeatable;
-	
-	/** @var   FOFTable  The item being rendered in a repeatable form field */
-	public $item;
-	
-	/** @var int A monotonically increasing number, denoting the row number in a repeatable view */
-	public $rowid;
 
 	/**
 	 * Method to get certain otherwise inaccessible properties from the form field object.
@@ -89,10 +84,10 @@ class FOFFormFieldGroupedlist extends JFormFieldGroupedList implements FOFFormFi
 			);
 		}
 
-		return '<span id="' . $this->id . '-group" class="fof-groupedlist-group ' . $class . '>' .
+		return '<span id="' . $this->id . '-group" class="BBDFOF-groupedlist-group ' . $class . '>' .
 			htmlspecialchars($selected['group'], ENT_COMPAT, 'UTF-8') .
 			'</span>' .
-			'<span id="' . $this->id . '-item" class="fof-groupedlist-item ' . $class . '>' .
+			'<span id="' . $this->id . '-item" class="BBDFOF-groupedlist-item ' . $class . '>' .
 			htmlspecialchars($selected['item'], ENT_COMPAT, 'UTF-8') .
 			'</span>';
 	}
@@ -119,10 +114,10 @@ class FOFFormFieldGroupedlist extends JFormFieldGroupedList implements FOFFormFi
 			);
 		}
 
-		return '<span class="' . $this->id . '-group fof-groupedlist-group ' . $class . '">' .
+		return '<span class="' . $this->id . '-group BBDFOF-groupedlist-group ' . $class . '">' .
 			htmlspecialchars($selected['group'], ENT_COMPAT, 'UTF-8') .
 			'</span>' .
-			'<span class="' . $this->id . '-item fof-groupedlist-item ' . $class . '">' .
+			'<span class="' . $this->id . '-item BBDFOF-groupedlist-item ' . $class . '">' .
 			htmlspecialchars($selected['item'], ENT_COMPAT, 'UTF-8') .
 			'</span>';
 	}
@@ -170,7 +165,7 @@ class FOFFormFieldGroupedlist extends JFormFieldGroupedList implements FOFFormFi
 				$label = '';
 			}
 
-			$match = FOFFormFieldList::getOptionName($data, $selected, $optKey, $optText);
+			$match = BBDFOFFormFieldList::getOptionName($data, $selected, $optKey, $optText);
 
 			if (!is_null($match))
 			{
@@ -184,4 +179,5 @@ class FOFFormFieldGroupedlist extends JFormFieldGroupedList implements FOFFormFi
 
 		return $ret;
 	}
+
 }

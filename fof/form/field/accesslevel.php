@@ -5,7 +5,7 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 // Protect from unauthorized access
-defined('_JEXEC') or die;
+defined('_JEXEC') or die();
 
 if (!class_exists('JFormFieldAccessLevel'))
 {
@@ -13,23 +13,18 @@ if (!class_exists('JFormFieldAccessLevel'))
 }
 
 /**
- * Form Field class for FOF
+ * Form Field class for BBDFOF
  * Joomla! access levels
  *
  * @package  FrameworkOnFramework
  * @since    2.0
  */
-class FOFFormFieldAccesslevel extends JFormFieldAccessLevel implements FOFFormField
+class BBDFOFFormFieldAccesslevel extends JFormFieldAccessLevel implements BBDFOFFormField
 {
+
 	protected $static;
 
 	protected $repeatable;
-	
-	/** @var int A monotonically increasing number, denoting the row number in a repeatable view */
-	public $rowid;
-	
-	/** @var   FOFTable  The item being rendered in a repeatable form field */
-	public $item;
 
 	/**
 	 * Method to get certain otherwise inaccessible properties from the form field object.
@@ -99,7 +94,6 @@ class FOFFormFieldAccesslevel extends JFormFieldAccessLevel implements FOFFormFi
 		{
 			$options = array_merge($params, $options);
 		}
-
 		// If all levels is allowed, push it into the array.
 		elseif ($params)
 		{
@@ -107,7 +101,7 @@ class FOFFormFieldAccesslevel extends JFormFieldAccessLevel implements FOFFormFi
 		}
 
 		return '<span id="' . $this->id . '" ' . $class . '>' .
-			htmlspecialchars(FOFFormFieldList::getOptionName($options, $this->value), ENT_COMPAT, 'UTF-8') .
+			htmlspecialchars(BBDFOFFormFieldList::getOptionName($options, $this->value), ENT_COMPAT, 'UTF-8') .
 			'</span>';
 	}
 
@@ -143,7 +137,6 @@ class FOFFormFieldAccesslevel extends JFormFieldAccessLevel implements FOFFormFi
 		{
 			$options = array_merge($params, $options);
 		}
-
 		// If all levels is allowed, push it into the array.
 		elseif ($params)
 		{
@@ -151,7 +144,8 @@ class FOFFormFieldAccesslevel extends JFormFieldAccessLevel implements FOFFormFi
 		}
 
 		return '<span class="' . $this->id . ' ' . $class . '">' .
-			htmlspecialchars(FOFFormFieldList::getOptionName($options, $this->value), ENT_COMPAT, 'UTF-8') .
+			htmlspecialchars(BBDFOFFormFieldList::getOptionName($options, $this->value), ENT_COMPAT, 'UTF-8') .
 			'</span>';
 	}
+
 }

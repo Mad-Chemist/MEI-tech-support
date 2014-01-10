@@ -5,29 +5,22 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 // Protect from unauthorized access
-defined('_JEXEC') or die;
+defined('_JEXEC') or die();
 
-/**
- * FOFForm is an extension to JForm which support not only edit views but also
- * browse (record list) and read (single record display) views based on XML
- * forms.
- *
- * @package  FrameworkOnFramework
- * @since    2.0
- */
-class FOFForm extends JForm
+class BBDFOFForm extends JForm
 {
+
 	/**
 	 * The model attached to this view
 	 *
-	 * @var FOFModel
+	 * @var BBDFOFModel
 	 */
 	protected $model;
 
 	/**
 	 * The view used to render this form
 	 *
-	 * @var FOFView
+	 * @var BBDFOFView
 	 */
 	protected $view;
 
@@ -41,7 +34,7 @@ class FOFForm extends JForm
 	 *                            already exists with the same group/name.
 	 * @param   string  $xpath    An optional xpath to search for the fields.
 	 *
-	 * @return  object  FOFForm instance.
+	 * @return  object  BBDFOFForm instance.
 	 *
 	 * @since   2.0
 	 * @throws  InvalidArgumentException if no data provided.
@@ -59,25 +52,25 @@ class FOFForm extends JForm
 
 			if (empty($data))
 			{
-				throw new InvalidArgumentException(sprintf('FOFForm::getInstance(name, *%s*)', gettype($data)));
+				throw new InvalidArgumentException(sprintf('BBDFOFForm::getInstance(name, *%s*)', gettype($data)));
 			}
 
 			// Instantiate the form.
-			$forms[$name] = new FOFForm($name, $options);
+			$forms[$name] = new BBDFOFForm($name, $options);
 
 			// Load the data.
 			if (substr(trim($data), 0, 1) == '<')
 			{
 				if ($forms[$name]->load($data, $replace, $xpath) == false)
 				{
-					throw new RuntimeException('FOFForm::getInstance could not load form');
+					throw new RuntimeException('BBDFOFForm::getInstance could not load form');
 				}
 			}
 			else
 			{
 				if ($forms[$name]->loadFile($data, $replace, $xpath) == false)
 				{
-					throw new RuntimeException('FOFForm::getInstance could not load file');
+					throw new RuntimeException('BBDFOFForm::getInstance could not load file');
 				}
 			}
 		}
@@ -98,7 +91,6 @@ class FOFForm extends JForm
 	public function getAttribute($attribute, $default = null)
 	{
 		$value = $this->xml->attributes()->$attribute;
-
 		if (is_null($value))
 		{
 			return $default;
@@ -112,8 +104,6 @@ class FOFForm extends JForm
 	/**
 	 * Loads the CSS files defined in the form, based on its cssfiles attribute
 	 *
-	 * @return  void
-	 *
 	 * @since 2.0
 	 */
 	public function loadCSSFiles()
@@ -124,10 +114,9 @@ class FOFForm extends JForm
 		if (!empty($cssfiles))
 		{
 			$cssfiles = explode(',', $cssfiles);
-
 			foreach ($cssfiles as $cssfile)
 			{
-				FOFTemplateUtils::addCSS(trim($cssfile));
+				BBDFOFTemplateUtils::addCSS(trim($cssfile));
 			}
 		}
 
@@ -137,21 +126,18 @@ class FOFForm extends JForm
 		if (!empty($lessfiles))
 		{
 			$lessfiles = explode(',', $lessfiles);
-
 			foreach ($lessfiles as $def)
 			{
 				$parts = explode('||', $def, 2);
 				$lessfile = $parts[0];
 				$alt = (count($parts) > 1) ? trim($parts[1]) : null;
-				FOFTemplateUtils::addLESS(trim($lessfile), $alt);
+				BBDFOFTemplateUtils::addLESS(trim($lessfile), $alt);
 			}
 		}
 	}
 
 	/**
 	 * Loads the Javascript files defined in the form, based on its jsfiles attribute
-	 *
-	 * @return  void
 	 *
 	 * @since 2.0
 	 */
@@ -165,10 +151,9 @@ class FOFForm extends JForm
 		}
 
 		$jsfiles = explode(',', $jsfiles);
-
 		foreach ($jsfiles as $jsfile)
 		{
-			FOFTemplateUtils::addJS(trim($jsfile));
+			BBDFOFTemplateUtils::addJS(trim($jsfile));
 		}
 	}
 
@@ -186,21 +171,19 @@ class FOFForm extends JForm
 	}
 
 	/**
-	 * Attaches a FOFModel to this form
+	 * Attaches a BBDFOFModel to this form
 	 *
-	 * @param   FOFModel  &$model  The model to attach to the form
-	 *
-	 * @return  void
+	 * @param   BBDFOFModel  $model  The model to attach to the form
 	 */
-	public function setModel(FOFModel &$model)
+	public function setModel(BBDFOFModel &$model)
 	{
 		$this->model = $model;
 	}
 
 	/**
-	 * Returns the FOFModel attached to this form
+	 * Returns the BBDFOFModel attached to this form
 	 *
-	 * @return FOFModel
+	 * @return BBDFOFModel
 	 */
 	public function &getModel()
 	{
@@ -208,21 +191,19 @@ class FOFForm extends JForm
 	}
 
 	/**
-	 * Attaches a FOFView to this form
+	 * Attaches a BBDFOFView to this form
 	 *
-	 * @param   FOFView  &$view  The view to attach to the form
-	 *
-	 * @return  void
+	 * @param   BBDFOFView  $view  The view to attach to the form
 	 */
-	public function setView(FOFView &$view)
+	public function setView(BBDFOFView &$view)
 	{
 		$this->view = $view;
 	}
 
 	/**
-	 * Returns the FOFView attached to this form
+	 * Returns the BBDFOFView attached to this form
 	 *
-	 * @return FOFView
+	 * @return BBDFOFView
 	 */
 	public function &getView()
 	{
@@ -230,9 +211,9 @@ class FOFForm extends JForm
 	}
 
 	/**
-	 * Method to get an array of FOFFormHeader objects in the headerset.
+	 * Method to get an array of BBDFOFFormHeader objects in the headerset.
 	 *
-	 * @return  array  The array of FOFFormHeader objects in the headerset.
+	 * @return  array  The array of BBDFOFFormHeader objects in the headerset.
 	 *
 	 * @since   2.0
 	 */
@@ -243,14 +224,12 @@ class FOFForm extends JForm
 		$elements = $this->findHeadersByGroup();
 
 		// If no field elements were found return empty.
-
 		if (empty($elements))
 		{
 			return $fields;
 		}
 
 		// Build the result array from the found field elements.
-
 		foreach ($elements as $element)
 		{
 			// Get the field groups for the element.
@@ -295,26 +274,27 @@ class FOFForm extends JForm
 		// Get only fields in a specific group?
 		if ($group)
 		{
+
 			// Get the fields elements for a given group.
 			$elements = &$this->findHeader($group);
 
 			// Get all of the field elements for the fields elements.
 			foreach ($elements as $element)
 			{
+
 				// If there are field elements add them to the return result.
 				if ($tmp = $element->xpath('descendant::header'))
 				{
+
 					// If we also want fields in nested groups then just merge the arrays.
 					if ($nested)
 					{
 						$fields = array_merge($fields, $tmp);
 					}
-
 					// If we want to exclude nested groups then we need to check each field.
 					else
 					{
 						$groupNames = explode('.', $group);
-
 						foreach ($tmp as $field)
 						{
 							// Get the names of the groups that the field is in.
@@ -346,19 +326,19 @@ class FOFForm extends JForm
 	}
 
 	/**
-	 * Method to get a header field represented as a FOFFormHeader object.
+	 * Method to get a header field represented as a BBDFOFFormHeader object.
 	 *
 	 * @param   string  $name   The name of the header field.
 	 * @param   string  $group  The optional dot-separated form group path on which to find the field.
 	 * @param   mixed   $value  The optional value to use as the default for the field.
 	 *
-	 * @return  mixed  The FOFFormHeader object for the field or boolean false on error.
+	 * @return  mixed  The BBDFOFFormHeader object for the field or boolean false on error.
 	 *
 	 * @since   2.0
 	 */
 	public function getHeader($name, $group = null, $value = null)
 	{
-		// Make sure there is a valid FOFForm XML document.
+		// Make sure there is a valid BBDFOFForm XML document.
 		if (!($this->xml instanceof SimpleXMLElement))
 		{
 			return false;
@@ -400,6 +380,7 @@ class FOFForm extends JForm
 		// Let's get the appropriate field element based on the method arguments.
 		if ($group)
 		{
+
 			// Get the fields elements for a given group.
 			$elements = &$this->findGroup($group);
 
@@ -421,7 +402,6 @@ class FOFForm extends JForm
 
 			// Use the first correct match in the given group.
 			$groupNames = explode('.', $group);
-
 			foreach ($fields as &$field)
 			{
 				// Get the group names as strings for ancestor fields elements.
@@ -455,7 +435,6 @@ class FOFForm extends JForm
 				{
 					continue;
 				}
-
 				// Found it!
 				else
 				{
@@ -469,13 +448,13 @@ class FOFForm extends JForm
 	}
 
 	/**
-	 * Method to load, setup and return a FOFFormHeader object based on field data.
+	 * Method to load, setup and return a BBDFOFFormHeader object based on field data.
 	 *
 	 * @param   string  $element  The XML element object representation of the form field.
 	 * @param   string  $group    The optional dot-separated form group path on which to find the field.
 	 * @param   mixed   $value    The optional value to use as the default for the field.
 	 *
-	 * @return  mixed  The FOFFormHeader object for the field or boolean false on error.
+	 * @return  mixed  The BBDFOFFormHeader object for the field or boolean false on error.
 	 *
 	 * @since   2.0
 	 */
@@ -499,7 +478,7 @@ class FOFForm extends JForm
 			$field = $this->loadHeaderType('field');
 		}
 
-		// Setup the FOFFormHeader object.
+		// Setup the BBDFOFFormHeader object.
 		$field->setForm($this);
 
 		if ($field->setup($element, $value, $group))
@@ -513,53 +492,53 @@ class FOFForm extends JForm
 	}
 
 	/**
-	 * Proxy for {@link FOFFormHelper::loadFieldType()}.
+	 * Proxy for {@link BBDFOFFormHelper::loadFieldType()}.
 	 *
 	 * @param   string   $type  The field type.
 	 * @param   boolean  $new   Flag to toggle whether we should get a new instance of the object.
 	 *
-	 * @return  mixed  FOFFormField object on success, false otherwise.
+	 * @return  mixed  BBDFOFFormField object on success, false otherwise.
 	 *
 	 * @since   2.0
 	 */
 	protected function loadFieldType($type, $new = true)
 	{
-		return FOFFormHelper::loadFieldType($type, $new);
+		return BBDFOFFormHelper::loadFieldType($type, $new);
 	}
 
 	/**
-	 * Proxy for {@link FOFFormHelper::loadHeaderType()}.
+	 * Proxy for {@link BBDFOFFormHelper::loadHeaderType()}.
 	 *
 	 * @param   string   $type  The field type.
 	 * @param   boolean  $new   Flag to toggle whether we should get a new instance of the object.
 	 *
-	 * @return  mixed  FOFFormHeader object on success, false otherwise.
+	 * @return  mixed  BBDFOFFormHeader object on success, false otherwise.
 	 *
 	 * @since   2.0
 	 */
 	protected function loadHeaderType($type, $new = true)
 	{
-		return FOFFormHelper::loadHeaderType($type, $new);
+		return BBDFOFFormHelper::loadHeaderType($type, $new);
 	}
 
 	/**
-	 * Proxy for {@link FOFFormHelper::loadRuleType()}.
+	 * Proxy for {@link BBDFOFFormHelper::loadRuleType()}.
 	 *
 	 * @param   string   $type  The rule type.
 	 * @param   boolean  $new   Flag to toggle whether we should get a new instance of the object.
 	 *
 	 * @return  mixed  JFormRule object on success, false otherwise.
 	 *
-	 * @see     FOFFormHelper::loadRuleType()
+	 * @see     BBDFOFFormHelper::loadRuleType()
 	 * @since   2.0
 	 */
 	protected function loadRuleType($type, $new = true)
 	{
-		return FOFFormHelper::loadRuleType($type, $new);
+		return BBDFOFFormHelper::loadRuleType($type, $new);
 	}
 
 	/**
-	 * Proxy for {@link FOFFormHelper::addFieldPath()}.
+	 * Proxy for {@link BBDFOFFormHelper::addFieldPath()}.
 	 *
 	 * @param   mixed  $new  A path or array of paths to add.
 	 *
@@ -569,11 +548,11 @@ class FOFForm extends JForm
 	 */
 	public static function addFieldPath($new = null)
 	{
-		return FOFFormHelper::addFieldPath($new);
+		return BBDFOFFormHelper::addFieldPath($new);
 	}
 
 	/**
-	 * Proxy for {@link FOFFormHelper::addHeaderPath()}.
+	 * Proxy for {@link BBDFOFFormHelper::addHeaderPath()}.
 	 *
 	 * @param   mixed  $new  A path or array of paths to add.
 	 *
@@ -583,36 +562,37 @@ class FOFForm extends JForm
 	 */
 	public static function addHeaderPath($new = null)
 	{
-		return FOFFormHelper::addHeaderPath($new);
+		return BBDFOFFormHelper::addHeaderPath($new);
 	}
 
 	/**
-	 * Proxy for FOFFormHelper::addFormPath().
+	 * Proxy for BBDFOFFormHelper::addFormPath().
 	 *
 	 * @param   mixed  $new  A path or array of paths to add.
 	 *
 	 * @return  array  The list of paths that have been added.
 	 *
-	 * @see     FOFFormHelper::addFormPath()
+	 * @see     BBDFOFFormHelper::addFormPath()
 	 * @since   2.0
 	 */
 	public static function addFormPath($new = null)
 	{
-		return FOFFormHelper::addFormPath($new);
+		return BBDFOFFormHelper::addFormPath($new);
 	}
 
 	/**
-	 * Proxy for FOFFormHelper::addRulePath().
+	 * Proxy for BBDFOFFormHelper::addRulePath().
 	 *
 	 * @param   mixed  $new  A path or array of paths to add.
 	 *
 	 * @return  array  The list of paths that have been added.
 	 *
-	 * @see FOFFormHelper::addRulePath()
+	 * @see BBDFOFFormHelper::addRulePath()
 	 * @since   2.0
 	 */
 	public static function addRulePath($new = null)
 	{
-		return FOFFormHelper::addRulePath($new);
+		return BBDFOFFormHelper::addRulePath($new);
 	}
+
 }

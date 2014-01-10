@@ -5,7 +5,7 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 // Protect from unauthorized access
-defined('_JEXEC') or die;
+defined('_JEXEC') or die();
 
 if (!class_exists('JFormFieldCheckbox'))
 {
@@ -13,23 +13,18 @@ if (!class_exists('JFormFieldCheckbox'))
 }
 
 /**
- * Form Field class for the FOF framework
+ * Form Field class for the BBDFOF framework
  * A single checkbox
  *
  * @package  FrameworkOnFramework
  * @since    2.0
  */
-class FOFFormFieldCheckbox extends JFormFieldCheckbox implements FOFFormField
+class BBDFOFFormFieldCheckbox extends JFormFieldCheckbox implements BBDFOFFormField
 {
+
 	protected $static;
 
 	protected $repeatable;
-	
-	/** @var   FOFTable  The item being rendered in a repeatable form field */
-	public $item;
-	
-	/** @var int A monotonically increasing number, denoting the row number in a repeatable view */
-	public $rowid;
 
 	/**
 	 * Method to get certain otherwise inaccessible properties from the form field object.
@@ -124,4 +119,5 @@ class FOFFormFieldCheckbox extends JFormFieldCheckbox implements FOFFormField
 			. htmlspecialchars($value, ENT_COMPAT, 'UTF-8') . '"' . $checked . $disabled . $onclick . ' />' .
 			'</span>';
 	}
+
 }

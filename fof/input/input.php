@@ -5,31 +5,27 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 // Protect from unauthorized access
-defined('_JEXEC') or die;
+defined('_JEXEC') or die();
 
 /**
  * FrameworkOnFramework input handling class. Extends upon the JInput class.
- *
- * @package  FrameworkOnFramework
- * @since    2.0
  */
-class FOFInput extends JInput
+class BBDFOFInput extends JInput
 {
+
 	/**
 	 * Public constructor. Overriden to allow specifying the global input array
 	 * to use as a string and instantiate from an objetc holding variables.
 	 *
-	 * @param   array|string|object|null  $source   Source data; set null to use $_REQUEST
-	 * @param   array                     $options  Filter options
+	 * @param array|string|object|null $source Source data; set null to use $_REQUEST
+	 * @param array $options Filter options
 	 */
 	public function __construct($source = null, array $options = array())
 	{
 		$hash = null;
-
 		if (is_string($source))
 		{
 			$hash = strtoupper($source);
-
 			switch ($hash)
 			{
 				case 'GET':
@@ -79,8 +75,7 @@ class FOFInput extends JInput
 		}
 
 		// Magic quotes GPC handling (something JInput simply can't handle at all)
-
-		if (($hash == 'REQUEST') && get_magic_quotes_gpc() && class_exists('JRequest', true))
+		if(($hash == 'REQUEST') && get_magic_quotes_gpc() && class_exists('JRequest', true))
 		{
 			$source = JRequest::get('REQUEST', 2);
 		}
@@ -95,7 +90,7 @@ class FOFInput extends JInput
 	 * @param   string  $name     Name of the value to get.
 	 * @param   mixed   $default  Default value to return if variable does not exist.
 	 * @param   string  $filter   Filter to apply to the value.
-	 * @param   int     $mask     The filter mask
+	 * @param   int		$mask	  The filter mask
 	 *
 	 * @return  mixed  The filtered input value.
 	 */
@@ -112,7 +107,7 @@ class FOFInput extends JInput
 	/**
 	 * Returns a copy of the raw data stored in the class
 	 *
-	 * @return  array
+	 * @return type
 	 */
 	public function getData()
 	{
@@ -124,14 +119,13 @@ class FOFInput extends JInput
 	 * is a continuity in our approach. The downside is that it's only compatible
 	 * with PHP 5.3.0. Sorry!
 	 *
-	 * @param   string  $name       Name of the method we're calling
-	 * @param   array   $arguments  The arguments passed to the method
-	 *
-	 * @return  mixed
+	 * @param string $name Name of the method we're calling
+	 * @param array $arguments The arguments passed to the method
+	 * @return mixed
 	 */
 	public static function __callStatic($name, $arguments)
 	{
-		JLog::add('FOFInput: static getXXX() methods are deprecated. Use the input object\'s methods instead.', JLog::WARNING, 'deprecated');
+		JLog::add('BBDFOFInput: static getXXX() methods are deprecated. Use the input object\'s methods instead.', JLog::WARNING, 'deprecated');
 
 		if (substr($name, 0, 3) == 'get')
 		{
@@ -143,28 +137,24 @@ class FOFInput extends JInput
 			$mask = 0;
 
 			$type = strtolower(substr($name, 3));
-
 			if ($type == 'var')
 			{
 				$type = array_shift($arguments);
 				$mask = array_shift($arguments);
 			}
-
 			if (is_null($type))
 			{
 				$type = 'none';
 			}
-
 			if (is_null($mask))
 			{
 				$mask = 0;
 			}
 
-			if (!($input instanceof FOFInput) && !($input instanceof JInput))
+			if (!($input instanceof BBDFOFInput) && !($input instanceof JInput))
 			{
-				$input = new FOFInput($input);
+				$input = new BBDFOFInput($input);
 			}
-
 			return $input->get($key, $default, $type, $mask);
 		}
 
@@ -187,12 +177,10 @@ class FOFInput extends JInput
 
 			$default = null;
 			$mask = 0;
-
 			if (isset($arguments[1]))
 			{
 				$default = $arguments[1];
 			}
-
 			if (isset($arguments[2]))
 			{
 				$mask = $arguments[2];
@@ -205,18 +193,17 @@ class FOFInput extends JInput
 	/**
 	 * Sets an input variable. WARNING: IT SHOULD NO LONGER BE USED!
 	 *
-	 * @param   string   $name       The name of the variable to set
-	 * @param   mixed    $value      The value to set it to
-	 * @param   array    &$input     The input array or FOFInput object
-	 * @param   boolean  $overwrite  Should I overwrite existing values (default: true)
-	 *
-	 * @return  string   Previous value
+	 * @param type $name
+	 * @param type $value
+	 * @param type $input
+	 * @param type $overwrite
+	 * @return type
 	 *
 	 * @deprecated
 	 */
 	public static function setVar($name, $value = null, &$input = array(), $overwrite = true)
 	{
-		JLog::add('FOFInput::setVar() is deprecated. Use set() instead.', JLog::WARNING, 'deprecated');
+		JLog::add('BBDFOFInput::setVar() is deprecated. Use set() instead.', JLog::WARNING, 'deprecated');
 
 		if (empty($input))
 		{
@@ -239,7 +226,7 @@ class FOFInput extends JInput
 			{
 				$input[$name] = $value;
 			}
-			elseif ($input instanceof FOFInput)
+			elseif ($input instanceof BBDFOFInput)
 			{
 				$input->set($name, $value);
 			}
@@ -252,23 +239,21 @@ class FOFInput extends JInput
 	 * Custom filter implementation. Works better with arrays and allows the use
 	 * of a filter mask.
 	 *
-	 * @param   mixed    $var   The variable (value) to clean
-	 * @param   integer  $mask  The clean mask
-	 * @param   string   $type  The variable type
+	 * @param string $var
+	 * @param int $mask
+	 * @param string $type
 	 *
-	 * @return   mixed
+	 * @return mixed
 	 */
 	protected function _cleanVar($var, $mask = 0, $type = null)
 	{
 		if (is_array($var))
 		{
 			$temp = array();
-
 			foreach ($var as $k => $v)
 			{
 				$temp[$k] = self::_cleanVar($v, $mask);
 			}
-
 			return $temp;
 		}
 
@@ -294,7 +279,7 @@ class FOFInput extends JInput
 		{
 			$var = $this->filter->clean($var, $type);
 		}
-
 		return $var;
 	}
+
 }

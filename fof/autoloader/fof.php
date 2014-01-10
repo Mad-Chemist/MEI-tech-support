@@ -6,40 +6,37 @@
  *  @license     GNU General Public License version 2, or later
  */
 
-defined('FOF_INCLUDED') or die();
+defined('BBDFOF_INCLUDED') or die();
 
 /**
- * The main class autoloader for FOF itself
- *
- * @package  FrameworkOnFramework
- * @since    2.1
+ * The main class autoloader for BBDFOF itself
  */
-class FOFAutoloaderFof
+class BBDFOFAutloaderBBDFOF
 {
 	/**
 	 * An instance of this autoloader
 	 *
-	 * @var   FOFAutoloaderFof
+	 * @var   BBDFOFAutoloaderBBDFOF
 	 */
 	public static $autoloader = null;
 
 	/**
-	 * The path to the FOF root directory
+	 * The path to the BBDFOF root directory
 	 *
 	 * @var   string
 	 */
-	public static $fofPath = null;
+	public static $BBDFOFPath = null;
 
 	/**
 	 * Initialise this autoloader
 	 *
-	 * @return  FOFAutoloaderFof
+	 * @return  BBDFOFAutloaderBBDFOF
 	 */
 	public static function init()
 	{
-		if (self::$autoloader == null)
+		if (self::$autoloader == NULL)
 		{
-			self::$autoloader = new self;
+			self::$autoloader = new self();
 		}
 
 		return self::$autoloader;
@@ -47,12 +44,14 @@ class FOFAutoloaderFof
 
 	/**
 	 * Public constructor. Registers the autoloader with PHP.
+	 *
+	 * @return  void
 	 */
 	public function __construct()
 	{
-		self::$fofPath = realpath(__DIR__ . '/../');
+		self::$BBDFOFPath = realpath(__DIR__ . '/../');
 
-		spl_autoload_register(array($this,'autoload_fof_core'));
+		spl_autoload_register(array($this,'autoload_BBDFOF_core'));
 	}
 
 	/**
@@ -62,54 +61,50 @@ class FOFAutoloaderFof
 	 *
 	 * @return  void
 	 */
-	public function autoload_fof_core($class_name)
+	public function autoload_BBDFOF_core($class_name)
 	{
-		// Make sure the class has a FOF prefix
-		if (substr($class_name, 0, 3) != 'FOF')
+		// Make sure the class has a BBDFOF prefix
+        if (substr($class_name, 0, 6) != 'BBDFOF')
 		{
-			return;
+            return;
 		}
 
 		// Remove the prefix
-		$class = substr($class_name, 3);
+        $class = substr($class_name, 6);
 
 		// Change from camel cased (e.g. ViewHtml) into a lowercase array (e.g. 'view','html')
-		$class = preg_replace('/(\s)+/', '_', $class);
-		$class = strtolower(preg_replace('/(?<=\\w)([A-Z])/', '_\\1', $class));
-		$class = explode('_', $class);
+        $class = preg_replace('/(\s)+/', '_', $class);
+        $class = strtolower(preg_replace('/(?<=\\w)([A-Z])/', '_\\1', $class));
+        $class = explode('_', $class);
 
-		// First try finding in structured directory format (preferred)
-		$path = self::$fofPath . '/' . implode('/', $class) . '.php';
+        // First try finding in structured directory format (preferred)
+        $path = self::$BBDFOFPath . '/' . implode('/', $class) . '.php';
 
-		if (@file_exists($path))
-		{
-			include_once $path;
-		}
+        if (@file_exists($path))
+        {
+            include_once $path;
+        }
 
-		// Then try the duplicate last name structured directory format (not recommended)
-
-		if (!class_exists($class_name, false))
-		{
+        // Then try the duplicate last name structured directory format (not recommended)
+        if (!class_exists($class_name, false))
+        {
 			reset($class);
-			$lastPart = end($class);
-			$path = self::$fofPath . '/' . implode('/', $class) . '/' . $lastPart . '.php';
+            $lastPart = end($class);
+            $path = self::$BBDFOFPath . '/' . implode('/', $class) . '/' . $lastPart . '.php';
+            if (@file_exists($path))
+            {
+                include_once $path;
+            }
+        }
 
-			if (@file_exists($path))
-			{
-				include_once $path;
-			}
-		}
-
-		// If it still fails, try looking in the legacy folder (used for backwards compatibility)
-
-		if (!class_exists($class_name, false))
-		{
-			$path = self::$fofPath . '/legacy/' . implode('/', $class) . '.php';
-
-			if (@file_exists($path))
-			{
-				include_once $path;
-			}
-		}
+        // If it still fails, try looking in the legacy folder (used for backwards compatibility)
+        if (!class_exists($class_name, false))
+        {
+            $path = self::$BBDFOFPath . '/legacy/' . implode('/', $class) . '.php';
+            if (@file_exists($path))
+            {
+                include_once $path;
+            }
+        }
 	}
 }

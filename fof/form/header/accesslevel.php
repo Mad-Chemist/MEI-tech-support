@@ -5,7 +5,7 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 // Protect from unauthorized access
-defined('_JEXEC') or die;
+defined('_JEXEC') or die();
 
 /**
  * Access level field header
@@ -13,8 +13,9 @@ defined('_JEXEC') or die;
  * @package  FrameworkOnFramework
  * @since    2.0
  */
-class FOFFormHeaderAccesslevel extends FOFFormHeaderFieldselectable
+class BBDFOFFormHeaderAccesslevel extends BBDFOFFormHeaderFieldselectable
 {
+
 	/**
 	 * Method to get the list of access levels
 	 *
@@ -39,4 +40,5 @@ class FOFFormHeaderAccesslevel extends FOFFormHeaderFieldselectable
 
 		return $options;
 	}
+
 }

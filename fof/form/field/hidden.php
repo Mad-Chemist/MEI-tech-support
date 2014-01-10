@@ -5,7 +5,7 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 // Protect from unauthorized access
-defined('_JEXEC') or die;
+defined('_JEXEC') or die();
 
 if (!class_exists('JFormFieldHidden'))
 {
@@ -13,23 +13,18 @@ if (!class_exists('JFormFieldHidden'))
 }
 
 /**
- * Form Field class for the FOF framework
+ * Form Field class for the BBDFOF framework
  * A hidden field
  *
  * @package  FrameworkOnFramework
  * @since    2.0
  */
-class FOFFormFieldHidden extends JFormFieldHidden implements FOFFormField
+class BBDFOFFormFieldHidden extends JFormFieldHidden implements BBDFOFFormField
 {
+
 	protected $static;
 
 	protected $repeatable;
-	
-	/** @var   FOFTable  The item being rendered in a repeatable form field */
-	public $item;
-	
-	/** @var int A monotonically increasing number, denoting the row number in a repeatable view */
-	public $rowid;
 
 	/**
 	 * Method to get certain otherwise inaccessible properties from the form field object.
@@ -92,4 +87,5 @@ class FOFFormFieldHidden extends JFormFieldHidden implements FOFFormField
 	{
 		return $this->getInput();
 	}
+
 }

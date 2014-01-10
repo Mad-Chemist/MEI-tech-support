@@ -5,18 +5,16 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 // Protect from unauthorized access
-defined('_JEXEC') or die;
+defined('_JEXEC') or die();
 
 /**
- * FrameworkOnFramework View class. The View is the MVC component which gets the
- * raw data from a Model and renders it in a way that makes sense. The usual
- * rendering is HTML, but you can also output JSON, CSV, XML, or even media
- * (images, videos, ...) and documents (Word, PDF, Excel...).
+ * FrameworkOnFramework View class
  *
- * @package  FrameworkOnFramework
- * @since    1.0
+ * FrameworkOnFramework is a set of classes which extend Joomla! 1.5 and later's
+ * MVC framework with features making maintaining complex software much easier,
+ * without tedious repetitive copying of the same code over and over again.
  */
-abstract class FOFView extends JObject
+abstract class BBDFOFView extends JObject
 {
 	/**
 	 * The name of the view
@@ -106,9 +104,9 @@ abstract class FOFView extends JObject
 	/**
 	 * The available renderer objects we can use to render views
 	 *
-	 * @var    array  Contains objects of the FOFRenderAbstract class
+	 * @var    array  Contains objects of the BBDFOFRenderAbstract class
 	 */
-	public static $renderers = array();
+	static $renderers = array();
 
 	/**
 	 * Cache of the configuration array
@@ -120,14 +118,14 @@ abstract class FOFView extends JObject
 	/**
 	 * The input object of this view
 	 *
-	 * @var    FOFInput
+	 * @var    BBDFOFInput
 	 */
 	protected $input = null;
 
 	/**
 	 * The chosen renderer object
 	 *
-	 * @var    FOFRenderAbstract
+	 * @var    BBDFOFRenderAbstract
 	 */
 	protected $rendererObject = null;
 
@@ -146,18 +144,19 @@ abstract class FOFView extends JObject
 	protected $doPostRender = true;
 
 	/**
-	 * Public constructor. Instantiates a FOFView object.
+	 * Public constructor. Instantiates a BBDFOFView object.
 	 *
 	 * @param   array  $config  The configuration data array
 	 */
 	public function __construct($config = array())
 	{
+		list($isCli, $isAdmin) = BBDFOFDispatcher::isCliAdmin();
+
 		// Make sure $config is an array
 		if (is_object($config))
 		{
-			$config = (array) $config;
-		}
-		elseif (!is_array($config))
+			$config = (array)$config;
+		} elseif (!is_array($config))
 		{
 			$config = array();
 		}
@@ -165,72 +164,55 @@ abstract class FOFView extends JObject
 		// Get the input
 		if (array_key_exists('input', $config))
 		{
-			if ($config['input'] instanceof FOFInput)
+			if ($config['input'] instanceof BBDFOFInput)
 			{
 				$this->input = $config['input'];
 			}
 			else
 			{
-				$this->input = new FOFInput($config['input']);
+				$this->input = new BBDFOFInput($config['input']);
 			}
 		}
 		else
 		{
-			$this->input = new FOFInput;
+			$this->input = new BBDFOFInput();
 		}
 
 		parent::__construct($config);
 
-		$component = 'com_foobar';
-
 		// Get the component name
 		if (array_key_exists('input', $config))
 		{
-			if ($config['input'] instanceof FOFInput)
+			if ($config['input'] instanceof BBDFOFInput)
 			{
 				$tmpInput = $config['input'];
 			}
 			else
 			{
-				$tmpInput = new FOFInput($config['input']);
+				$tmpInput = new BBDFOFInput($config['input']);
 			}
-
 			$component = $tmpInput->getCmd('option', '');
 		}
 		else
 		{
 			$tmpInput = $this->input;
 		}
-
 		if (array_key_exists('option', $config))
-		{
 			if ($config['option'])
-			{
 				$component = $config['option'];
-			}
-		}
-
 		$config['option'] = $component;
 
 		// Get the view name
-		$view = null;
 		if (array_key_exists('input', $config))
 		{
 			$view = $tmpInput->getCmd('view', '');
 		}
-
 		if (array_key_exists('view', $config))
-		{
 			if ($config['view'])
-			{
 				$view = $config['view'];
-			}
-		}
-
 		$config['view'] = $view;
 
 		// Set the component and the view to the input array
-
 		if (array_key_exists('input', $config))
 		{
 			$tmpInput->set('option', $config['option']);
@@ -238,7 +220,6 @@ abstract class FOFView extends JObject
 		}
 
 		// Set the view name
-
 		if (array_key_exists('name', $config))
 		{
 			$this->_name = $config['name'];
@@ -247,43 +228,35 @@ abstract class FOFView extends JObject
 		{
 			$this->_name = $config['view'];
 		}
-
 		$tmpInput->set('view', $this->_name);
 		$config['input'] = $tmpInput;
 		$config['name'] = $this->_name;
 		$config['view'] = $this->_name;
 
-		// Get the component directories
-		$componentPaths = FOFPlatform::getInstance()->getComponentBaseDirs($config['option']);
-
 		// Set the charset (used by the variable escaping functions)
-
 		if (array_key_exists('charset', $config))
 		{
-			JLog::add('Setting a custom charset for escaping is deprecated. Override FOFView::escape() instead.', JLog::WARNING, 'deprecated');
+			JLog::add('Setting a custom charset for escaping is deprecated. Override BBDFOFView::escape() instead.', JLog::WARNING, 'deprecated');
 			$this->_charset = $config['charset'];
 		}
 
 		// User-defined escaping callback
-
 		if (array_key_exists('escape', $config))
 		{
 			$this->setEscape($config['escape']);
 		}
 
 		// Set a base path for use by the view
-
 		if (array_key_exists('base_path', $config))
 		{
 			$this->_basePath = $config['base_path'];
 		}
 		else
 		{
-			$this->_basePath = $componentPaths['main'];
+			$this->_basePath = ($isAdmin ? JPATH_ADMINISTRATOR : JPATH_SITE) . '/' . $config['option'];
 		}
 
 		// Set the default template search path
-
 		if (array_key_exists('template_path', $config))
 		{
 			// User-defined dirs
@@ -291,13 +264,12 @@ abstract class FOFView extends JObject
 		}
 		else
 		{
-			$altView = FOFInflector::isSingular($this->getName()) ? FOFInflector::pluralize($this->getName()) : FOFInflector::singularize($this->getName());
+			$altView = BBDFOFInflector::isSingular($this->getName()) ? BBDFOFInflector::pluralize($this->getName()) : BBDFOFInflector::singularize($this->getName());
 			$this->_setPath('template', $this->_basePath . '/views/' . $altView . '/tmpl');
 			$this->_addPath('template', $this->_basePath . '/views/' . $this->getName() . '/tmpl');
 		}
 
 		// Set the default helper search path
-
 		if (array_key_exists('helper_path', $config))
 		{
 			// User-defined dirs
@@ -309,7 +281,6 @@ abstract class FOFView extends JObject
 		}
 
 		// Set the layout
-
 		if (array_key_exists('layout', $config))
 		{
 			$this->setLayout($config['layout']);
@@ -321,11 +292,13 @@ abstract class FOFView extends JObject
 
 		$this->config = $config;
 
-		if (!FOFPlatform::getInstance()->isCli())
+		if (!$isCli)
 		{
 			$this->baseurl = JURI::base(true);
 
-			$fallback = FOFPlatform::getInstance()->getTemplateOverridePath($component) . '/' . $this->getName();
+			$app = JFactory::getApplication();
+			$component = preg_replace('/[^A-Z0-9_\.-]/i', '', $component);
+			$fallback = JPATH_THEMES . '/' . $app->getTemplate() . '/html/' . $component . '/' . $this->getName();
 			$this->_addPath('template', $fallback);
 		}
 	}
@@ -341,17 +314,22 @@ abstract class FOFView extends JObject
 	 * template files default.j30.php, default.j3.php and default.php, in this
 	 * order.
 	 *
-	 * @param   string  $path         See above
-	 * @param   array   $forceParams  A hash array of variables to be extracted in the local scope of the template file
-	 *
-	 * @return  boolean  False if loading failed
+	 * @param string $path
+	 * @param array $forceParams A hash array of variables to be extracted in the local scope of the template file
 	 */
 	public function loadAnyTemplate($path = '', $forceParams = array())
 	{
 		// Automatically check for a Joomla! version specific override
 		$throwErrorIfNotFound = true;
 
-		$suffixes = FOFPlatform::getInstance()->getTemplateSuffixes();
+		$jversion = new JVersion();
+		$versionParts = explode('.', $jversion->RELEASE);
+		$majorVersion = array_shift($versionParts);
+		$suffixes = array(
+			'.j' . str_replace('.', '', $jversion->getHelpVersion()),
+			'.j' . $majorVersion,
+		);
+		unset($jversion, $versionParts, $majorVersion);
 
 		foreach ($suffixes as $suffix)
 		{
@@ -367,7 +345,6 @@ abstract class FOFView extends JObject
 			foreach ($suffixes as $suffix)
 			{
 				$result = $this->loadAnyTemplate($path . $suffix, $forceParams);
-
 				if ($result !== false)
 				{
 					return $result;
@@ -375,20 +352,27 @@ abstract class FOFView extends JObject
 			}
 		}
 
+		list($isCli, $isAdmin) = BBDFOFDispatcher::isCliAdmin();
+		if(!$isCli)
+		{
+			$template = JFactory::getApplication()->getTemplate();
+		}
+		else
+		{
+			$template = 'cli';
+		}
+
 		$layoutTemplate = $this->getLayoutTemplate();
 
 		// Parse the path
 		$templateParts = $this->_parseTemplatePath($path);
 
-		// Get the paths
-		$componentPaths = FOFPlatform::getInstance()->getComponentBaseDirs($templateParts['component']);
-		$templatePath = FOFPlatform::getInstance()->getTemplateOverridePath($templateParts['component']);
-
 		// Get the default paths
 		$paths = array();
-		$paths[] = $templatePath . '/' . $templateParts['view'];
-		$paths[] = ($templateParts['admin'] ? $componentPaths['admin'] : $componentPaths['site']) . '/views/' . $templateParts['view'] . '/tmpl';
-
+		$paths[] = ($templateParts['admin'] ? JPATH_ADMINISTRATOR : JPATH_SITE) . '/templates/' .
+			$template . '/html/' . $templateParts['component'] . '/' . $templateParts['view'];
+		$paths[] = ($templateParts['admin'] ? JPATH_ADMINISTRATOR : JPATH_SITE) . '/components/' .
+			$templateParts['component'] . '/views/' . $templateParts['view'] . '/tmpl';
 		if (isset($this->_path) || property_exists($this, '_path'))
 		{
 			$paths = array_merge($paths, $this->_path['template']);
@@ -399,7 +383,6 @@ abstract class FOFView extends JObject
 		}
 
 		// Look for a template override
-
 		if (isset($layoutTemplate) && $layoutTemplate != '_' && $layoutTemplate != $template)
 		{
 			$apath = array_shift($paths);
@@ -420,14 +403,12 @@ abstract class FOFView extends JObject
 			unset($filetofind);
 
 			// Never allow a 'this' property
-
 			if (isset($this->this))
 			{
 				unset($this->this);
 			}
 
 			// Force parameters into scope
-
 			if (!empty($forceParams))
 			{
 				extract($forceParams);
@@ -435,11 +416,12 @@ abstract class FOFView extends JObject
 
 			// Start capturing output into a buffer
 			ob_start();
-
-			// Include the requested template filename in the local scope (this will execute the view logic).
+			// Include the requested template filename in the local scope
+			// (this will execute the view logic).
 			include $this->_tempFilePath;
 
-			// Done with the requested template; get the buffer and clear it.
+			// Done with the requested template; get the buffer and
+			// clear it.
 			$this->_output = ob_get_contents();
 			ob_end_clean();
 
@@ -451,7 +433,6 @@ abstract class FOFView extends JObject
 			{
 				return new Exception(JText::sprintf('JLIB_APPLICATION_ERROR_LAYOUTFILE_NOT_FOUND', $path), 500);
 			}
-
 			return false;
 		}
 	}
@@ -467,14 +448,21 @@ abstract class FOFView extends JObject
 	 */
 	public function display($tpl = null)
 	{
-		FOFPlatform::getInstance()->setErrorHandling(E_ALL, 'ignore');
+		if (version_compare(JVERSION, '3.0', 'lt'))
+		{
+			JError::setErrorHandling(E_ALL, 'ignore');
+		}
 
 		$result = $this->loadTemplate($tpl);
+
+		if (version_compare(JVERSION, '3.0', 'lt'))
+		{
+			JError::setErrorHandling(E_WARNING, 'callback');
+		}
 
 		if ($result instanceof Exception)
 		{
 			JError::raiseError($result->getCode(), $result->getMessage());
-
 			return $result;
 		}
 
@@ -488,7 +476,7 @@ abstract class FOFView extends JObject
 	 * an object, an associative array, or a single value by name.
 	 *
 	 * You are not allowed to set variables that begin with an underscore;
-	 * these are either private properties for FOFView or private variables
+	 * these are either private properties for BBDFOFView or private variables
 	 * within the template script itself.
 	 *
 	 * @return  boolean  True on success, false on failure.
@@ -504,7 +492,6 @@ abstract class FOFView extends JObject
 		$arg1 = @func_get_arg(1);
 
 		// Assign by object
-
 		if (is_object($arg0))
 		{
 			// Assign public properties
@@ -515,12 +502,10 @@ abstract class FOFView extends JObject
 					$this->$key = $val;
 				}
 			}
-
 			return true;
 		}
 
 		// Assign by associative array
-
 		if (is_array($arg0))
 		{
 			foreach ($arg0 as $key => $val)
@@ -530,17 +515,16 @@ abstract class FOFView extends JObject
 					$this->$key = $val;
 				}
 			}
-
 			return true;
 		}
 
-		// Assign by string name and mixed value. We use array_key_exists() instead of isset()
-		// because isset() fails if the value is set to null.
+		// Assign by string name and mixed value.
 
+		// We use array_key_exists() instead of isset() because isset()
+		// fails if the value is set to null.
 		if (is_string($arg0) && substr($arg0, 0, 1) != '_' && func_num_args() > 1)
 		{
 			$this->$arg0 = $arg1;
-
 			return true;
 		}
 
@@ -552,7 +536,7 @@ abstract class FOFView extends JObject
 	 * Assign variable for the view (by reference).
 	 *
 	 * You are not allowed to set variables that begin with an underscore;
-	 * these are either private properties for FOFView or private variables
+	 * these are either private properties for BBDFOFView or private variables
 	 * within the template script itself.
 	 *
 	 * @param   string  $key   The name for the reference in the view.
@@ -569,7 +553,6 @@ abstract class FOFView extends JObject
 		if (is_string($key) && substr($key, 0, 1) != '_')
 		{
 			$this->$key = &$val;
-
 			return true;
 		}
 
@@ -627,9 +610,9 @@ abstract class FOFView extends JObject
 			{
 				// The method exists, let's call it and return what we get
 				$result = $this->_models[$model]->$method();
-
 				return $result;
 			}
+
 		}
 
 		// Degrade to JObject::get
@@ -643,7 +626,7 @@ abstract class FOFView extends JObject
 	 *
 	 * @param   string  $name  The name of the model (optional)
 	 *
-	 * @return  mixed  FOFModel object
+	 * @return  mixed  BBDFOFModel object
 	 */
 	public function getModel($name = null)
 	{
@@ -651,7 +634,6 @@ abstract class FOFView extends JObject
 		{
 			$name = $this->_defaultModel;
 		}
-
 		return $this->_models[strtolower($name)];
 	}
 
@@ -704,28 +686,20 @@ abstract class FOFView extends JObject
 	/**
 	 * Method to add a model to the view.
 	 *
-	 * @param   FOFMOdel  $model    The model to add to the view.
-     * @param   boolean   $default  Is this the default model?
-     * @param   String    $name     optional index name to store the model
+	 * @param   BBDFOFMOdel  $model    The model to add to the view.
+	 * @param   boolean   $default  Is this the default model?
 	 *
 	 * @return  object   The added model.
 	 */
-	public function setModel($model, $default = false, $name = null)
+	public function setModel($model, $default = false)
 	{
-		if (is_null($name))
-		{
-			$name = $model->getName();
-		}
-
-		$name = strtolower($name);
-
+		$name = strtolower($model->getName());
 		$this->_models[$name] = $model;
 
 		if ($default)
 		{
 			$this->_defaultModel = $name;
 		}
-
 		return $model;
 	}
 
@@ -739,7 +713,6 @@ abstract class FOFView extends JObject
 	public function setLayout($layout)
 	{
 		$previous = $this->_layout;
-
 		if (strpos($layout, ':') === false)
 		{
 			$this->_layout = $layout;
@@ -767,7 +740,6 @@ abstract class FOFView extends JObject
 	public function setLayoutExt($value)
 	{
 		$previous = $this->_layoutExt;
-
 		if ($value = preg_replace('#[^A-Za-z0-9]#', '', trim($value)))
 		{
 			$this->_layoutExt = $value;
@@ -783,11 +755,11 @@ abstract class FOFView extends JObject
 	 *
 	 * @return  void
 	 *
-	 * @deprecated  2.1  Override FOFView::escape() instead.
+	 * @deprecated  2.1  Override BBDFOFView::escape() instead.
 	 */
 	public function setEscape($spec)
 	{
-		JLog::add(__METHOD__ . ' is deprecated. Override FOFView::escape() instead.', JLog::WARNING, 'deprecated');
+		JLog::add(__METHOD__ . ' is deprecated. Override BBDFOFView::escape() instead.', JLog::WARNING, 'deprecated');
 
 		$this->_escape = $spec;
 	}
@@ -816,8 +788,9 @@ abstract class FOFView extends JObject
 		$this->_addPath('helper', $path);
 	}
 
+
 	/**
-	 * Overrides the built-in loadTemplate function with an FOF-specific one.
+	 * Overrides the built-in loadTemplate function with an BBDFOF-specific one.
 	 * Our overriden function uses loadAnyTemplate to provide smarter view
 	 * template loading.
 	 *
@@ -828,25 +801,47 @@ abstract class FOFView extends JObject
 	 */
 	public function loadTemplate($tpl = null, $strict = false)
 	{
-		$paths = FOFPlatform::getInstance()->getViewTemplatePaths(
-			$this->input->getCmd('option', ''),
-			$this->input->getCmd('view', ''),
-			$this->getLayout(),
-			$tpl,
-			$strict
-		);
+		list($isCli, $isAdmin) = BBDFOFDispatcher::isCliAdmin();
+
+		$basePath = $isAdmin ? 'admin:' : 'site:';
+		$basePath .= $this->config['option'] . '/';
+		$altBasePath = $basePath;
+		$basePath .= $this->config['view'] . '/';
+		$altBasePath .= (BBDFOFInflector::isSingular($this->config['view']) ? BBDFOFInflector::pluralize($this->config['view']) : BBDFOFInflector::singularize($this->config['view'])) . '/';
+
+		if ($strict)
+		{
+			$paths = array(
+				$basePath . $this->getLayout() . ($tpl ? "_$tpl" : ''),
+				// $basePath . 'default' . ($tpl ? "_$tpl" : ''),
+				$altBasePath . $this->getLayout() . ($tpl ? "_$tpl" : ''),
+				// $altBasePath . 'default' . ($tpl ? "_$tpl" : ''),
+			);
+		}
+		else
+		{
+			$paths = array(
+				$basePath . $this->getLayout() . ($tpl ? "_$tpl" : ''),
+				$basePath . $this->getLayout(),
+				$basePath . 'default' . ($tpl ? "_$tpl" : ''),
+				$basePath . 'default',
+				$altBasePath . $this->getLayout() . ($tpl ? "_$tpl" : ''),
+				$altBasePath . $this->getLayout(),
+				$altBasePath . 'default' . ($tpl ? "_$tpl" : ''),
+				$altBasePath . 'default',
+			);
+		}
 
 		foreach ($paths as $path)
 		{
 			$result = $this->loadAnyTemplate($path);
-
 			if (!($result instanceof Exception))
 			{
 				break;
 			}
 		}
 
-		if (FOFPlatform::getInstance()->checkVersion(JVERSION, '3.0', 'lt') && ($result instanceof Exception))
+		if ($result instanceof Exception)
 		{
 			JError::raiseError($result->getCode(), $result->getMessage());
 		}
@@ -883,12 +878,9 @@ abstract class FOFView extends JObject
 		}
 
 		if (empty($path))
-		{
 			return;
-		}
 
 		$pathparts = explode('/', $path, 3);
-
 		switch (count($pathparts))
 		{
 			case 3:
@@ -908,26 +900,25 @@ abstract class FOFView extends JObject
 	/**
 	 * Get the renderer object for this view
 	 *
-	 * @return  FOFRenderAbstract
+	 * @return  BBDFOFRenderAbstract
 	 */
 	public function &getRenderer()
 	{
-		if (!($this->rendererObject instanceof FOFRenderAbstract))
+		if (!($this->rendererObject instanceof BBDFOFRenderAbstract))
 		{
 			$this->rendererObject = $this->findRenderer();
 		}
-
 		return $this->rendererObject;
 	}
 
 	/**
 	 * Sets the renderer object for this view
 	 *
-	 * @param   FOFRenderAbstract  &$renderer  The render class to use
+	 * @param   BBDFOFRenderAbstract  $renderer
 	 *
 	 * @return  void
 	 */
-	public function setRenderer(FOFRenderAbstract &$renderer)
+	public function setRenderer(BBDFOFRenderAbstract &$renderer)
 	{
 		$this->rendererObject = $renderer;
 	}
@@ -935,34 +926,27 @@ abstract class FOFView extends JObject
 	/**
 	 * Finds a suitable renderer
 	 *
-	 * @return  FOFRenderAbstract
+	 * @return  BBDFOFRenderAbstract
 	 */
 	protected function findRenderer()
 	{
 		JLoader::import('joomla.filesystem.folder');
 
-		// Try loading the stock renderers shipped with FOF
-
-		if (empty(self::$renderers) || !class_exists('FOFRenderJoomla', false))
+		// Try loading the stock renderers shipped with BBDFOF
+		if (empty(self::$renderers) || !class_exists('BBDFOFRenderJoomla', false))
 		{
 			$path = dirname(__FILE__) . '/../render/';
 			$renderFiles = JFolder::files($path, '.php');
-
 			if (!empty($renderFiles))
 			{
 				foreach ($renderFiles as $filename)
 				{
 					if ($filename == 'abstract.php')
-					{
 						continue;
-					}
-
 					@include_once $path . '/' . $filename;
-
-					$camel = FOFInflector::camelize($filename);
-					$className = 'FOFRender' . ucfirst(FOFInflector::getPart($camel, 0));
+					$camel = BBDFOFInflector::camelize($filename);
+					$className = 'BBDFOFRender' . ucfirst(BBDFOFInflector::getPart($camel, 0));
 					$o = new $className;
-
 					self::registerRenderer($o);
 				}
 			}
@@ -971,18 +955,13 @@ abstract class FOFView extends JObject
 		// Try to detect the most suitable renderer
 		$o = null;
 		$priority = 0;
-
 		if (!empty(self::$renderers))
 		{
 			foreach (self::$renderers as $r)
 			{
 				$info = $r->getInformation();
-
 				if (!$info->enabled)
-				{
 					continue;
-				}
-
 				if ($info->priority > $priority)
 				{
 					$priority = $info->priority;
@@ -998,11 +977,11 @@ abstract class FOFView extends JObject
 	/**
 	 * Registers a renderer object with the view
 	 *
-	 * @param   FOFRenderAbstract  &$renderer  The render object to register
+	 * @param   BBDFOFRenderAbstract  $renderer
 	 *
 	 * @return  void
 	 */
-	public static function registerRenderer(FOFRenderAbstract &$renderer)
+	public static function registerRenderer(BBDFOFRenderAbstract &$renderer)
 	{
 		self::$renderers[] = $renderer;
 	}
@@ -1049,13 +1028,15 @@ abstract class FOFView extends JObject
 
 		if ($helper == false)
 		{
-			$componentPaths = FOFPlatform::getInstance()->getComponentBaseDirs($this->config['option']);
-			$path = $componentPaths['main'] . '/helpers';
+			list($isCli, $isAdmin) = BBDFOFDispatcher::isCliAdmin();
+			$path = ($isAdmin ? JPATH_ADMINISTRATOR : JPATH_SITE) . '/components/' .
+				$this->config['option'] . '/helpers';
 			$helper = JPath::find($path, $this->_createFileName('helper', array('name' => $file)));
 
 			if ($helper == false)
 			{
-				$path = $path = $componentPaths['alt'] . '/helpers';
+				$path = ($isAdmin ? JPATH_SITE : JPATH_ADMINISTRATOR) . '/components/' .
+					$this->config['option'] . '/helpers';
 				$helper = JPath::find($path, $this->_createFileName('helper', array('name' => $file)));
 			}
 		}
@@ -1088,9 +1069,12 @@ abstract class FOFView extends JObject
 	 * @param   mixed   $path  The new search path, or an array of search paths.  If null or false, resets to the current directory only.
 	 *
 	 * @return  void
+	 *
 	 */
 	protected function _setPath($type, $path)
 	{
+		list($isCli,) = BBDFOFDispatcher::isCliAdmin();
+
 		// Clear out the prior search dirs
 		$this->_path[$type] = array();
 
@@ -1102,13 +1086,13 @@ abstract class FOFView extends JObject
 		{
 			case 'template':
 				// Set the alternative template search dir
-
-				if (!FOFPlatform::getInstance()->isCli())
+				if (!$isCli)
 				{
-					$fallback = FOFPlatform::getInstance()->getTemplateOverridePath($this->input->getCmd('option', '')) . '/' . $this->getName();
+					$app = JFactory::getApplication();
+					$component = preg_replace('/[^A-Z0-9_\.-]/i', '', $this->input->getCmd('option'));
+					$fallback = JPATH_THEMES . '/' . $app->getTemplate() . '/html/' . $component . '/' . $this->getName();
 					$this->_addPath('template', $fallback);
 				}
-
 				break;
 		}
 	}
@@ -1166,7 +1150,6 @@ abstract class FOFView extends JObject
 				$filename = strtolower($parts['name']) . '.php';
 				break;
 		}
-
 		return $filename;
 	}
 }

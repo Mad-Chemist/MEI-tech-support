@@ -5,7 +5,7 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 // Protect from unauthorized access
-defined('_JEXEC') or die;
+defined('_JEXEC') or die();
 
 /**
  * Generic filter, text box entry with optional buttons
@@ -13,8 +13,9 @@ defined('_JEXEC') or die;
  * @package  FrameworkOnFramework
  * @since    2.0
  */
-class FOFFormHeaderFiltersearchable extends FOFFormHeaderFieldsearchable
+class BBDFOFFormHeaderFiltersearchable extends BBDFOFFormHeaderFieldsearchable
 {
+
 	/**
 	 * Get the header
 	 *
@@ -24,4 +25,5 @@ class FOFFormHeaderFiltersearchable extends FOFFormHeaderFieldsearchable
 	{
 		return '';
 	}
+
 }
