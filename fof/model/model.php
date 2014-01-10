@@ -1805,6 +1805,7 @@ class BBDFOFModel extends JObject
 	 *
 	 * @since   2.0
 	 */
+	/*#b3wd #looks promising*/
 	public function getForm($data = array(), $loadData = true, $source = null)
 	{
 		$this->_formData = $data;
