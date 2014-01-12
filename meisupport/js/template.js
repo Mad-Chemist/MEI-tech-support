@@ -46,32 +46,55 @@
 
 
 
-		/* multi select support for file upload*/
-		var check = jQuery('body.com_meiadmin.view-file.task-edit form#adminForm');
-		if (check.length === 1) remakeSubmit();
-		function trickSelect() {
+/* multi select support for file upload*/
+	var check = jQuery('body.com_meiadmin.view-file.task-edit form#adminForm');
+
+
+	if (check.length === 1) {
+			var vbChan = ['Gaming','Retail','Transportation','Vending'], vbId = [3,4,7,8], vbVal = jQuery('#channel').val(), vbOpts; //channel vars
+			var vbReg = ['Americas','EMEA','APR'], vbRid = [0,1,2], vbRval = jQuery('#region').val(), vbRopts; //region vars
+			remakeSubmit();
+			setMultiselectUp();
+	}
+
+	function setMultiselectUp() {
+		jQuery('#channel').attr({'id':'oldc','name':'oldc'});
+		jQuery.each(vbId, function(index,value) { 
+			vbOpts+= (vbVal.indexOf(value) != -1) ? '<option value="'+value+'" selected="selected">'+vbChan[index]+'</option>' :'<option value="'+value+'">'+vbChan[index]+'</option>'; 
+		});
+		jQuery('#oldc').after('<select id="channel" name="channel" multiple required>'+vbOpts+'</select>');
+		jQuery('#region').attr({'id':'oldr','name':'oldr'});
+		jQuery.each(vbRid, function(index,value) { 
+			vbRopts+= (vbRval.indexOf(value) != -1) ? '<option value="'+value+'" selected="selected">'+vbReg[index]+'</option>' :'<option value="'+value+'">'+vbReg[index]+'</option>'; 
+		});
+
+		jQuery('#oldr').after('<select id="region" name="region" multiple required>'+vbRopts+'</select>');
+
+		jQuery('#oldc, #oldr').remove();
+	}
+	function trickSelect() {
+		var chanVal = jQuery('select#channel').val(), regVal = jQuery('select#region').val();
+		chanVal = chanVal.toString().split(',').join('',''), regVal = regVal.toString().split(',').join('','');
+		jQuery('select#channel').attr('id','channel2');
+		jQuery('select#region').attr('id','region2');
+
+		check.append('<input type="hidden" id="channel" value="'+chanVal+'"><input type="hidden" id="region" value="'+regVal+'">');
+	}
+	function remakeSubmit() {
+		Joomla.submitform = function (a,b){
 			var chanVal = jQuery('select#channel').val(), regVal = jQuery('select#region').val();
 			chanVal = chanVal.toString().split(',').join('',''), regVal = regVal.toString().split(',').join('','');
-			jQuery('select#channel').attr('id','channel2');
-			jQuery('select#region').attr('id','region2');
+			jQuery('select#channel').attr({'id':'channel2','name':'channel2[]'});
+			jQuery('select#region').attr({'id':'region2','name':'region2[]'});
 
-			check.append('<input type="hidden" id="channel" value="'+chanVal+'"><input type="hidden" id="region" value="'+regVal+'">');
-		}
-		function remakeSubmit() {
-			Joomla.submitform = function (a,b){
-				var chanVal = jQuery('select#channel').val(), regVal = jQuery('select#region').val();
-				chanVal = chanVal.toString().split(',').join('',''), regVal = regVal.toString().split(',').join('','');
-				jQuery('select#channel').attr({'id':'channel2','name':'channel2[]'});
-				jQuery('select#region').attr({'id':'region2','name':'region2[]'});
+			check.append('<input type="hidden" id="channel" value="'+chanVal+'" name="channel"><input type="hidden" id="region" value="'+regVal+'" name="region">');
 
-				check.append('<input type="hidden" id="channel" value="'+chanVal+'" name="channel"><input type="hidden" id="region" value="'+regVal+'" name="region">');
-
-				"undefined"===typeof b&&(b=document.getElementById("adminForm")); 
-				"undefined"!==typeof a&&(b.task.value=a); 
-				if("function"==typeof b.onsubmit)b.onsubmit();
-				"function"==typeof b.fireEvent&&b.fireEvent("submit");b.submit();
-			} 
-		}
+			"undefined"===typeof b&&(b=document.getElementById("adminForm")); 
+			"undefined"!==typeof a&&(b.task.value=a); 
+			if("function"==typeof b.onsubmit)b.onsubmit();
+			"function"==typeof b.fireEvent&&b.fireEvent("submit");b.submit();
+		} 
+	}
 		/*homepage - login, hide unwanted elements*/
 		if (jQuery('#body-login form').length > 0) { 
       	jQuery('.posttext').appendTo('.userdata');
