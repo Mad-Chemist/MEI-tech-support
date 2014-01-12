@@ -23,7 +23,7 @@
          />
         <field name="channel" type="text"
             label="COM_MEIADMIN_CHANNEL"
-           
+            required="true"
          />
         <field name="type" type="list" label="COM_MEIADMIN_FILE_FIELD_TYPE" default="manual" required="true">
             <option value="general">General Documentation</option>
@@ -43,8 +43,13 @@
             label="COM_MEIADMIN_FILE_FIELD_LANGUAGE"
             required="true"
          />
-        <field name="region" type="text"
+        <field name="region" type="sql"
             label="COM_MEIADMIN_REGION"
+            key_field="id"
+            value_field="value"
+            query="SELECT meiadmin_region_id AS id, title AS value FROM #__meiadmin_regions WHERE 1"
+            required="true"
+            multiple="true"
          />
         <field type="file"
                label="COM_MEIADMIN_FILE_UPLOAD"
