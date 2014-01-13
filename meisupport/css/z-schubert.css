@@ -670,3 +670,12 @@ margin-top: 10px;
 #more-than-5 {
     display: none;
 }
+.google-map {
+    float: right;
+    display: inline-block;
+    height: 100%;
+    position: relative;
+    width: 350px;
+    margin: 0px 15px;
+    border: 2px #797979 solid;
+}
