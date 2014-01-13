@@ -147,9 +147,9 @@ $user = JFactory::getUser();
         <jdoc:include type="modules" name="nav-bottom" style="none" />
         <div style="clear:both;"></div>
       </div>
-      <?php endif; ?>
+      <?php include_once('templates/'.$this->template.'/includes/get-homepage-products.php');
+      endif; ?>
       <jdoc:include type="modules" name="content-bottom" style="none" />
-      <?php include_once('templates/'.$this->template.'/includes/get-homepage-products.php'); ?>
       <div style="clear:both;"></div>
     </div>
   </div>
