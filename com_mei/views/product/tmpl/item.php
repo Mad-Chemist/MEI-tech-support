@@ -1,6 +1,22 @@
 <?php
 defined('_JEXEC') or die();
-
+/*schubert*/
+$userV3 =& JFactory::getUser();
+$userId = $userV3->get( 'id' );
+if ($userId > 100) { 
+    $userAccess     =   mysql_query('SELECT  `fk_region_id`, `fk_channel_id` FROM  `44aae_meiadmin_customers` WHERE  `fk_user_id` = '.$userId.' LIMIT 0,1');
+    if ($userAccess) {
+        while ($row     =   mysql_fetch_array($userAccess) ){ 
+            $GLOBALS['regV'] = $row[0];
+            $GLOBALS['chanV'] = $row[1];
+        }
+    }
+    else {
+        $GLOBALS['regV'] = 0;
+        $GLOBALS['chanV'] = 0;
+    }
+}
+/*schubert*/
 ?>
 <div id="meiProduct">
     <div id="meiProductDescription">

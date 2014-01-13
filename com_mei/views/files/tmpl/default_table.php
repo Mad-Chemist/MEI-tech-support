@@ -1,3 +1,4 @@
+
   <?php  include_once "file-icon.php";  ?>
   <h4 class="typeTitle"><?php echo JText::_('COM_MEI_TYPE_TITLE_' . strtoupper($this->type)) ?></h4>
   <div class="file_table span11">
@@ -8,6 +9,7 @@
         <th><?php echo JText::_('COM_MEI_TABLE_HEADING_LAST_UPDATED'); ?></th>
       </tr>
       <?php foreach($this->tableFiles as $file) : ?>
+      <?php if ( strpos($file->channel,$GLOBALS['chanV']) !== false && strpos($file->region,$GLOBALS['regV']) !== false ) { //checks if user has correct region and channel access ?>
       <tr  class="<?php echo str_replace(" ", "-", $file->title); ?>">
         <td>
           <?php retrieveEXT($file->meiadmin_file_id, $file->current_version); ?>
@@ -17,10 +19,12 @@
         <td>
         <?php 
           $modified = new JDate($file->modified_on);
-          echo $modified->format('M d, Y h:i A'); 
+          echo $modified->format('M d, Y h:i A');
         ?>
         </td>
       </tr>
-      <?php endforeach; ?>  
+      <?php } endforeach; ?>  
     </table>
   </div>
+        
+        
