@@ -1,0 +1,27 @@
+<style>
+.service-center {
+    margin: 10px 0px;
+    width:100%;
+    background:gray;
+    display:block;
+}
+#service-centers span.center-heading {
+    font-weight: bold;
+}
+.service-center .scinformation {
+    float:left;
+    height:100%;
+    border-left: #E4DB0C 5px solid;
+    padding-left:10px;
+    margin-bottom:15px;
+}
+.service-center .scnumber {
+	float:left;
+	clear:left;
+	font-size:70px;
+	padding-top:30px;
+	padding-right:10px;
+}
+</style>
+
+<div id="service-centers"> <div class="service-center" > <div class="scnumber">'+(i+1)+'</div> <div class="scinformation" itemscope itemtype="http://schema.org/LocalBusiness"> <div> <span class="center-heading">Name:</span> <span itemprop="name">'+vLocations[i]['name']+'</span> </div> <div> <span class="center-heading">Address:</span> <span itemprop="address">'+vLocations[i]['address']+'</span> </div> <div> <span class="center-heading">Phone:</span> <span>'+showPhoneNumber()+'</span> </div> <div> <span class="center-heading">Fax:</span> <span itemprop="faxNumber">'+vLocations[i]['fax']+'</span> </div> <div> <span class="center-heading">Email:</span> <span> <a href="mailto:'+vLocations[i]['email']+'" itemprop="email">'+vLocations[i]['email']+'</a> </span> </div> <div> <span class="center-heading">Web:</span> <span> <a href="http://'+vLocations[i]['web']+'" target="_blank" itemprop="url">'+vLocations[i]['web']+'</a> </span> </div> </div> <div style="clear:both;"></div> </div> </div>
