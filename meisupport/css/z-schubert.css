@@ -618,3 +618,55 @@ margin-top: 10px;
 #system-message-container {
 /* display: none !important; */
 }
+
+/* service centers */
+.service-center {
+    margin: 10px 0px 20px;
+    padding: 10px 0px;
+    width:100%;
+    display:block;
+
+    border: 1px solid #DDD;
+    background: #F5F5F5;
+    background: -moz-linear-gradient(top, #FAFAFA 0%, #F5F5F5 100%);
+    background: -webkit-linear-gradient(top, #FAFAFA 0%, #F5F5F5 100%);
+    background: -o-linear-gradient(top, #FAFAFA 0%, #F5F5F5 100%);
+    background: linear-gradient(to bottom, #FAFAFA 0%, #F5F5F5 100%);
+    -webkit-border-radius:5px;
+    -moz-border-radius:5px;
+    border-radius: 5px;
+    box-shadow: 0 1px 0 #FFF inset;
+    text-shadow: 0 1px 0 #FFF;
+    box-shadow: 0 2px 5px rgba(77, 77, 77, 0.49);
+    font-size: 15px;
+}
+#service-centers span.center-heading {
+    font-weight: bold;
+}
+.service-center .scinformation {
+    float:left;
+    height:100%;
+    border-left: #08C 5px solid;
+    padding-left:10px;
+}
+.service-center .scnumber {
+    float:left;
+    clear:left;
+    font-size:70px;
+    padding:50px 10px 0px;
+    width: 75px;
+    text-align:center;
+}
+
+.center-heading {
+    width: 70px;
+    display: inline-block;
+}
+.scinformation div {
+    display: block;
+    border-bottom: 1px #E4E4E4 dotted;
+    margin: 10px 0px;
+}
+#more-than-5 {
+    display: none;
+}
