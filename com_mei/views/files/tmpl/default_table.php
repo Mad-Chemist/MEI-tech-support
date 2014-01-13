@@ -9,7 +9,7 @@
         <th><?php echo JText::_('COM_MEI_TABLE_HEADING_LAST_UPDATED'); ?></th>
       </tr>
       <?php foreach($this->tableFiles as $file) : ?>
-      <?php if ( strpos($file->channel,$GLOBALS['chanV']) !== false && strpos($file->region,$GLOBALS['regV']) !== false ) { //checks if user has correct region and channel access ?>
+      <?php if (!$GLOBALS['PERMV'] || (strpos($file->channel,$GLOBALS['chanV']) !== false && strpos($file->region,$GLOBALS['regV']) !== false) ) { //checks if user has correct region and channel access ?>
       <tr  class="<?php echo str_replace(" ", "-", $file->title); ?>">
         <td>
           <?php retrieveEXT($file->meiadmin_file_id, $file->current_version); ?>

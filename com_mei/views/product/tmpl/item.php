@@ -16,6 +16,7 @@ if ($userId > 100) {
         $GLOBALS['chanV'] = 0;
     }
 }
+$GLOBALS['PERMV'] = true;
 /*schubert*/
 ?>
 <div id="meiProduct">
