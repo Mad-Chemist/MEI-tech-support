@@ -52,7 +52,7 @@
 
 	if (check.length === 1) {
 			var vbChan = ['Gaming','Retail','Transportation','Vending'], vbId = [3,4,7,8], vbVal = jQuery('#channel').val(), vbOpts; //channel vars
-			var vbReg = ['Americas','EMEA','APR'], vbRid = [0,1,2], vbRval = jQuery('#region').val(), vbRopts; //region vars
+			var vbReg = ['Americas','EMEA','APR'], vbRid = [1,2,3], vbRval = jQuery('#region').val(), vbRopts; //region vars
 			remakeSubmit();
 			setMultiselectUp();
 	}
