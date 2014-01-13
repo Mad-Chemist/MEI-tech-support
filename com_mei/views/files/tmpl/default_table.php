@@ -26,5 +26,3 @@
       <?php } endforeach; ?>  
     </table>
   </div>
-        
-        
