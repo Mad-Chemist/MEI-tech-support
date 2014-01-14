@@ -507,6 +507,12 @@ max-width: 100% !important;
      #prod-info {
         width:76%;
     }
+
+    /* sfsc */
+    .google-map {
+        width: 150px !important;
+        overflow: hidden;
+    }
 }
 
 @media (max-width:950px) {
@@ -620,7 +626,16 @@ margin-top: 10px;
 }
 
 /* service centers */
+#loading {
+    width: 100%;
+    text-align: center;
+}
+#loading img {
+    height: 50px;
+}
+
 .service-center {
+    position:relative;
     margin: 10px 0px 20px;
     padding: 10px 0px;
     width:100%;
@@ -643,11 +658,15 @@ margin-top: 10px;
 #service-centers span.center-heading {
     font-weight: bold;
 }
+.service-centers {
+margin: 10px 0px;
+}
 .service-center .scinformation {
     float:left;
     height:100%;
     border-left: #08C 5px solid;
     padding-left:10px;
+    max-width: 520px;
 }
 .service-center .scnumber {
     float:left;
@@ -671,11 +690,48 @@ margin-top: 10px;
     display: none;
 }
 .google-map {
-    float: right;
-    display: inline-block;
-    height: 100%;
-    position: relative;
-    width: 350px;
-    margin: 0px 15px;
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    margin-top: -90px;
+    height: 180px;
+    width: 300px;
     border: 2px #797979 solid;
+}
+.google-map img {
+    height:180px;
+    width:300px;
+    max-width:none;
+    position: absolute;
+    left: 50%;
+    margin-left: -150px;
+}
+
+#service-center-form label {
+    display: inline;
+    vertical-align: middle;
+    display:block;
+    margin:5px 0px;
+}
+#service-center-form input, #service-center-form select {
+    vertical-align: middle;
+    margin: -3px 10px 3px;
+}
+#service-center-form .bttn {
+    font-size:14px;
+    padding:7px 10px;
+    display:block;
+    margin:0px;
+}
+
+@media (max-width:860px) {
+    .google-map {display:none; }
+}
+@media (max-width:680px) {
+    .scnumber {display: none; }
+    .service-center {
+        height: 100% !Important;
+        margin: 0px;
+        padding: 0px;
+    }
 }

@@ -17,6 +17,7 @@ $doc = JFactory::getDocument();
 $this->language = $doc->language;
 $this->direction = $doc->direction;
 
+$menu = & JSite::getMenu();
 // Detecting Active Variables
 $option   = $app->input->getCmd('option', '');
 $view     = $app->input->getCmd('view', '');
@@ -117,6 +118,7 @@ $user = JFactory::getUser();
       Select Language <b>&#8669;</b>
     </div>
   </div>
+
   <?php if ($this->countModules('nav-top')) : ?>
   <div id="nav" class="mainnav rounded">
   	<div id="nav-active-bg"></div>
@@ -124,18 +126,21 @@ $user = JFactory::getUser();
     <jdoc:include type="modules" name="nav-top" style="none" />
   </div>
   <?php endif; ?>
+
   <div class="body rounded">
-  	<?php if ($this->countModules('nav-top')) : ?>
+
+  	<?php if ($this->countModules('breadcrumbs')) : ?>
   	<div class='breadcrumbs'>
   	<jdoc:include type="modules" name="breadcrumbs" style="none" />
   	</div>
   	<?php endif; ?>
+
     <div id="main-article"  <?php if ($this->countModules('login-box') == 0) echo' style="width:100%;" '; ?> >
       <jdoc:include type="component" />
     </div>
     <div id="body-login">
       <jdoc:include type="modules" name="login-box" style="none" />
-      <?php if ($this->countModules('login-box') > 0 && $user->id > 0) include_once('templates/'.$this->template.'/includes/get-user-icon.php'); ?>
+      <?php if ($menu->getActive() == $menu->getDefault() && $user->id > 0) include_once('templates/'.$this->template.'/includes/get-user-icon.php'); ?>
     </div>
     <div style="clear:both;"></div>
   </div>

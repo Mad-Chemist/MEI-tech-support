@@ -322,8 +322,8 @@ jQuery(document).ready(function() {
 	}
 
 	if ("geolocation" in navigator)  distanceSetUp(); else  compatDistanceSetup();
-
-	function distanceSetUp() {
+});
+function distanceSetUp() {
 		navigator.geolocation.getCurrentPosition(function(position) {
 			mylat= position.coords.latitude, mylong = position.coords.longitude;
 			output();
@@ -334,9 +334,8 @@ jQuery(document).ready(function() {
 	}
 
 	function compatDistanceSetup() {
-		alert('enter your address');
+		jQuery('#loading').slideUp();
 	}
-
 	function output() { 
 		i =0;
 		while( i<vLocations.length) {
@@ -358,6 +357,7 @@ jQuery(document).ready(function() {
 			}
 
 		}
+		jQuery('#loading').slideUp(function() { jQuery('#loading').remove() });
 	}
 
 	function calculateDistance(lat1,lat2,lon1,lon2) {
@@ -373,11 +373,9 @@ jQuery(document).ready(function() {
 		return d;
 	}
 
-
-});
 function nicelyShowCenters(maxed) {
 	maxed = (maxed === 1) ?  jQuery('#more-than-5') :  jQuery('#service-centers');
-	maxed.append('<div id="service-centers"> <div class="service-center" > <div class="scnumber">'+(i+1)+'</div> <div class="scinformation" itemscope itemtype="http://schema.org/LocalBusiness"> <div> <span class="center-heading">Name:</span> <span itemprop="name">'+vLocations[i]['name']+'</span> </div> <div> <span class="center-heading">Address:</span> <span itemprop="address">'+vLocations[i]['address']+'</span> </div> <div> <span class="center-heading">Phone:</span> <span>'+showPhoneNumber()+'</span> </div> <div> <span class="center-heading">Fax:</span> <span itemprop="faxNumber">'+vLocations[i]['fax']+'</span> </div> <div> <span class="center-heading">Email:</span> <span> <a href="mailto:'+vLocations[i]['email']+'" itemprop="email">'+vLocations[i]['email']+'</a> </span> </div> <div> <span class="center-heading">Web:</span> <span> <a href="http://'+vLocations[i]['web']+'" target="_blank" itemprop="url">'+vLocations[i]['web']+'</a> </span> </div> </div><div class="google-map"><img src="/images/service-centers/gmap.png"></div><div style="clear:both;"></div> </div> </div>');
+	maxed.append('<div class="service-centers"> <div class="service-center" > <div class="scnumber">'+(i+1)+'</div> <div class="scinformation" itemscope itemtype="http://schema.org/LocalBusiness"> <div> <span class="center-heading">Name:</span> <span itemprop="name">'+vLocations[i]['name']+'</span> </div> <div> <span class="center-heading">Address:</span> <span itemprop="address">'+vLocations[i]['address']+'</span> </div> <div> <span class="center-heading">Phone:</span> <span>'+showPhoneNumber()+'</span> </div> <div> <span class="center-heading">Fax:</span> <span itemprop="faxNumber">'+vLocations[i]['fax']+'</span> </div> <div> <span class="center-heading">Email:</span> <span> <a href="mailto:'+vLocations[i]['email']+'" itemprop="email">'+vLocations[i]['email']+'</a> </span> </div> <div> <span class="center-heading">Web:</span> <span> <a href="http://'+vLocations[i]['web']+'" target="_blank" itemprop="url">'+vLocations[i]['web']+'</a> </span> </div> </div><div class="google-map"><img src="/images/service-centers/gmap.png"></div><div style="clear:both;"></div> </div> </div>');
 }
 function showPhoneNumber() {
 	var vphones = "";
@@ -392,7 +390,24 @@ function showMoreSC() {
 	jQuery('#show-more-centers').text(ntext);
 	return false;
 }
-// gaming 3
-// retail 4
-// transportation 7
-// vending 8
+
+function queryAddress(address) {
+		if (address === 'undefined') return;
+		else address = address.replace(' ', '+');
+		jQuery.ajax({
+			url: 'http://maps.googleapis.com/maps/api/geocode/json?address='+address+'&sensor=false',
+			dataType: 'json',
+			success: function(data) {
+				var tempsave = data;
+				if (tempsave['results'][0]['geometry']['location']['lat'] && tempsave['results'][0]['geometry']['location']['lng']) {
+					mylong = tempsave['results'][0]['geometry']['location']['lng'], mylat = tempsave['results'][0]['geometry']['location']['lat'];
+					output();
+
+				} else alert('There was an error');
+			}
+		});
+	}
+function locateViaForm() {
+	if (jQuery('#service-center-form #address').val().length > 1) queryAddress(jQuery('#service-center-form #address').val());
+	//service-centers
+}
