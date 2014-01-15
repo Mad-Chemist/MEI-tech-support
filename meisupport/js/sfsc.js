@@ -17,7 +17,8 @@ vLanguage = [
 	},
 	{
 		'cant-locate':"We were unable to locate that.  Sorry!",
-		'success':"We've located the closest service centers for you!"
+		'success':"We've located the closest service centers for you!",
+		'empty':"Woops.  Looks like you didn't enter an address!"
 	}
 ],
 vLocations =  [
@@ -495,5 +496,6 @@ function queryAddress(address) {
 	}
 function locateViaForm() {
 	if (jQuery('#service-center-form #address').val().length > 1) queryAddress(jQuery('#service-center-form #address').val());
+	else pagealert(vLanguage[2]['empty'],{'class':' fa-a fa-a-exclamation','theme':'red','delay':5000});
 	//service-centers
 }
