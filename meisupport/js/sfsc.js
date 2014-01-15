@@ -1,27 +1,50 @@
 jQuery('head').append('<link rel="stylesheet" href="/templates/meisupport/alerts/css/themes.css"><script src="/templates/meisupport/alerts/alerts.jquery.js"></script>');
-var mylat, mylong, i, 
-vLanguage = [
-	{
-		'manager':'On Service Manager',
-		'warranty':'Make Warranty Claims',
-		'oem':'OEM'
-	},
-	{
-		'name':'Name',
-		'address':'Address',
-		'phone':'Phone',
-		'fax':'Fax',
-		'email':'Email',
-		'web':'Web',
-		'map':'View on map'
-	},
-	{
-		'cant-locate':"We were unable to locate that.  Sorry!",
-		'success':"We've located the closest service centers for you!",
-		'empty':"Woops.  Looks like you didn't enter an address!"
-	}
-],
-vLocations =  [
+var mylat, mylong, i, vLanguage = {};
+if (typeof cvlang === 'undefined') var cvlang = 'en-GB';
+
+vLanguage['en-GB'] = [
+		{
+			'manager':'On Service Manager',
+			'warranty':'Make Warranty Claims',
+			'oem':'OEM'
+		},
+		{
+			'name':'Name',
+			'address':'Address',
+			'phone':'Phone',
+			'fax':'Fax',
+			'email':'Email',
+			'web':'Web',
+			'map':'View on map'
+		},
+		{
+			'cant-locate':"We were unable to locate that.  Sorry!",
+			'success':"We've located the closest service centers for you.",
+			'empty':"Woops.  Looks like you didn't enter an address!"
+		}
+	],
+vLanguage['es-ES'] = [
+		{
+			'manager':'el gerente de servicio',
+			'warranty':'Hacer Reclamaciones de garantía',
+			'oem':'OEM'
+		},
+		{
+			'name':'Nombre',
+			'address':'Dirección',
+			'phone':'Teléfono',
+			'fax':'Fax',
+			'email':'Email',
+			'web':'Web',
+			'map':'Ver en el mapa'
+		},
+		{
+			'cant-locate':"No fue posible localizar a eso. ¡Lo siento!",
+			'success':"Hemos localizado los centros de servicio más cercanos para usted.",
+			'empty':"Woops. Parece que no has introducido una dirección!"
+		}
+	];	
+var vLocations =  [
 	{
 		'id':0,
 		'industry':34,
@@ -33,7 +56,7 @@ vLocations =  [
 		'email': 'eddy_AECO@ionet.net',
 		'web' : 'www.aecosales.com',
 		'location':[35.2522046,-96.936734],
-		'options':{'manager':vLanguage[0]['manager']}
+		'options':{'manager':vLanguage[cvlang][0]['manager']}
 	},
 	{
 		'id':1,
@@ -59,7 +82,7 @@ vLocations =  [
 		'email': 'support@arbortronics.com',
 		'web' : 'www.arbortronics.com',
 		'location':[43.761552,-79.467824],
-		'options':{'manager':vLanguage[0]['manager']}
+		'options':{'manager':vLanguage[cvlang][0]['manager']}
 	},
 	{
 		'id':3,
@@ -98,7 +121,7 @@ vLocations =  [
 		'email': 'rzayasbazan@betson.com',
 		'web' : 'www.betson.com',
 		'location':[40.828433,-74.080717],
-		'options':{'manager':vLanguage[0]['manager'],'warranty':vLanguage[0]['warranty']}
+		'options':{'manager':vLanguage[cvlang][0]['manager'],'warranty':vLanguage[cvlang][0]['warranty']}
 	},		
 	{
 		'id':6,
@@ -163,7 +186,7 @@ vLocations =  [
 		'email': 'rzayasbazan@betson.com',
 		'web' : 'www.betson.com',
 		'location':[37.636826,-122.126906],
-		'options':{'manager':vLanguage[0]['manager'],'warranty':vLanguage[0]['warranty']}
+		'options':{'manager':vLanguage[cvlang][0]['manager'],'warranty':vLanguage[cvlang][0]['warranty']}
 	},		
 	{	
 		'id':11,
@@ -189,7 +212,7 @@ vLocations =  [
 		'email': 'mstolley@changerservices.com',
 		'web' : 'www.changerservices.com',
 		'location':[44.870859,-93.161182],
-		'options':{'manager':vLanguage[0]['manager'],'warranty':vLanguage[0]['warranty']}
+		'options':{'manager':vLanguage[cvlang][0]['manager'],'warranty':vLanguage[cvlang][0]['warranty']}
 	},	
 	{	
 		'id':13,
@@ -228,7 +251,7 @@ vLocations =  [
 		'email': 'bob@easterncommercial.com',
 		'web' : 'www.easterncommercial.com',
 		'location':[36.761179,-76.234286],
-		'options':{'manager':vLanguage[0]['manager'],'warranty':vLanguage[0]['warranty']}
+		'options':{'manager':vLanguage[cvlang][0]['manager'],'warranty':vLanguage[cvlang][0]['warranty']}
 	},	
 	{	
 		'id':16,
@@ -241,7 +264,7 @@ vLocations =  [
 		'email': 'bob.dobbins@ellenbytech.com',
 		'web' : 'www.ellenbytech.com',
 		'location':[39.811054,-75.144183],
-		'options':{'manager':vLanguage[0]['manager'],'oem':vLanguage[0]['oem']}
+		'options':{'manager':vLanguage[cvlang][0]['manager'],'oem':vLanguage[cvlang][0]['oem']}
 	},	
 	{	
 		'id':17,
@@ -254,7 +277,7 @@ vLocations =  [
 		'email': 'sales@gekay.com',
 		'web' : 'www.gekay.com',
 		'location':[42.182016,-72.515018],
-		'options':{'manager':vLanguage[0]['manager']}
+		'options':{'manager':vLanguage[cvlang][0]['manager']}
 	},	
 	{	
 		'id':18,
@@ -267,7 +290,7 @@ vLocations =  [
 		'email': 'Benny@lopez-fernandez.com',
 		'web' : '',
 		'location':[29.001579,-110.908928],
-		'options':{'manager':vLanguage[0]['manager']}
+		'options':{'manager':vLanguage[cvlang][0]['manager']}
 	},	
 	{	
 		'id':19,
@@ -280,7 +303,7 @@ vLocations =  [
 		'email': 'cassie@moderngaminginc.com',
 		'web' : '',
 		'location':[30.368689,-90.86586],
-		'options':{'manager':vLanguage[0]['manager'],'warranty':vLanguage[0]['warranty']}
+		'options':{'manager':vLanguage[cvlang][0]['manager'],'warranty':vLanguage[cvlang][0]['warranty']}
 	},	
 	{	
 		'id':20,
@@ -293,7 +316,7 @@ vLocations =  [
 		'email': 'ventas@permaquim.com',
 		'web' : 'www.permaquim.com',
 		'location':[-34.540911,-58.506498],
-		'options':{'manager':vLanguage[0]['manager']}
+		'options':{'manager':vLanguage[cvlang][0]['manager']}
 	},	
 	{	
 		'id':21,
@@ -306,7 +329,7 @@ vLocations =  [
 		'email': 'sameinc@aol.com',
 		'web' : '',
 		'location':[29.819359,-95.476331],
-		'options':{'manager':vLanguage[0]['manager']}
+		'options':{'manager':vLanguage[cvlang][0]['manager']}
 	},	
 	{	
 		'id':22,
@@ -319,7 +342,7 @@ vLocations =  [
 		'email': 'jon@vendingsvs.com',
 		'web' : 'www.vendingsvs.com',
 		'location':[35.180002,-80.921313],
-		'options':{'manager':vLanguage[0]['manager']}
+		'options':{'manager':vLanguage[cvlang][0]['manager']}
 	},	
 	{	
 		'id':23,
@@ -345,7 +368,7 @@ vLocations =  [
 		'email': 'James.Packer@suzohapp.com',
 		'web' : 'www.suzohapp.com',
 		'location':[18.457572,-66.075145],
-		'options':{'manager':vLanguage[0]['manager'],'warranty':vLanguage[0]['warranty']}
+		'options':{'manager':vLanguage[cvlang][0]['manager'],'warranty':vLanguage[cvlang][0]['warranty']}
 	},
 	{	
 		'id':25,
@@ -371,7 +394,7 @@ vLocations =  [
 		'email': 'mei@teamonerepair.com',
 		'web' : 'www.teamonerepair.com',
 		'location':[39.937462,-120.90478],
-		'options':{'manager':vLanguage[0]['manager']}
+		'options':{'manager':vLanguage[cvlang][0]['manager']}
 	},	
 	{	
 		'id':27,
@@ -384,7 +407,7 @@ vLocations =  [
 		'email': 'sales@vendorsrepair.com',
 		'web' : 'www.vendorsrepair.com',
 		'location':[28.611726,-81.425277],
-		'options':{'manager':vLanguage[0]['manager']}
+		'options':{'manager':vLanguage[cvlang][0]['manager']}
 	}
 ];
 jQuery(document).ready(function() {
@@ -410,7 +433,7 @@ function distanceSetUp() {
 		jQuery('#loading').slideUp();
 	}
 	function output() { 
-		pagealert(vLanguage[2]['success'],{'class':' fa-a fa-a-mapm','theme':'green','delay':3000});
+		pagealert(vLanguage[cvlang][2]['success'],{'class':' fa-a fa-a-mapm','theme':'green','delay':3000});
 		jQuery('#service-centers').empty();
 		i =0;
 		while( i<vLocations.length) {
@@ -451,13 +474,13 @@ function distanceSetUp() {
 function nicelyShowCenters(maxed) {
 	maxed = (maxed === 1) ?  jQuery('#more-than-5') :  jQuery('#service-centers');
 	var opts = (vLocations[i]['options'].length !== 0) ? showCenterOptions() : "";
-	maxed.append('<div class="service-centers"> <div class="service-center" > <div class="scnumber">'+ (i+1) + opts +'</div> <div class="scinformation" itemscope itemtype="http://schema.org/LocalBusiness"> <div> <span class="center-heading">'+vLanguage[1]['name']+':</span> <span itemprop="name">'+vLocations[i]['name']+'</span> </div> <div> <span class="center-heading">'+vLanguage[1]['address']+':</span> <span itemprop="address">'+vLocations[i]['address']+'</span> </div> <div> <span class="center-heading">'+vLanguage[1]['phone']+':</span> <span>'+showPhoneNumber()+'</span> </div> <div> <span class="center-heading">'+vLanguage[1]['fax']+':</span> <span itemprop="faxNumber">'+vLocations[i]['fax']+'</span> </div> <div> <span class="center-heading">'+vLanguage[1]['email']+':</span> <span> <a href="mailto:'+vLocations[i]['email']+'" itemprop="email">'+vLocations[i]['email']+'</a> </span> </div> <div> <span class="center-heading">'+vLanguage[1]['web']+':</span> <span> <a href="http://'+vLocations[i]['web']+'" target="_blank" itemprop="url">'+vLocations[i]['web']+'</a> </span> </div> </div> <div class="google-map"> <a href="'+vLocations[i]['map']+'" target="_blank" title="'+vLanguage[1]['map']+'"> <img src="/images/service-centers/gmap-'+vLocations[i]['id']+'.jpg"></a> </div> <div style="clear:both;"></div> </div> </div> ');
+	maxed.append('<div class="service-centers"> <div class="service-center" > <div class="scnumber">'+ (i+1) + opts +'</div> <div class="scinformation" itemscope itemtype="http://schema.org/LocalBusiness"> <div> <span class="center-heading">'+vLanguage[cvlang][1]['name']+':</span> <span itemprop="name">'+vLocations[i]['name']+'</span> </div> <div> <span class="center-heading">'+vLanguage[cvlang][1]['address']+':</span> <span itemprop="address">'+vLocations[i]['address']+'</span> </div> <div> <span class="center-heading">'+vLanguage[cvlang][1]['phone']+':</span> <span>'+showPhoneNumber()+'</span> </div> <div> <span class="center-heading">'+vLanguage[cvlang][1]['fax']+':</span> <span itemprop="faxNumber">'+vLocations[i]['fax']+'</span> </div> <div> <span class="center-heading">'+vLanguage[cvlang][1]['email']+':</span> <span> <a href="mailto:'+vLocations[i]['email']+'" itemprop="email">'+vLocations[i]['email']+'</a> </span> </div> <div> <span class="center-heading">'+vLanguage[cvlang][1]['web']+':</span> <span> <a href="http://'+vLocations[i]['web']+'" target="_blank" itemprop="url">'+vLocations[i]['web']+'</a> </span> </div> </div> <div class="google-map"> <a href="'+vLocations[i]['map']+'" target="_blank" title="'+vLanguage[cvlang][1]['map']+'"> <img src="/images/service-centers/gmap-'+vLocations[i]['id']+'.jpg"></a> </div> <div style="clear:both;"></div> </div> </div> ');
 }
 function showCenterOptions() {
 	var opts = "";
-	if (typeof vLocations[i]['options']['manager'] !== 'undefined') opts+= "<img src='/images/service-centers/manager-ico.png' title='"+vLanguage[0]['manager']+"' >";
-	if (typeof vLocations[i]['options']['oem'] !== 'undefined') opts+= "<img src='/images/service-centers/oem-ico.png' title='"+vLanguage[0]['oem']+"' >";
-	if (typeof vLocations[i]['options']['warranty'] !== 'undefined') opts+= "<img src='/images/service-centers/warranty-ico.png' title='"+vLanguage[0]['warranty']+"' >";	
+	if (typeof vLocations[i]['options']['manager'] !== 'undefined') opts+= "<img src='/images/service-centers/manager-ico.png' title='"+vLanguage[cvlang][0]['manager']+"' >";
+	if (typeof vLocations[i]['options']['oem'] !== 'undefined') opts+= "<img src='/images/service-centers/oem-ico.png' title='"+vLanguage[cvlang][0]['oem']+"' >";
+	if (typeof vLocations[i]['options']['warranty'] !== 'undefined') opts+= "<img src='/images/service-centers/warranty-ico.png' title='"+vLanguage[cvlang][0]['warranty']+"' >";	
 	return "<span>"+opts+"</span>";
 }
 function showPhoneNumber() {
@@ -487,15 +510,15 @@ function queryAddress(address) {
 					mylong = tempsave['results'][0]['geometry']['location']['lng'], mylat = tempsave['results'][0]['geometry']['location']['lat'];
 					output();
 
-				} else pagealert(vLanguage[2]['cant-locate'],{'class':' fa-a fa-a-exclamation','theme':'red','delay':5000});
+				} else pagealert(vLanguage[cvlang][2]['cant-locate'],{'class':' fa-a fa-a-exclamation','theme':'red','delay':5000});
 			},
 			error: function() {
-				pagealert(vLanguage[2]['cant-locate'],{'class':' fa-a fa-a-exclamation','theme':'red','delay':5000});
+				pagealert(vLanguage[cvlang][2]['cant-locate'],{'class':' fa-a fa-a-exclamation','theme':'red','delay':5000});
 			}
 		});
 	}
 function locateViaForm() {
 	if (jQuery('#service-center-form #address').val().length > 1) queryAddress(jQuery('#service-center-form #address').val());
-	else pagealert(vLanguage[2]['empty'],{'class':' fa-a fa-a-exclamation','theme':'red','delay':5000});
+	else pagealert(vLanguage[cvlang][2]['empty'],{'class':' fa-a fa-a-exclamation','theme':'red','delay':5000});
 	//service-centers
 }
