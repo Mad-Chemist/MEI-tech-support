@@ -12,7 +12,7 @@ vLanguage = [
 		'phone':'Phone',
 		'fax':'Fax',
 		'email':'Email',
-		'web':'web',
+		'web':'Web',
 		'map':'View on map'
 	},
 	{
@@ -481,11 +481,15 @@ function queryAddress(address) {
 			dataType: 'json',
 			success: function(data) {
 				var tempsave = data;
-				if (tempsave['results'][0]['geometry']['location']['lat'] && tempsave['results'][0]['geometry']['location']['lng']) {
+				console.log(tempsave);
+				if (tempsave['status'] === "OK") {
 					mylong = tempsave['results'][0]['geometry']['location']['lng'], mylat = tempsave['results'][0]['geometry']['location']['lat'];
 					output();
 
 				} else pagealert(vLanguage[2]['cant-locate'],{'class':' fa-a fa-a-exclamation','theme':'red','delay':5000});
+			},
+			error: function() {
+				pagealert(vLanguage[2]['cant-locate'],{'class':' fa-a fa-a-exclamation','theme':'red','delay':5000});
 			}
 		});
 	}
