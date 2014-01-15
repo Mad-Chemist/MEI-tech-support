@@ -1,3 +1,4 @@
+jQuery('head').append('<link rel="stylesheet" href="/templates/meisupport/alerts/css/themes.css"><script src="/templates/meisupport/alerts/alerts.jquery.js"></script>');
 var mylat, mylong, i, 
 vLanguage = [
 	{
@@ -13,6 +14,10 @@ vLanguage = [
 		'email':'Email',
 		'web':'web',
 		'map':'View on map'
+	},
+	{
+		'cant-locate':"We were unable to locate that.  Sorry!",
+		'success':"We've located the closest service centers for you!"
 	}
 ],
 vLocations =  [
@@ -404,6 +409,7 @@ function distanceSetUp() {
 		jQuery('#loading').slideUp();
 	}
 	function output() { 
+		pagealert(vLanguage[2]['success'],{'class':' fa-a fa-a-mapm','theme':'green','delay':3000});
 		jQuery('#service-centers').empty();
 		i =0;
 		while( i<vLocations.length) {
@@ -479,7 +485,7 @@ function queryAddress(address) {
 					mylong = tempsave['results'][0]['geometry']['location']['lng'], mylat = tempsave['results'][0]['geometry']['location']['lat'];
 					output();
 
-				} else alert('There was an error');
+				} else pagealert(vLanguage[2]['cant-locate'],{'class':' fa-a fa-a-exclamation','theme':'red','delay':5000});
 			}
 		});
 	}
