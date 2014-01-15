@@ -37,6 +37,12 @@
             <option value="60">60 days</option>
             <option value="120">120 days</option>
         </field>
+        <field name="support_email" type="email"
+               label="COM_MEIADMIN_CUSTOMER_FIELD_SUPPORT_EMAIL"
+               class="meiadmin-title-field"
+               size="50"
+               required="true"
+         />
         <field name="email" type="email"
                label="COM_MEIADMIN_CUSTOMER_FIELD_EMAIL"
                class="meiadmin-title-field"
