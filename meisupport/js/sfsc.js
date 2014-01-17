@@ -3,47 +3,47 @@ var mylat, mylong, i, vLanguage = {};
 if (typeof cvlang === 'undefined') var cvlang = 'en-GB';
 
 vLanguage['en-GB'] = [
-		{
-			'manager':'On Service Manager',
-			'warranty':'Make Warranty Claims',
-			'oem':'OEM'
-		},
-		{
-			'name':'Name',
-			'address':'Address',
-			'phone':'Phone',
-			'fax':'Fax',
-			'email':'Email',
-			'web':'Web',
-			'map':'View on map'
-		},
-		{
-			'cant-locate':"We were unable to locate that.  Sorry!",
-			'success':"We've located the closest service centers for you.",
-			'empty':"Woops.  Looks like you didn't enter an address!"
-		}
-	],
+	{
+		'manager':'On Service Manager',
+		'warranty':'Make Warranty Claims',
+		'oem':'OEM'
+	},
+	{
+		'name':'Name',
+		'address':'Address',
+		'phone':'Phone',
+		'fax':'Fax',
+		'email':'Email',
+		'web':'Web',
+		'map':'View on map'
+	},
+	{
+		'cant-locate':"We were unable to locate that.  Sorry!",
+		'success':"We've located the closest service centers for you.",
+		'empty':"Woops.  Looks like you didn't enter an address!"
+	}
+],
 vLanguage['es-ES'] = [
-		{
-			'manager':'el gerente de servicio',
-			'warranty':'Hacer Reclamaciones de garantía',
-			'oem':'OEM'
-		},
-		{
-			'name':'Nombre',
-			'address':'Dirección',
-			'phone':'Teléfono',
-			'fax':'Fax',
-			'email':'Email',
-			'web':'Web',
-			'map':'Ver en el mapa'
-		},
-		{
-			'cant-locate':"No fue posible localizar a eso. ¡Lo siento!",
-			'success':"Hemos localizado los centros de servicio más cercanos para usted.",
-			'empty':"Woops. Parece que no has introducido una dirección!"
-		}
-	];	
+	{
+		'manager':'el gerente de servicio',
+		'warranty':'Hacer Reclamaciones de garantía',
+		'oem':'OEM'
+	},
+	{
+		'name':'Nombre',
+		'address':'Dirección',
+		'phone':'Teléfono',
+		'fax':'Fax',
+		'email':'Email',
+		'web':'Web',
+		'map':'Ver en el mapa'
+	},
+	{
+		'cant-locate':"No fue posible localizar a eso. ¡Lo siento!",
+		'success':"Hemos localizado los centros de servicio más cercanos para usted.",
+		'empty':"Woops. Parece que no has introducido una dirección!"
+	}
+];	
 var vLocations =  [
 	{
 		'id':0,
