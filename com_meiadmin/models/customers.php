@@ -96,8 +96,8 @@ class MeiadminModelCustomers extends BBDFOFModel
     protected function onBeforeSave(&$data, &$table)
     {
         if (!parent::onBeforeSave($data, $table)) return false;
-        $this->_flattenProducts($data);
         $this->_filterForm($data);
+        $this->_updateCustomerSubscriptions($data);
         $user = $this->_saveUserData($data);
         $this->_assignAccountNumber($data);
         if ($user) {
@@ -118,19 +118,53 @@ class MeiadminModelCustomers extends BBDFOFModel
         $data['access_account'] = $data['fk_user_id'];
     }
 
-    protected function _flattenProducts(&$data)
-    {
-        if (!empty($data['products'])) {
-            $data['products'] = implode(',', $data['products']);
-        } else {
-            $data['products'] = '';
-        }
-    }
-
     protected function _filterForm(&$data)
     {
         $form = $form = $this->getForm($data, false, 'form.form');
         $data = $form->filter($data);
+    }
+
+    protected function _updateCustomerSubscriptions($data)
+    {
+        $submittedSubscriptions = $data['products'];
+        $currentSubscriptions = $this->_loadSubscriptions($data);
+        $subscriptionsToAdd = array_diff($submittedSubscriptions, $currentSubscriptions['products']);
+        if (!empty($subscriptionsToAdd)) $this->_addSubscriptions($subscriptionsToAdd, $data['fk_user_id']);
+        $subscriptionsToDelete = array_diff($currentSubscriptions['products'], $submittedSubscriptions);
+        if (!empty($subscriptionsToDelete)) $this->_deleteSubscriptions($subscriptionsToDelete, $currentSubscriptions);
+    }
+
+    protected function _loadSubscriptions($data)
+    {
+        $query = $this->_db->getQuery(true);
+        $query->select('id, fk_product_id')
+            ->from('#__meiadmin_customer_subscriptions')
+            ->where('fk_user_id = '.$this->_db->quote($data['fk_user_id']));
+        $this->_db->setQuery($query);
+        $subscriptions = $this->_db->loadObjectList('fk_product_id');
+        $subscriptions['products'] = array_keys($subscriptions);
+        return $subscriptions;
+    }
+
+    protected function _addSubscriptions($subscriptions, $id)
+    {
+        $table = $this->getTable('customer_subscriptions');
+        $table->set('_tbl_key', 'id');
+        foreach ($subscriptions as $subscription){
+            $data = array('fk_user_id' => $id, 'fk_product_id' => $subscription);
+            if (!$table->save($data)) throw new Exception(JText::_('COM_MEIADMIN_CUSTOMER_SUBSCRIPTION_SAVE_ERROR'));
+            $table->id = null;
+            $table->reset();
+        }
+    }
+
+    protected function _deleteSubscriptions($subscriptionsToDelete, $currentSubscriptions)
+    {
+        $table = $this->getTable('customer_subscriptions');
+        $table->set('_tbl_key', 'id');
+        foreach ($subscriptionsToDelete as $key => $product){
+            if (!$table->delete($currentSubscriptions[$product]->id)) throw new Exception(JText::_('COM_MEIADMIN_CUSTOMER_SUBSCRIPTION_DELETE_ERROR'));
+        }
     }
 
     protected function _saveUserData(&$input)

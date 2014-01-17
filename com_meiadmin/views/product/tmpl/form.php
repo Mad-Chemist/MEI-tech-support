@@ -6,8 +6,6 @@ $viewTemplate = $this->getRenderedForm();
 
 echo $viewTemplate;
 
-
-
 ?>
 
 <?php $this->_loadFiles(); ?>

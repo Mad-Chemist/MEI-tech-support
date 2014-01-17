@@ -13,13 +13,16 @@ class MeiadminHelperProducts {
     }
 
     public static function selected(){
-        $jinput = JFactory::getApplication()->input;
+        $finput = new BBDFOFInput;
         $db = JFactory::getDbo();
         $query = $db->getQuery(true);
-        $query->select('`products`')->from('#__meiadmin_customers')->where('`meiadmin_customer_id` = ' . $db->quote($jinput->get('id')));
+        $query->select('`fk_product_id`')
+            ->from('#__meiadmin_customer_subscriptions as s')
+            ->leftJoin('#__meiadmin_customers as c ON (c.fk_user_id = s.fk_user_id)')
+            ->where('`meiadmin_customer_id` = ' . $db->quote($finput->get('id')));
         $db->setQuery($query);
-        $result = $db->loadResult();
-        return explode(',', $result);
+        $result = $db->loadObjectList('fk_product_id');
+        return array_keys($result);
     }
 
 }

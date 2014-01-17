@@ -42,7 +42,7 @@
                class="meiadmin-title-field"
                size="50"
                required="true"
-         />
+                />
         <field name="email" type="email"
                label="COM_MEIADMIN_CUSTOMER_FIELD_EMAIL"
                class="meiadmin-title-field"
@@ -105,20 +105,8 @@
                source_value="title"
                source_method="getAll"
                />
-
-
-
         <field type="menuitem" />
         <field type="hidden" name="fk_user_id" default="0"/>
-    </fieldset>
-    <fieldset name="customerIcon" description="customerIcon" label="COM_MEIADMIN_CUSTOMER_IMAGE" class="span6 pull-right">
-        <field name="image" type="media"
-          label="COM_MEIADMIN_CUSTOMER_FIELD_IMAGE"
-          size="50"
-          directory="user-images"
-          preview="true"
-          filter="path"
-         />
     </fieldset>
     <fieldset name="fileAccessFields" description="FileAccess" label="COM_MEIADMIN_CUSTOMER_ACCESS" class="span6 pull-right">
         <field type="radio" name="access_nda" default="0" class="radio btn-group" label="COM_MEIADMIN_ACCESS_NDA">

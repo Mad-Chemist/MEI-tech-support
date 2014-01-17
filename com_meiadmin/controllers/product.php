@@ -14,7 +14,6 @@ class MeiadminControllerProduct extends BBDFOFController {
     {
         if(!$this->onBeforeExecute()) throw new Exception(JText::_('JLIB_APPLICATION_ERROR_ACCESS_FORBIDDEN'), 403);
         return parent::execute($task);
-        
     }
 
     protected function onBeforeExecute()

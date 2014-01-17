@@ -8,5 +8,6 @@
 defined('_JEXEC') or die();
 
 require_once JPATH_LIBRARIES.'/bbdfof/include.php';
+JLoader::register('MeiPassword', JPATH_COMPONENT.'/includes/password.php');
 
 BBDFOFDispatcher::getTmpInstance('com_mei')->dispatch();

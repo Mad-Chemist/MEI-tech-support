@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form
+        lessfiles="media://com_meiadmin/css/product.less||media://com_meiadmin/css/product.css"
+        validate="true"
+        type="edit"
+        jsfiles="media://system/js/mootools-more.js"
+        >
+    <fieldset name="customerPassword" class="span4" label="COM_MEI_CUSTOMER_PASSWORD_CHANGE">
+        <field name="password" type="password"
+               label="COM_MEI_CUSTOMER_FIELD_OLD_PASSWORD"
+               class="mei-title-field"
+               size="50"
+                />
+        <field name="newPassword" type="password"
+               label="COM_MEI_CUSTOMER_FIELD_NEW_PASSWORD"
+               class="mei-title-field"
+               size="50"
+                />
+        <field name="newPasswordConfirm" type="password"
+               label="COM_MEI_CUSTOMER_FIELD_PASSWORD_CONFIRM"
+               class="mei-title-field"
+               size="50"
+                />
+        <field name="submit" type="button"
+               text="COM_MEI_CUSTOMER_BUTTON_SAVE"
+               class="mei-title-button"
+               onclick="Joomla.submitbutton('changepassword')"
+                />
+    </fieldset>
+
+    <fieldset name="customerImage" label="COM_MEI_CUSTOMER_IMAGE" class="span6 pull-right">
+        <field type="file"
+               label="COM_MEI_IMAGE_UPLOAD"
+               description="COM_MEI_IMAGE_UPLOAD_DESC" name="image" />
+        <field name="submit" type="button"
+               text="COM_MEI_CUSTOMER_BUTTON_SAVE"
+               class="mei-title-button"
+               onclick="Joomla.submitbutton('save')"
+                />
+    </fieldset>
+
+    <fieldset name="signedNDA" label="COM_MEI_CUSTOMER_NDA" class="span6 pull-right">
+        <field name="nda" type="media"
+               label="COM_MEI_CUSTOMER_NDA_DESC"
+               size="50"
+               directory="profiles"
+               preview="false"
+               filter="path"
+                />
+        <field name="submit" type="button"
+               text="COM_MEI_CUSTOMER_BUTTON_SAVE"
+               class="mei-title-button"
+               onclick="Joomla.submitbutton('save')"
+                />
+    </fieldset>
+
+    <fieldset name="customerAttributes" class="span4" label="COM_MEI_CUSTOMER_INFORMATION">
+        <field name="email" type="email"
+               label="COM_MEI_CUSTOMER_FIELD_EMAIL"
+               class="meiadmin-title-field"
+               size="50"
+               required="true"
+                />
+        <field name="telephone" type="tel"
+               label="COM_MEI_CUSTOMER_FIELD_TELEPHONE"
+               class="meiadmin-title-field"
+               filter="tel"
+                />
+        <field name="address1" type="text"
+               label="COM_MEI_CUSTOMER_FIELD_ADDRESS1"
+               class="meiadmin-title-field"
+                />
+        <field name="address2" type="text"
+               label="COM_MEI_CUSTOMER_FIELD_ADDRESS2"
+               class="meiadmin-title-field"
+                />
+        <field name="city" type="text"
+               label="COM_MEI_CUSTOMER_FIELD_CITY"
+               class="meiadmin-title-field"
+                />
+        <field name="state" type="text"
+               label="COM_MEI_CUSTOMER_FIELD_STATE"
+               class="meiadmin-title-field"
+                />
+        <field name="country" type="text"
+               label="COM_MEI_CUSTOMER_FIELD_COUNTRY"
+               class="meiadmin-title-field"
+                />
+        <field name="postcode" type="text"
+               label="COM_MEI_CUSTOMER_FIELD_POSTALCODE"
+               class="meiadmin-title-field"
+                />
+        <field name="fk_channel_id" type="sql"
+               label="COM_MEI_CHANNEL"
+               key_field="id"
+               value_field="value"
+               query="SELECT meiadmin_channel_id AS id, title AS value FROM #__meiadmin_channels WHERE 1"
+               required="true"
+                />
+        <field name="region" type="sql"
+               label="COM_MEI_REGION"
+               key_field="id"
+               value_field="value"
+               query="SELECT meiadmin_region_id AS id, title AS value FROM #__meiadmin_regions WHERE 1"
+               required="true"
+                />
+        <field type="menuitem" />
+        <field type="hidden" name="fk_user_id" default="0"/>
+        <field type="hidden" name="meiadmin_customer_id" default="0"/>
+    </fieldset>
+    <fieldset name="customerSubscriptions" class="span6 pull-right" label="COM_MEI_CUSTOMER_FILE_SUBSCRIPTIONS">
+        <field type="radio" name="general" default="1" class="radio btn-group" label="General Documentation" filter="int">
+            <option value="1">COM_MEI_YES</option>
+            <option value="0">COM_MEI_NO</option>
+        </field>
+        <field type="radio" name="service" default="1" class="radio btn-group" label="Service Documentation" filter="int">
+            <option value="1">COM_MEI_YES</option>
+            <option value="0">COM_MEI_NO</option>
+        </field>
+        <field type="radio" name="integration" default="1" class="radio btn-group" label="Integration Manual" filter="int">
+            <option value="1">COM_MEI_YES</option>
+            <option value="0">COM_MEI_NO</option>
+        </field>
+        <field type="radio" name="specifications" default="1" class="radio btn-group" label="Specifications" filter="int">
+            <option value="1">COM_MEI_YES</option>
+            <option value="0">COM_MEI_NO</option>
+        </field>
+        <field type="radio" name="drawing" default="1" class="radio btn-group" label="Drawing" filter="int">
+            <option value="1">COM_MEI_YES</option>
+            <option value="0">COM_MEI_NO</option>
+        </field>
+        <field type="radio" name="application" default="1" class="radio btn-group" label="Application Firmware" filter="int">
+            <option value="1">COM_MEI_YES</option>
+            <option value="0">COM_MEI_NO</option>
+        </field>
+        <field type="radio" name="variant" default="1" class="radio btn-group" label="Variant Firmware" filter="int">
+            <option value="1">COM_MEI_YES</option>
+            <option value="0">COM_MEI_NO</option>
+        </field>
+        <field type="radio" name="channel" default="1" class="radio btn-group" label="Channel Set" filter="int">
+            <option value="1">COM_MEI_YES</option>
+            <option value="0">COM_MEI_NO</option>
+        </field>
+        <field type="radio" name="combined" default="1" class="radio btn-group" label="Combined Software" filter="int">
+            <option value="1">COM_MEI_YES</option>
+            <option value="0">COM_MEI_NO</option>
+        </field>
+        <field type="radio" name="service-tool" default="1" class="radio btn-group" label="Service Tool" filter="int">
+            <option value="1">COM_MEI_YES</option>
+            <option value="0">COM_MEI_NO</option>
+        </field>
+        <field type="radio" name="api" default="1" class="radio btn-group" label="Api/Integration tool" filter="int">
+            <option value="1">COM_MEI_YES</option>
+            <option value="0">COM_MEI_NO</option>
+        </field>
+        <field type="radio" name="coin" default="1" class="radio btn-group" label="Coin Profile" filter="int">
+            <option value="1">COM_MEI_YES</option>
+            <option value="0">COM_MEI_NO</option>
+        </field>
+    </fieldset>
+</form>
