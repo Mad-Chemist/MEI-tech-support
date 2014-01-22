@@ -390,7 +390,7 @@ width: 85%;
 
 
 .typeTitle {
-    margin:12px auto;
+    margin:12px auto !important;
     border: #AAA 1px solid;
     width: 86%;
    padding: 9px 2%;
