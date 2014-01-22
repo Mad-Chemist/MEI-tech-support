@@ -788,3 +788,35 @@ margin: 10px 0px;
         padding: 0px;
     }
 }
+
+
+/* Product files from admin view */
+
+.nav-tabs > .active > a {
+    background: #EEE;
+    border: 1px #CCC solid !important;
+    border-bottom:none !important;
+}
+.nav-tabs > .active > a:hover {
+    background: #EEE;
+}
+#productFilesTabs {
+    /* background: #FFF; */
+    padding: 5px 5px 1px;
+    border-bottom: #CCC 1px solid;
+}
+
+#productFilesContent {
+    background: #EEE;
+    padding: 15px 0px;
+    margin-top: -18px;
+    border-left: 1px #CCC solid;
+    border-right: 1px #CCC solid;
+    border-bottom: 1px #CCC solid;
+}
+#productFilesTabs li.active {
+    border-bottom: 1px #EEE solid;
+}
+#productFilesTabs li {
+    margin-bottom: -3px !important;
+}
