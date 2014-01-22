@@ -4,11 +4,12 @@
 	while ($prow=mysql_fetch_array($getProducts)) {
 		$build = '';
 		$build.= '<div class="product">';
-		$build.= ($prow['images'] === '') ? '<img src="/images/blank.jpg">':'<img src="'.$prow['images'].'">';
-		$build.= '<div class="info">';
 		$build.= '<div class="title">'.$prow['title'].'</div>';
+		$build.= ($prow['images'] === '') ? '<img src="/images/blank.jpg">':'<img src="'.$prow['images'].'">';
+		$build.= '<a href="index.php?option=com_mei&view=product&layout=item&id='.$prow['meiadmin_product_id'].'&Itemid=105" class="bttn">View</a>';
+		$build.= '<div class="info">';
 		$build.=  $prow['description'];
-		$build.= '<a href="index.php?option=com_mei&view=product&layout=item&id='.$prow['meiadmin_product_id'].'&Itemid=105" class="bttn">Go</a></div></div>';   
+		$build.= '</div></div>';   
 		echo $build; 
 	}
 	echo "</div>";
@@ -29,11 +30,12 @@
 			while ($prow=mysql_fetch_array($getProducts)) {
 				$build = '';
 				$build.= '<div class="product">';
-				$build.= '<img src="'.$prow['images'].'">';
-				$build.= '<div class="info">';
 				$build.= '<div class="title">'.$prow['title'].'</div>';
+				$build.= '<img src="'.$prow['images'].'">';
+				$build.= '<a href="index.php?option=com_mei&view=product&layout=item&id='.$prow['meiadmin_product_id'].'&Itemid=105" class="bttn">View</a>';
+				$build.= '<div class="info">';
 				$build.=  $prow['description'];
-				$build.= '<a href="index.php?option=com_mei&view=product&layout=item&id='.$prow['meiadmin_product_id'].'&Itemid=105" class="bttn">Go</a></div></div>';   
+				$build.= '</div></div>';   
 				echo $build; 
 			}
 		}
