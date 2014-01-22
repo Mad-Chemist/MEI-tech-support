@@ -4,7 +4,7 @@
 	while ($prow=mysql_fetch_array($getProducts)) {
 		$build = '';
 		$build.= '<div class="product">';
-		$build.= '<img src="'.$prow['images'].'">';
+		$build.= ($prow['images'] === '') ? '<img src="/images/blank.jpg">':'<img src="'.$prow['images'].'">';
 		$build.= '<div class="info">';
 		$build.= '<div class="title">'.$prow['title'].'</div>';
 		$build.=  $prow['description'];
