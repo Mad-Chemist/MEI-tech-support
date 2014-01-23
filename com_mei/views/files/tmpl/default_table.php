@@ -8,7 +8,7 @@
   $tHeadEcho.= '<th>'. JText::_('COM_MEI_TABLE_HEADING_NAME').'</th>';
   $tHeadEcho.= '<th>'. JText::_('COM_MEI_TABLE_HEADING_VERSION').'</th>';
   $tHeadEcho.= '<th>'. JText::_('COM_MEI_TABLE_HEADING_LAST_UPDATED').'</th></tr>';
-  $filesEcho = '';    
+  $filesEcho = '';   
   foreach($this->tableFiles as $file) : 
     if (!$GLOBALS['PERMV'] || (strpos($file->channel,$GLOBALS['chanV']) !== false && strpos($file->region,$GLOBALS['regV']) !== false) ) { 
       $filesEcho.=  '<tr  class="'.str_replace(" ", "-", $file->title).'">';

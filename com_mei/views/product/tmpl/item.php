@@ -12,9 +12,13 @@ if ($userId > 100) {
         }
     }
     else {
-        $GLOBALS['regV'] = 0;
-        $GLOBALS['chanV'] = 0;
+        $GLOBALS['regV'] = '1';
+        $GLOBALS['chanV'] = '3';
     }
+}
+else {
+    $GLOBALS['regV'] = '1';
+    $GLOBALS['chanV'] = '3';
 }
 $GLOBALS['PERMV'] = true;
 /*schubert*/
