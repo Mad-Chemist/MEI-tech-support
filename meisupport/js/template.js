@@ -45,6 +45,12 @@
 
 
 
+/* change title of product edit page */
+if (jQuery('body').hasClass('view-product') === true && jQuery('body').hasClass('task-edit') === true) {
+	jQuery('#main-article h1').text('Editing '+jQuery('#title').val());
+}
+
+
 
 /* multi select support for file upload*/
 	var check = jQuery('body.com_meiadmin.view-file.task-edit form#adminForm');
