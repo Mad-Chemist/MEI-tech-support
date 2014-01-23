@@ -1,28 +1,22 @@
-
-  <?php  include_once "file-icon.php";  ?>
-  <h4 class="typeTitle"><?php echo JText::_('COM_MEI_TYPE_TITLE_' . strtoupper($this->type)) ?></h4>
-  <div class="file_table span11">
-    <table class="table table-bordered table-striped table-hover">
-      <tr class="file-table-head">
-        <th><?php echo JText::_('COM_MEI_TABLE_HEADING_NAME'); ?></th>
-        <th><?php echo JText::_('COM_MEI_TABLE_HEADING_VERSION'); ?></th>
-        <th><?php echo JText::_('COM_MEI_TABLE_HEADING_LAST_UPDATED'); ?></th>
-      </tr>
-      <?php foreach($this->tableFiles as $file) : ?>
-      <?php if (!$GLOBALS['PERMV'] || (strpos($file->channel,$GLOBALS['chanV']) !== false && strpos($file->region,$GLOBALS['regV']) !== false) ) { //checks if user has correct region and channel access ?>
-      <tr  class="<?php echo str_replace(" ", "-", $file->title); ?>">
-        <td>
-          <?php retrieveEXT($file->meiadmin_file_id, $file->current_version); ?>
-          <a href="<?php echo $file->url; ?>"><?php echo($file->title); ?></a>
-        </td>
-        <td><?php echo( $file->current_version ); ?></td>
-        <td>
-        <?php 
-          $modified = new JDate($file->modified_on);
-          echo $modified->format('M d, Y h:i A');
-        ?>
-        </td>
-      </tr>
-      <?php } endforeach; ?>  
-    </table>
-  </div>
+<?php  
+  include_once "file-icon.php";  
+  $sHeadEcho = '';
+  $sHeadEcho.= '<h4 class="typeTitle">'. JText::_('COM_MEI_TYPE_TITLE_' . strtoupper($this->type)).'</h4>';
+  $sHeadEcho.= '<div class="file_table span11">';
+  $sHeadEcho.= '<table class="table table-bordered table-striped table-hover">';
+  $sHeadEcho.= '<tr class="file-table-head">';
+  $sHeadEcho.= '<th>'. JText::_('COM_MEI_TABLE_HEADING_NAME').'</th>';
+  $sHeadEcho.= '<th>'. JText::_('COM_MEI_TABLE_HEADING_VERSION').'</th>';
+  $sHeadEcho.= '<th>'. JText::_('COM_MEI_TABLE_HEADING_LAST_UPDATED').'</th></tr>';
+  $filesEcho = '';    
+  foreach($this->tableFiles as $file) : 
+    if (!$GLOBALS['PERMV'] || (strpos($file->channel,$GLOBALS['chanV']) !== false && strpos($file->region,$GLOBALS['regV']) !== false) ) { 
+      $filesEcho.=  '<tr  class="'.str_replace(" ", "-", $file->title).'">';
+      $filesEcho.=  '<td>'.retrieveEXT($file->meiadmin_file_id, $file->current_version).'<a href="'.$file->url.'">'.$file->title.'</a></td>';
+      $filesEcho.=  '<td>'.$file->current_version.'</td>';
+      $modified = new JDate($file-> modified_on);
+      $filesEcho.=  '<td>'.$modified->format('M d, Y h:i A').'</td></tr>';
+    } 
+  endforeach; 
+  if (strlen($filesEcho) > 0)   echo $sHeadEcho.$filesEcho.'</table></div>';
+?>

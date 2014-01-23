@@ -30,7 +30,7 @@
 			$getEXT = mysql_fetch_assoc($getEXT); 
 			$getEXT = $getEXT['filename'];
 			$getEXT = strtolower(pathinfo($getEXT, PATHINFO_EXTENSION));
-			echo "<img src='".assignIMG($getEXT)."' class='extIMG'> ";
+			return "<img src='".assignIMG($getEXT)."' class='extIMG'> ";
 		}
 
 ?>
