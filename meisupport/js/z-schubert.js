@@ -81,14 +81,16 @@ function addHomepageProductNavFX() {
 function setUpAccordion() {
 	if (jQuery('.file_table').length > 0) { 
 		//adds the search box to product page
-		jQuery('div[name=firmware] table').prepend("<tr class='firmware-search'><td colspan='3'><span style='float:right;'>search: <input type='text' class='firm-search'></span></td></tr>");
-		//searches when typed into:
-		jQuery('.firm-search').keyup(function(){
-			jQuery(this).parents('table').find('tr:not(.firmware-search, .file-table-head)').hide();
-			jQuery(this).parents('table').find('tr[class*='+jQuery(this).val().split(" ").join("-")+']:not(.firmware-search, .file-table-head)').show();
+		if (jQuery('div[name=firmware] table').length > 0) {
+			jQuery('div[name=firmware] table').prepend("<tr class='firmware-search'><td colspan='3'><span style='float:right;'>search: <input type='text' class='firm-search'></span></td></tr>");
+			//searches when typed into:
+			jQuery('.firm-search').keyup(function(){
+				jQuery(this).parents('table').find('tr:not(.firmware-search, .file-table-head)').hide();
+				jQuery(this).parents('table').find('tr[class*='+jQuery(this).val().split(" ").join("-")+']:not(.firmware-search, .file-table-head)').show();
 
-			if (jQuery(this).val() == "") 	jQuery(this).parents('table').find('tr:not(.firmware-search, .file-table-head)').show();
-		});
+				if (jQuery(this).val() == "") 	jQuery(this).parents('table').find('tr:not(.firmware-search, .file-table-head)').show();
+			});
+		}
 		/*adds arrow to product section head*/
 		jQuery('.section-head').append('<img src="/images/arrow-open.png" class="arrowOpen"><img src="/images/arrow-down.png" style="display:none;" class="arrowClose">');
 		jQuery('.file_table, .section-children').slideUp(0); 
