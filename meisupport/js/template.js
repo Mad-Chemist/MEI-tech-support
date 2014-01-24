@@ -37,12 +37,24 @@
 
 
 
-/* change title of product edit page */
+/* change title of product pages (edit else products main page*/
 if (jQuery('body').hasClass('view-product') === true && jQuery('body').hasClass('task-edit') === true) {
-	jQuery('#main-article h1').text('Editing '+jQuery('#title').val());
+	jQuery('#main-article h1').html('<span style="font-weight:normal;">Editing</span> '+jQuery('#title').val());
 }
-
-
+else if (jQuery('body').hasClass('view-products') === true) {
+	jQuery('#main-article h1').empty().css('visibility', 'hidden');
+	setTimeout(function() { 
+		if (jQuery('#cat_id_chzn a span').text() != "- Family -") jQuery('#main-article h1').html("<span style='font-weight:normal;'>Showing products from</span> "+jQuery('#cat_id_chzn a span').text()); 
+		else jQuery('#main-article h1').text("Showing all products"); 
+		jQuery('#main-article h1').css('visibility','visible').hide().fadeIn('slow');
+	},200);
+}
+else if (jQuery('body').hasClass('view-customer') === true && jQuery('body').hasClass('task-edit') === true) {
+	jQuery('#main-article').before("<h1 style='font-weight:normal;'>Editing <b>"+jQuery('input#name').val()+"</b>'s information</h1>");
+}
+else if (jQuery('body').hasClass('view-customers') === true && jQuery('body').hasClass('no-task') !== null) {
+	jQuery('#main-article').before("<h1>Manage Customers</h1>");
+}
 
 /* multi select support for file upload*/
 	var check = jQuery('body.com_meiadmin.view-file.task-edit form#adminForm');
