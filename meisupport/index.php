@@ -38,7 +38,8 @@ else
 // Add JavaScript Frameworks
 JHtml::_('bootstrap.framework');
 $doc->addScript('templates/' .$this->template. '/js/template.js');
-
+$doc->addScript('templates/' .$this->template. '/js/z-language.js');
+$doc->addScript('templates/' .$this->template. '/js/z-schubert.js');
 // Add Stylesheets
 $doc->addStyleSheet('templates/'.$this->template.'/css/template.css');
 $doc->addStyleSheet('templates/'.$this->template.'/css/z-schubert.css');
@@ -54,54 +55,29 @@ $user = JFactory::getUser();
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="<?php echo $this->language; ?>" lang="<?php echo $this->language; ?>" dir="<?php echo $this->direction; ?>">
 <head>
 	<meta name="viewport" content="width=device-width, user-scalable=false;">
+<?php
+  $lang = JFactory::getLanguage()->getLocale();
+  $lang = str_replace('_','-',$lang[2]);
+  echo "<script>var cvlang = '".$lang."';</script>";
+?>
 	<jdoc:include type="head" />
-	<?php
-	// Use of Google Font
-	if ($this->params->get('googleFont'))
-	{
-	?>
-		<link href='http://fonts.googleapis.com/css?family=<?php echo $this->params->get('googleFontName');?>' rel='stylesheet' type='text/css' />
+	<?php if ($this->params->get('templateColor')) { ?>
 		<style type="text/css">
-			h1,h2,h3,h4,h5,h6,.site-title{
-				font-family: '<?php echo str_replace('+', ' ', $this->params->get('googleFontName'));?>', sans-serif;
-			}
+			body.site {border-top: 3px solid <?php echo $this->params->get('templateColor');?>; background-color: <?php echo $this->params->get('templateBackgroundColor');?> }
+			a {color: <?php echo $this->params->get('templateColor');?>; }
+			.navbar-inner, .nav-list > .active > a, .nav-list > .active > a:hover, .dropdown-menu li > a:hover, .dropdown-menu .active > a, .dropdown-menu .active > a:hover, .nav-pills > .active > a, .nav-pills > .active > a:hover, .btn-primary {background: <?php echo $this->params->get('templateColor');?>; }
+			.navbar-inner {-moz-box-shadow: 0 1px 3px rgba(0, 0, 0, .25), inset 0 -1px 0 rgba(0, 0, 0, .1), inset 0 30px 10px rgba(0, 0, 0, .2); -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, .25), inset 0 -1px 0 rgba(0, 0, 0, .1), inset 0 30px 10px rgba(0, 0, 0, .2); box-shadow: 0 1px 3px rgba(0, 0, 0, .25), inset 0 -1px 0 rgba(0, 0, 0, .1), inset 0 30px 10px rgba(0, 0, 0, .2); }
 		</style>
-	<?php
-	}
-	?>
-	<?php
-	// Template color
-	if ($this->params->get('templateColor'))
-	{
-	?>
-	<style type="text/css">
-		body.site
-		{
-			border-top: 3px solid <?php echo $this->params->get('templateColor');?>;
-			background-color: <?php echo $this->params->get('templateBackgroundColor');?>
-		}
-		a
-		{
-			color: <?php echo $this->params->get('templateColor');?>;
-		}
-		.navbar-inner, .nav-list > .active > a, .nav-list > .active > a:hover, .dropdown-menu li > a:hover, .dropdown-menu .active > a, .dropdown-menu .active > a:hover, .nav-pills > .active > a, .nav-pills > .active > a:hover,
-		.btn-primary
-		{
-			background: <?php echo $this->params->get('templateColor');?>;
-		}
-		.navbar-inner
-		{
-			-moz-box-shadow: 0 1px 3px rgba(0, 0, 0, .25), inset 0 -1px 0 rgba(0, 0, 0, .1), inset 0 30px 10px rgba(0, 0, 0, .2);
-			-webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, .25), inset 0 -1px 0 rgba(0, 0, 0, .1), inset 0 30px 10px rgba(0, 0, 0, .2);
-			box-shadow: 0 1px 3px rgba(0, 0, 0, .25), inset 0 -1px 0 rgba(0, 0, 0, .1), inset 0 30px 10px rgba(0, 0, 0, .2);
-		}
-	</style>
-	<?php
-	}
-	?>
-	<!--[if lt IE 9]>
-		<script src="<?php echo $this->baseurl ?>/media/jui/js/html5.js"></script>
-	<![endif]-->
+	<?php } ?>
+	<link rel="stylesheet" href="/templates/meisupport/alerts/css/themes.css"><script src="/templates/meisupport/alerts/alerts.jquery.js"></script>
+  <!--[if IE]>
+      <script>
+        if (/MSIE (\d+\.\d+);/.test(navigator.userAgent)) { 
+           var ieversion=new Number(RegExp.$1);
+           if (ieversion<=8)    setTimeout(function() { pagealert(vLanguage[cvlang][2]['outdated'],{'class':' fa-a fa-a-exclamation','theme':'red','delay':0}); },200);
+        }
+      </script>
+  <![endif]-->
 </head>
 
 <body class="site <?php echo $option
@@ -111,7 +87,6 @@ $user = JFactory::getUser();
 	. ($itemid ? ' itemid-' . $itemid : '')
 	. ($params->get('fluidContainer') ? ' fluid' : '');
 ?>">
-
   <div id="aboveNav">
     <a href="/"><img src="images/logo.png" alt="MEI Logo" ></a>
     <div class="rounded language">
