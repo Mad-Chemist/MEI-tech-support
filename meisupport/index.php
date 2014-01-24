@@ -26,29 +26,18 @@ $task     = $app->input->getCmd('task', '');
 $itemid   = $app->input->getCmd('Itemid', '');
 $sitename = $app->getCfg('sitename');
 
-if($task == "edit" || $layout == "form" )
-{
-	$fullWidth = 1;
-}
-else
-{
-	$fullWidth = 0;
-}
+if($task == "edit" || $layout == "form" ) $fullWidth = 1;
+else  $fullWidth = 0;
 
-// Add JavaScript Frameworks
 JHtml::_('bootstrap.framework');
 $doc->addScript('templates/' .$this->template. '/js/template.js');
 $doc->addScript('templates/' .$this->template. '/js/z-language.js');
 $doc->addScript('templates/' .$this->template. '/js/z-schubert.js');
-// Add Stylesheets
 $doc->addStyleSheet('templates/'.$this->template.'/css/template.css');
 $doc->addStyleSheet('templates/'.$this->template.'/css/z-schubert.css');
 
-// Load optional RTL Bootstrap CSS
 JHtml::_('bootstrap.loadCss', false, $this->direction);
-
-// Add current user information
-$user = JFactory::getUser();
+$user = JFactory::getUser(); /*Add current user information*/
 
 ?>
 <!DOCTYPE html>
@@ -80,36 +69,26 @@ $user = JFactory::getUser();
   <![endif]-->
 </head>
 
-<body class="site <?php echo $option
-	. ' view-' . $view
-	. ($layout ? ' layout-' . $layout : ' no-layout')
-	. ($task ? ' task-' . $task : ' no-task')
-	. ($itemid ? ' itemid-' . $itemid : '')
-	. ($params->get('fluidContainer') ? ' fluid' : '');
-?>">
+<body class="site <?php echo $option . ' view-' . $view . ($layout ? ' layout-' . $layout : ' no-layout') . ($task ? ' task-' . $task : ' no-task') . ($itemid ? ' itemid-' . $itemid : '') . ($params->get('fluidContainer') ? ' fluid' : ''); ?>">
   <div id="aboveNav">
     <a href="/"><img src="images/logo.png" alt="MEI Logo" ></a>
-    <div class="rounded language">
-      Select Language <b>&#8669;</b>
-    </div>
+    <div class="rounded language"> Select Language <b>&#8669;</b> </div>
   </div>
 
   <?php if ($this->countModules('nav-top')) : ?>
-  <div id="nav" class="mainnav rounded">
-  	<div id="nav-active-bg"></div>
-  	<div id="nav-mobile-call" style="display:none;">Menu <img src="images/mobile.png" width="30"></div>
-    <jdoc:include type="modules" name="nav-top" style="none" />
-  </div>
+    <div id="nav" class="mainnav rounded">
+    	<div id="nav-active-bg"></div>
+    	<div id="nav-mobile-call" style="display:none;">Menu <img src="images/mobile.png" width="30"></div>
+      <jdoc:include type="modules" name="nav-top" style="none" />
+    </div>
   <?php endif; ?>
 
   <div class="body rounded">
-
   	<?php if ($this->countModules('breadcrumbs')) : ?>
-  	<div class='breadcrumbs'>
-  	<jdoc:include type="modules" name="breadcrumbs" style="none" />
-  	</div>
+    	<div class='breadcrumbs'>
+    	<jdoc:include type="modules" name="breadcrumbs" style="none" />
+    	</div>
   	<?php endif; ?>
-
     <div id="main-article"  <?php if ($this->countModules('login-box') == 0) echo' style="width:100%;" '; ?> >
       <jdoc:include type="component" />
     </div>
@@ -135,17 +114,8 @@ $user = JFactory::getUser();
   </div>
  <?php endif; ?>
   <footer class="footer"  id="footer" role="contentinfo">
-    <jdoc:include type="modules" name="footer" style="none" />
-    <!-- <p class="pull-right">
-    <a href="#top" id="back-top">
-      <?php echo JText::_('TPL_PROTOSTAR_BACKTOTOP'); ?></a>
-  </p>
-  -->
-    MEIgroup.com
-  <span>&copy; <?php echo $sitename; ?> <?php echo date('Y');?></span>
+    <jdoc:include type="modules" name="footer" style="none" /> MEIgroup.com <span>&copy; <?php echo $sitename; ?> <?php echo date('Y');?></span>
 </footer>
 <jdoc:include type="modules" name="debug" style="none" />
-
 </body>
-
 </html>
