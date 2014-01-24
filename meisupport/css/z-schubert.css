@@ -96,6 +96,7 @@ display: none;
 }
     #product-nav {
     width: 100%;
+    border-bottom: #8F8F8F solid 1px;
     }
 
     .product {
@@ -219,6 +220,7 @@ padding-left: 10px;
     background: #C7BFBF;
     position:absolute;
     opacity: 0.2;
+    box-shadow: inset 0px 0px 5px 1px #333;
     }
     #nav-mobile-call img {
         width:30px !important;
@@ -240,6 +242,8 @@ padding-left: 10px;
     width: 100%;
     max-width: 150px;
     margin: 0px auto;
+    border: #FFF 3px solid;
+    margin-bottom: 10px;
     }
     #body-login .userImg img {
     display:block;
@@ -584,26 +588,37 @@ max-width: 100% !important;
     }
 }
 @media (max-width:1000px) {
-    .nav.menu {
-        width: 210px;
-        z-index: 9999;
-        margin: 0px auto;
-        top: 0px;
-        border: 1px #D6C6C6 solid;
-        background: rgba(255, 255, 255, 0.9);
-        display:none;
-        -moz-box-shadow: 0px 6px 9px rgba(0, 0, 0, 0.33);  
-        -webkit-box-shadow: 0px 6px 9px rgba(0, 0, 0, 0.33);  
-        box-shadow: 0px 6px 9px rgba(0, 0, 0, 0.33);
-        padding:10px;
-    }
+.nav.menu {
+    background: rgba(255, 255, 255, 0.9);
+    display:none;
+    position: absolute;
+    left: 10px;
+    right: 10px;
+
+    width: auto;
+    padding: 0px;
+    padding-top: 7px;
+    z-index: -1;
+    border-top: none;
+    box-shadow: 0px 5px 10px #979797, inset 0px 5px 14px -7px #000;
+    overflow: hidden;
+}
     #nav .nav.menu li {
+
         float: none;
         z-index: 9999;
         padding: 5px;
+        display: block;
+        text-align: left;
+        width: 200px;
+        margin: 3px auto !important;
     }
     #nav ul.nav.menu li a {
-    text-shadow: rgba(0, 0, 0, 0.35) 1px;
+        font-weight: normal;
+    text-shadow: none;
+    color: #333;
+    background: #F8F8F8;
+    padding: 2px 5px;
     font-size:20px;
     }
     #nav ul.nav.menu li a:hover {
@@ -611,11 +626,15 @@ max-width: 100% !important;
     }
     #nav {
         z-index: 9999;
+        background: #414141;
+        color: #FFF;
+        height: 40px;
+        line-height: 1;
     }
     #nav-active-bg {
         display: none;
     }
-    #nav-mobile-call { display:block !important; width:100%; text-align:center; font-size:26px; padding-top:15px; padding-bottom:15px;}
+    #nav-mobile-call { display:block !important; width:100%; text-align:center; font-size:26px;     height: 100%; padding: 0px; line-height: 40px;}
     #nav-mobile-call:hover + .nav.menu, .nav.menu:hover {
         display:block;
     }
@@ -846,3 +865,4 @@ margin: 10px 0px;
 #productFilesTabs li {
     margin-bottom: -3px !important;
 }
+
