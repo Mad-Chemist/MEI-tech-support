@@ -33,18 +33,19 @@ function changeMeiAdminHeadings() {
 		jQuery('#main-article h1').html('<span style="font-weight:normal;">'+vLanguage[cvlang][3]['editP']+'</span> '+jQuery('#title').val());
 	}
 	else if (jQuery('body').hasClass('view-products') === true) {
-		jQuery('#main-article h1').empty().css('visibility', 'hidden');
 		setTimeout(function() { 
 			if (jQuery('#cat_id_chzn a span').text() != "- Family -") jQuery('#main-article h1').html("<span style='font-weight:normal;'>"+vLanguage[cvlang][3]['viewPF']+"</span> "+jQuery('#cat_id_chzn a span').text()); 
 			else jQuery('#main-article h1').text(vLanguage[cvlang][3]['viewAP']); 
-			jQuery('#main-article h1').css('visibility','visible').hide().fadeIn('slow');
-		},200);
+		},100);
 	}
 	else if (jQuery('body').hasClass('view-customer') === true && jQuery('body').hasClass('task-edit') === true) {
 		jQuery('#main-article').before("<h1 style='font-weight:normal;'>"+vLanguage[cvlang][3]['editC']+" <b>"+jQuery('input#name').val()+"</b></h1>");
 	}
 	else if (jQuery('body').hasClass('view-customers') === true && jQuery('body').hasClass('no-task') !== null) {
 		jQuery('#main-article').before("<h1>"+vLanguage[cvlang][3]['viewC']+"</h1>");
+	}
+	else if (jQuery('body').hasClass('view-families') === true) {
+		jQuery('#main-article h1').text(vLanguage[cvlang][3]['viewPFs']); 
 	}
 }
 function hideHomepageLogin() {

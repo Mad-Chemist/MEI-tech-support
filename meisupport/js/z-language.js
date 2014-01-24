@@ -27,7 +27,8 @@ vLanguage['en-GB'] = [
 	'viewPF':"Showing products from",
 	'viewAP':"Showing all products",
 	'editC' : 'Editing',
-	'viewC' : "Manage Customers"
+	'viewC' : "Manage Customers",
+	'viewPFs': "Product Families"
 },
 {
 	'gaming':'gaming',
@@ -63,7 +64,8 @@ vLanguage['es-ES'] = [
 	'viewPF':"Mostrando productos de",
 	'viewAP':"Mostrando todos los productos",
 	'editC' : 'Editar',
-	'viewC' : "Gestione Clientes"
+	'viewC' : "Gestione Clientes",
+	'viewPFs' : "Familias de productos"
 },
 {
 	'gaming':'juego de azar',
