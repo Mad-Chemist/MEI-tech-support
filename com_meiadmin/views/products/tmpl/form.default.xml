@@ -6,6 +6,7 @@
         show_pagination="1"
         norows_placeholder="COM_MEIADMIN_COMMON_NORECORDS"
         cssfiles="media://com_meiadmin/css/browse.css"
+        returnurl="index.php?option=com_meiadmin&amp;view=products[MENU:ITEMID]"
         >
     <headerset>
         <header name="ordering" type="ordering" sortable="true" tdwidth="1%"/>
@@ -13,14 +14,16 @@
         <header name="title" type="fieldsearchable" sortable="true"
                 buttons="yes" buttonclass="btn" tdwidth="55%"
                 />
-        <header name="family" type="field" sortable="false" tdwidth="15%" label="COM_MEIADMIN_PRODUCTS_FIELD_FAMILY" />
-        <header name="enabled" type="published" sortable="true" tdwidth="8%"/>
         <header name="cat_id"
                 label="COM_MEIADMIN_PRODUCTS_FIELD_FAMILY"
                 type="filtersql"
                 key_field="meiadmin_category_id"
                 value_field="title"
+                tdwidth="15%"
                 query="SELECT meiadmin_category_id, title FROM #__meiadmin_categories"/>
+
+        <header name="enabled" type="published" sortable="true" tdwidth="25%"/>
+        <header name="family" type="field" sortable="false" tdwidth="5%" label="COM_MEIADMIN_PRODUCTS_FIELD_FAMILY_EMPTY" />
     </headerset>
 
     <fieldset name="items">
@@ -39,5 +42,4 @@
 
         <field name="enabled" type="published"/>
     </fieldset>
-
 </form>

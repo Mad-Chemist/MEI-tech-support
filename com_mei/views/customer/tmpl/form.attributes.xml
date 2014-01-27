@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form
+        lessfiles="media://com_meiadmin/css/product.less||media://com_meiadmin/css/product.css"
+        validate="true"
+        type="edit"
+        jsfiles="media://system/js/mootools-more.js"
+        >
+    <fieldset name="customerAttributes" label="COM_MEI_CUSTOMER_INFORMATION">
+        <field name="email" type="email"
+               label="COM_MEI_CUSTOMER_FIELD_EMAIL"
+               class="meiadmin-title-field"
+               size="50"
+               required="true"
+                />
+        <field name="telephone" type="tel"
+               label="COM_MEI_CUSTOMER_FIELD_TELEPHONE"
+               class="meiadmin-title-field"
+               filter="tel"
+                />
+        <field name="address1" type="text"
+               label="COM_MEI_CUSTOMER_FIELD_ADDRESS1"
+               class="meiadmin-title-field"
+                />
+        <field name="address2" type="text"
+               label="COM_MEI_CUSTOMER_FIELD_ADDRESS2"
+               class="meiadmin-title-field"
+                />
+        <field name="city" type="text"
+               label="COM_MEI_CUSTOMER_FIELD_CITY"
+               class="meiadmin-title-field"
+                />
+        <field name="state" type="text"
+               label="COM_MEI_CUSTOMER_FIELD_STATE"
+               class="meiadmin-title-field"
+                />
+        <field name="country" type="text"
+               label="COM_MEI_CUSTOMER_FIELD_COUNTRY"
+               class="meiadmin-title-field"
+                />
+        <field name="postcode" type="text"
+               label="COM_MEI_CUSTOMER_FIELD_POSTALCODE"
+               class="meiadmin-title-field"
+                />
+        <field name="submit" type="button"
+               text="COM_MEI_CUSTOMER_BUTTON_SAVE_ATTRIBUTES"
+               class="mei-title-button"
+               onclick="Joomla.submitbutton('save')"
+                />
+        <field type="menuitem" />
+        <field type="hidden" name="fk_user_id" default="0" />
+        <field type="hidden" name="meiadmin_customer_id" default="0" />
+        <field type="hidden" name="task" default="saveAttributes" />
+    </fieldset>
+</form>

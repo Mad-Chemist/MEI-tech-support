@@ -21,9 +21,9 @@
             size="50"
 	    required="false"
          />
-        <field name="channel" type="text"
+       <field name="channel" type="text"
             label="COM_MEIADMIN_CHANNEL"
-           
+            required="true"
          />
         <field name="type" type="list" label="COM_MEIADMIN_FILE_FIELD_TYPE" default="manual" required="true">
             <option value="general">General Documentation</option>
@@ -45,6 +45,7 @@
          />
         <field name="region" type="text"
             label="COM_MEIADMIN_REGION"
+            required="true"
          />
         <field type="file"
                label="COM_MEIADMIN_FILE_UPLOAD"

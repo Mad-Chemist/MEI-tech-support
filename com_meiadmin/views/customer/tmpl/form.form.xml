@@ -52,7 +52,6 @@
         <field name="telephone" type="tel"
                label="COM_MEIADMIN_CUSTOMER_FIELD_TELEPHONE"
                class="meiadmin-title-field"
-                filter="tel"
                 />
         <field name="address1" type="text"
                label="COM_MEIADMIN_CUSTOMER_FIELD_ADDRESS1"
@@ -105,9 +104,6 @@
                source_value="title"
                source_method="getAll"
                />
-
-
-
         <field type="menuitem" />
         <field type="hidden" name="fk_user_id" default="0"/>
     </fieldset>

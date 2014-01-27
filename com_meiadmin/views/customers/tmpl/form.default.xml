@@ -6,6 +6,7 @@
         show_pagination="1"
         norows_placeholder="COM_MEIADMIN_COMMON_NORECORDS"
         cssfiles="media://com_meiadmin/css/browse.css"
+        returnurl="index.php?option=com_meiadmin&amp;view=customers[MENU:ITEMID]"
 >
     <headerset>
         <header name="id" type="rowselect" tdwidth="5%" />

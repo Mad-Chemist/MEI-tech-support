@@ -111,7 +111,7 @@ class MeiModelFiles extends BBDFOFModel
             }
         }
 
-// Remove php's time limit -- Thank you, Nooku, for the tip
+        // Remove php's time limit -- Thank you, Nooku, for the tip
         if (function_exists('ini_get') && function_exists('set_time_limit')) {
             if (!ini_get('safe_mode')) {
                 @set_time_limit(0);
@@ -121,14 +121,13 @@ class MeiModelFiles extends BBDFOFModel
 
     protected function _initiateDownload($filename)
     {
-
         $basename = @basename($filename);
         $filesize = @filesize($filename);
         $extension = strtolower(str_replace(".", "", strrchr($filename, ".")));
 
         while (@ob_end_clean()) ;
         @clearstatcache();
-// Send MIME headers
+        // Send MIME headers
         header('MIME-Version: 1.0');
         header('Content-Disposition: attachment; filename="' . $basename . '"');
         header('Content-Transfer-Encoding: binary');
@@ -145,9 +144,9 @@ class MeiModelFiles extends BBDFOFModel
                 header('Content-Type: application/octet-stream');
                 break;
         }
-// Notify of filesize, if this info is available
+        // Notify of filesize, if this info is available
         if ($filesize > 0) header('Content-Length: ' . @filesize($filename));
-// Disable caching
+        // Disable caching
         header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
         header("Expires: 0");
         header('Pragma: no-cache');

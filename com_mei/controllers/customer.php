@@ -4,13 +4,88 @@ defined('_JEXEC') or die;
 
 class MeiControllerCustomer extends BBDFOFController
 {
-    public function changePassword()
+    public function __construct($config = array())
+    {
+        parent::__construct($config);
+        JHtml::_('bootstrap.framework');
+        JHtml::script(JUri::base() . 'media/com_mei/js/customer.js');
+    }
+
+    public function onBeforeSave()
+    {
+        // TODO: Customer needs to be able to save account profile
+        return true;
+    }
+
+    public function onBeforeAdd()
+    {
+        // TODO: Customer needs to be able to view account profile
+        return true;
+    }
+
+    public function onBeforeEdit()
+    {
+        // TODO: Customer needs to be able to edit account profile
+        return true;
+    }
+
+    public function saveAttributes()
+    {
+        $this->_save('Attributes');
+    }
+
+    public function saveExclusions()
+    {
+        $this->_save('Exclusions');
+    }
+
+    public function saveImage()
+    {
+        $this->_save('Image');
+    }
+
+    public function saveNda()
+    {
+        $this->_save('Nda');
+    }
+
+    protected function _save($form)
     {
         $model = $this->getThisModel();
+        $method = 'save'.$form;
+        $model->$method();
+        $this->_redirectToEdit($model, JText::_('COM_MEI_SAVE_SUCCESS_'.strtoupper($form)));
+        return true;
+    }
+
+    public function resetPassword()
+    {
+        $model = $this->getThisModel();
+        $passwordModel = $this->getModel('password');
+        $newPassword = $model->resetPassword($passwordModel);
+        $mailer = JFactory::getMailer();
+        $model->setMailer($mailer);
+        $model->emailNewPassword($newPassword);
+    }
+
+    public function requiredPasswordChange()
+    {
+        $this->changePassword($setExpiration = true);
+    }
+
+    public function changePassword($setExpiration = false)
+    {
+        $model = $this->getThisModel();
+        $passwordModel = $this->getModel('password');
         try{
-            $model->saveNewPassword();
+            $model->saveNewPassword($passwordModel, $setExpiration);
+            if (!$setExpiration) {
+                $this->_redirectToEdit($model, JText::_('COM_MEI_SAVE_SUCCESS_PASSWORD'));
+            } else {
+                $this->setRedirect(JUri::base() . 'index.php');
+            }
         }catch (Exception $e){
-            $this->_displayErrorMessage($e, 'changepassword', null);
+            $this->_displayErrorMessage($e, $this->_getLayout(), null);
         }
     }
 
@@ -23,12 +98,26 @@ class MeiControllerCustomer extends BBDFOFController
         $this->setRedirect($url, $e->getMessage(), 'error');
     }
 
-    protected function _loadUrl($id, $layout, $task)
+    protected function _loadUrl($id = null, $layout = null, $task = null)
     {
         $Itemid = JFactory::getApplication()->input->get('Itemid');
-        $url = 'index.php?option=' . $this->component . '&view=' . $this->view . '&id=' . $id . '&Itemid=' . $Itemid;
+        $url = 'index.php?option=' . $this->component . '&view=' . $this->view . '&Itemid=' . $Itemid;
+        $url .= ($id != '0') ? '&id=' . $id : '';
         $url .= (!is_null($layout)) ? '&layout=' . $layout : '';
         $url .= (!is_null($task)) ? '&task=' . $task : '';
         return $url;
+    }
+
+    protected function _getLayout()
+    {
+        if ($layout = JFactory::getApplication()->input->get('layout')) return $layout;
+        return 'edit';
+    }
+
+    protected function _redirectToEdit($model, $message = '')
+    {
+        $layout = ($this->_getLayout() != 'edit') ? $this->_getLayout() : 'form';
+        $id = $model->getId();
+        $this->setRedirect($this->_loadUrl($id, $layout), $message);
     }
 }

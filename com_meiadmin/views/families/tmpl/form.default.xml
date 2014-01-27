@@ -6,6 +6,7 @@
     show_filters="1"
     show_pagination="1"
     norows_placeholder="COM_MEIADMIN_COMMON_NORECORDS"
+    returnurl="index.php?option=com_meiadmin&amp;view=families[MENU:ITEMID]"
 >
     <headerset>
         <header name="ordering" type="ordering" sortable="true" tdwidth="1%" />

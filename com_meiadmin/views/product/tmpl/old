@@ -33,7 +33,7 @@ echo $viewTemplate;
 
         <?php
         $this->sectionHeading = 'COM_MEIADMIN_TOOLS';
-        $this->sectionFiles = (array_key_exists('tool', $this->items)) ? $this->items['tool'] : false;
+        $this->sectionFiles = (array_key_exists('tools', $this->items)) ? $this->items['tools'] : false;
         if($this->sectionFiles ) echo $this->loadAnyTemplate('com_meiadmin/files/default_section');
         ?>
 

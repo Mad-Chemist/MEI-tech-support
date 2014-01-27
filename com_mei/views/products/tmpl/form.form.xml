@@ -1,40 +1,40 @@
-<?xml version="1.0" encoding="utf-8"?>
-<form
-    lessfiles="media://com_meiadmin/css/frontend.less||media://com_meiadmin/css/frontend.css"
-    validate="true"
-    type="edit"
->
-    <fieldset name="a_single_item" class="meiadmin-item-container form-horizontal">
-        <field name="title" type="text"
-            label="COM_MEIADMIN_PRODUCTS_FIELD_TITLE"
-            class="meiadmin-title-field"
-            size="50"
-	    required="true"
-         />
-
-        <field name="cat_id" type="sql"
-            label="COM_MEIADMIN_PRODUCTS_FIELD_FAMILY"
-            class="meiadmin-field"
-            key_field="id"
-	    value_field="value"
-	    query="SELECT meiadmin_category_id AS id, title AS value FROM #__meiadmin_categories WHERE 1"
-            required="true"
-         />
-        <field name="language" type="language"
-            label="COM_MEIADMIN_PRODUCTS_FIELD_LANGUAGE"
-            class="meiadmin-field"
-            required="true"
-         />
-        <field name="description" type="editor"
-            label="COM_MEIADMIN_PRODUCTS_FIELD_DESCRIPTION"
-        />
-    </fieldset>
-    <fieldset name="Image" class="form-horizontal">
-        <field name="images" type="media"
-            label="COM_MEIADMIN_PRODUCTS_FIELD_FILE"
-            size="50"
-	    directory="com_meiadmin/images"
-	    preview="true"
-         />
-    </fieldset>
+<?xml version="1.0" encoding="utf-8"?>
+<form
+        lessfiles="media://com_meiadmin/css/frontend.less||media://com_meiadmin/css/frontend.css"
+        validate="true"
+        type="edit"
+        >
+    <fieldset name="a_single_item" class="meiadmin-item-container form-horizontal">
+        <field name="title" type="text"
+               label="COM_MEIADMIN_PRODUCTS_FIELD_TITLE"
+               class="meiadmin-title-field"
+               size="50"
+               required="true"
+                />
+
+        <field name="cat_id" type="sql"
+               label="COM_MEIADMIN_PRODUCTS_FIELD_FAMILY"
+               class="meiadmin-field"
+               key_field="id"
+               value_field="value"
+               query="SELECT meiadmin_category_id AS id, title AS value FROM #__meiadmin_categories WHERE 1"
+               required="true"
+                />
+        <field name="language" type="language"
+               label="COM_MEIADMIN_PRODUCTS_FIELD_LANGUAGE"
+               class="meiadmin-field"
+               required="true"
+                />
+        <field name="description" type="editor"
+               label="COM_MEIADMIN_PRODUCTS_FIELD_DESCRIPTION"
+                />
+    </fieldset>
+    <fieldset name="Image" class="form-horizontal">
+        <field name="images" type="media"
+               label="COM_MEIADMIN_PRODUCTS_FIELD_FILE"
+               size="50"
+               directory="com_meiadmin/images"
+               preview="true"
+                />
+    </fieldset>
 </form>

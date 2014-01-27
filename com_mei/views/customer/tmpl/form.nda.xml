@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form
+        lessfiles="media://com_meiadmin/css/product.less||media://com_meiadmin/css/product.css"
+        validate="true"
+        type="edit"
+        jsfiles="media://system/js/mootools-more.js"
+        enctype="multipart/form-data"
+        >
+    <fieldset name="signedNDA" label="COM_MEI_CUSTOMER_NDA">
+        <field name="nda" type="file"
+               label="COM_MEI_CUSTOMER_NDA_DESC"
+               size="50"
+               directory="profiles"
+               preview="false"
+               filter="path"
+                />
+        <field name="submit" type="button"
+               text="COM_MEI_CUSTOMER_BUTTON_SAVE_NDA"
+               class="mei-title-button"
+               onclick="Joomla.submitbutton('save')"
+                />
+        <field type="menuitem" />
+        <field type="hidden" name="fk_user_id" default="0"/>
+        <field type="hidden" name="meiadmin_customer_id" default="0"/>
+        <field type="hidden" name="task" default="saveNda" />
+    </fieldset>
+</form>
