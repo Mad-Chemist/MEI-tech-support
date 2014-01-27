@@ -35,7 +35,7 @@ if('' != $this->sectionFiles)
     <div class="controls">
         <input type="submit"
                id="submitSubscriptions"
-               class="btn mei-title-button"
+               class="bttn mei-title-button"
                value="<?php echo JText::_('COM_MEI_CUSTOMER_BUTTON_SAVE_EXCLUSIONS') ?>"
             />
     </div>

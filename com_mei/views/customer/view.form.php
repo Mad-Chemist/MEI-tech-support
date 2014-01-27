@@ -87,7 +87,7 @@ class MeiViewCustomer extends BBDFOFViewForm
     {
         $this->_ndaExpiration = $this->get('NdaExpiration');
         $ndaStringToInsert = $this->loadAnyTemplate('com_mei/customer/nda');
-        $ndaInsertPosition = $this->_getStringReplacePosition($html, '</button>');
+        $ndaInsertPosition = $this->_getStringReplacePosition($html, '</h3>');
         $html = substr_replace($html, $ndaStringToInsert, $ndaInsertPosition, 0);
     }
 
