@@ -143,11 +143,10 @@
             <option value="1">COM_MEIADMIN_YES</option>
             <option value="0">COM_MEIADMIN_NO</option>
         </field>
-        <field name="access_account" type="text"
+        <field name="cust_user_id" type="text"
                label="COM_MEIADMIN_ACCESS_ACCOUNT"
                size="50"
                required="false"
-               readonly="true"
                 />
     </fieldset>
 </form>
