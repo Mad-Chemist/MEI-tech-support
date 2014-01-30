@@ -38,7 +38,7 @@ function distanceSetUp() {
 			i++;
 		}
 		if (i<vLocations.length) {
-			jQuery('#service-centers').append('<div id="more-than-5"></div><a id="show-more-centers" onclick="showMoreSC()">Show More</a>');
+			jQuery('#service-centers').append('<div id="more-than-5"></div><a id="show-more-centers" onclick="showMoreSC()" class="bttn" style="display:inline-block;"><img src="/images/plus.png" width="10px" style="margin-bottom: 3px;"> '+vLanguage[cvlang][1]['more']+'</a>');
 			while(i<vLocations.length) {
 				nicelyShowCenters(1);
 				i++;
@@ -82,8 +82,14 @@ function showPhoneNumber() {
 }
 function showMoreSC() {
 	jQuery('#more-than-5').slideToggle();
-	var ntext = (jQuery('#show-more-centers').text() =='Show More') ? 'Show Less':'Show More';
-	jQuery('#show-more-centers').text(ntext);
+	if (jQuery('#show-more-centers').attr('state') != "0") {
+		jQuery('#show-more-centers').html('<img src="/images/minus.png" width="10px" style="margin-bottom: 3px;"> '+vLanguage[cvlang][1]['less']);
+		jQuery('#show-more-centers').attr('state','0');
+	}
+	else {
+		jQuery('#show-more-centers').html('<img src="/images/plus.png" width="10px" style="margin-bottom: 3px;"> '+vLanguage[cvlang][1]['more']);
+		jQuery('#show-more-centers').attr('state','1');
+	}
 	return false;
 }
 

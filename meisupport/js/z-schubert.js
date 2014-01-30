@@ -113,7 +113,7 @@ function setUpAccordion() {
 function setUpMultiSelect() {
 	var check = jQuery('body.com_meiadmin.view-file.task-edit form#adminForm');
 	if (check.length === 1) {
-			var vbChan = ['Gaming','Retail','Transportation','Vending'], vbId = [3,4,7,8], vbVal = jQuery('#channel').val(), vbOpts; //channel vars
+			var vbChan = [vLanguage[cvlang][4]['gaming'], vLanguage[cvlang][4]['retail'], vLanguage[cvlang][4]['transportation'],vLanguage[cvlang][4]['vending'],vLanguage[cvlang][4]['financial']], vbId = [3,4,7,8,9], vbVal = jQuery('#channel').val(), vbOpts; //channel vars
 			var vbReg = ['Americas','EMEA','APR'], vbRid = [1,2,3], vbRval = jQuery('#region').val(), vbRopts; //region vars
 			remakeSubmit();
 			setMultiselectUp();
@@ -144,6 +144,8 @@ function setUpMultiSelect() {
 	}
 	function remakeSubmit() {
 		Joomla.submitform = function (a,b){
+			var confirmCheck = confirm(vLanguage[cvlang][2]['confirm']);
+			if (confirmCheck == false) return;
 			var chanVal = jQuery('select#channel').val(), regVal = jQuery('select#region').val();
 			chanVal = chanVal.toString().split(',').join('',''), regVal = regVal.toString().split(',').join('','');
 			jQuery('select#channel').attr({'id':'channel2','name':'channel2[]'});

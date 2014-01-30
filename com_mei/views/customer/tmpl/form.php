@@ -6,11 +6,11 @@ defined('_JEXEC') or die;
 
     <h1><?php echo JText::_('COM_MEI_CUSTOMER_ACCOUNT') ?></h1>
     <span class="anchor-links">
-        <a onclick="jQuery(window).scrollTop(jQuery('a[name=update]').offset().top);return false;"><?php echo JText::_('COM_MEI_CUSTOMER_INFORMATION') ?></a> 
-        <a onclick="jQuery(window).scrollTop(jQuery('a[name=nda]').offset().top);return false;"><?php echo JText::_('COM_MEI_CUSTOMER_NDA') ?></a> 
-        <a onclick="jQuery(window).scrollTop(jQuery('a[name=passw]').offset().top);return false;"><?php echo JText::_('COM_MEI_CUSTOMER_PASSWORD_RESET') ?></a> 
-        <a onclick="jQuery(window).scrollTop(jQuery('a[name=image]').offset().top);return false;"><?php echo JText::_('COM_MEI_CUSTOMER_IMAGE') ?></a> 
-        <a onclick="jQuery(window).scrollTop(jQuery('a[name=subscribe]').offset().top);return false;"><?php echo JText::_('COM_MEI_CUSTOMER_ACCOUNT_SUBSCRIBE') ?></a>
+        <a onclick="jQuery(window).scrollTop(jQuery('a[name=update]').offset().top);return false;"><?php echo JText::_('COM_MEI_CUSTOMER_INFORMATION'); ?></a> 
+        <a onclick="jQuery(window).scrollTop(jQuery('a[name=nda]').offset().top);return false;"><?php echo JText::_('COM_MEI_CUSTOMER_NDA'); ?></a> 
+        <a onclick="jQuery(window).scrollTop(jQuery('a[name=passw]').offset().top);return false;"><?php echo JText::_('COM_MEI_CUSTOMER_PASSWORD_RESET'); ?></a> 
+        <a onclick="jQuery(window).scrollTop(jQuery('a[name=image]').offset().top);return false;"><?php echo JText::_('COM_MEI_CUSTOMER_IMAGE'); ?></a> 
+        <a onclick="jQuery(window).scrollTop(jQuery('a[name=subscribe]').offset().top);return false;"><?php echo JText::_('COM_MEI_CUSTOMER_ACCOUNT_SUBSCRIBE'); ?></a>
     </span>
 <div style="width:100%;height:30px;display:block;"></div>
 </div></div></div>
@@ -56,7 +56,7 @@ defined('_JEXEC') or die;
      }
     h1, h3 {
     border-bottom: #8F8F8F solid 1px;
-    width: 90%;
+    /* width: 90%; */
     padding-bottom: 5px;
     }
     .my-account-left {

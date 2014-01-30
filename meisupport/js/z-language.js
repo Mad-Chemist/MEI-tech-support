@@ -13,14 +13,17 @@ vLanguage['en-GB'] = [
 	'fax':'Fax',
 	'email':'Email',
 	'web':'Web',
-	'map':'View on map'
+	'map':'View on map',
+	'more':'Show More',
+	'less':'Show Less'
 },
 {
 	'cant-locate':"We were unable to locate that.  Sorry!",
 	'success':"We've located the closest service centers for you.",
 	'empty':"Woops.  Looks like you didn't enter an address!",
 	'compat':"Please use the form above to locate nearby service centers.",
-	'outdated': "Your browser is outdated.  Some features may not work properly."
+	'outdated': "Your browser is outdated.  Some features may not work properly.",
+	'confirm':"Please confirm that you want to proceed with these changes."
 },
 {
 	'editP':"Editing",
@@ -31,10 +34,11 @@ vLanguage['en-GB'] = [
 	'viewPFs': "Product Families"
 },
 {
-	'gaming':'gaming',
-	'retail':'retail',
-	'transportation':'transportation',
-	'vending':'vending'
+	'gaming':'Gaming',
+	'retail':'Retail',
+	'transportation':'Transportation',
+	'vending':'Vending',
+	'financial':'Financial services'
 }
 ],
 vLanguage['es-ES'] = [
@@ -50,14 +54,17 @@ vLanguage['es-ES'] = [
 	'fax':'Fax',
 	'email':'Email',
 	'web':'Web',
-	'map':'Ver en el mapa'
+	'map':'Ver en el mapa',
+	'more':'Mostrar más',
+	'less':'Mostrar menos'
 },
 {
 	'cant-locate':"No fue posible localizar a eso. ¡Lo siento!",
 	'success':"Hemos localizado los centros de servicio más cercanos para usted.",
 	'empty':"Woops. Parece que no has introducido una dirección!",
 	'compat':"Utilice el formulario de arriba para localizar centros de servicios cercanos.",
-	'outdated': "Su navegador no está actualizado.  Algunas características pueden no funcionar correctamente."
+	'outdated': "Su navegador no está actualizado.  Algunas características pueden no funcionar correctamente.",
+	'confirm':'Por favor confirme que desea continuar con estos cambios.'
 },
 {
 	'editP':"Editar",
@@ -68,10 +75,11 @@ vLanguage['es-ES'] = [
 	'viewPFs' : "Familias de productos"
 },
 {
-	'gaming':'juego de azar',
-	'retail':'venta al por menor',
-	'transportation':'transportación',
-	'vending':'venta'
+	'gaming':'Juego de azar',
+	'retail':'Venta al por menor',
+	'transportation':'Transportación',
+	'vending':'Venta',
+	'financial':'Servicios financieros'
 }
 ];	
 
