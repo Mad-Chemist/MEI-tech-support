@@ -44,6 +44,14 @@ $user = JFactory::getUser(); /*Add current user information*/
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="<?php echo $this->language; ?>" lang="<?php echo $this->language; ?>" dir="<?php echo $this->direction; ?>">
 <head>
 	<meta name="viewport" content="width=device-width, user-scalable=false;">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+  <link rel="apple-touch-icon" sizes="57x57" href="/templates/meisupport/apple/apple-touch-icon-57x57.png" />
+  <link rel="apple-touch-icon" sizes="72x72" href="/templates/meisupport/apple/apple-touch-icon-72x72.png" />
+  <link rel="apple-touch-icon" sizes="76x76" href="/templates/meisupport/apple/apple-touch-icon-76x76.png" />
+  <link rel="apple-touch-icon" sizes="114x114" href="/templates/meisupport/apple/apple-touch-icon-114x114.png" />
+  <link rel="apple-touch-icon" sizes="120x120" href="/templates/meisupport/apple/apple-touch-icon-120x120.png" />
+  <link rel="apple-touch-icon" sizes="144x144" href="/templates/meisupport/apple/apple-touch-icon-144x144.png" />
+  <link rel="apple-touch-icon" sizes="152x152" href="/templates/meisupport/apple/apple-touch-icon-152x152.png" />
 <?php
   $lang = JFactory::getLanguage()->getLocale();
   $lang = str_replace('_','-',$lang[2]);
