@@ -79,9 +79,9 @@ function addHomepageProductNavFX() {
 	}
 }
 function setUpAccordion() {
-	if (jQuery('.file_table').length > 0) { 
+	if (jQuery('.file_table').length > 0 ) { 
 		//adds the search box to product page
-		if (jQuery('div[name=firmware] table').length > 0) {
+		if (jQuery('div[name=firmware] table').length > 0 && jQuery('body').hasClass('view-customer') != true) {
 			jQuery('div[name=firmware] table').prepend("<tr class='firmware-search'><td colspan='3'><span style='float:right;'>search: <input type='text' class='firm-search'></span></td></tr>");
 			//searches when typed into:
 			jQuery('.firm-search').keyup(function(){
@@ -109,6 +109,7 @@ function setUpAccordion() {
 			jQuery(this).next('.section-children').slideToggle();
 		});	
 	}
+	if (jQuery('body').hasClass('view-customer') != true) jQuery('h2.section-head:nth-child(1)').click();
 }
 function setUpMultiSelect() {
 	var check = jQuery('body.com_meiadmin.view-file.task-edit form#adminForm');
