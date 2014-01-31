@@ -10,4 +10,4 @@ defined('_JEXEC') or die;
     <p><?php echo JText::_('COM_MEI_CUSTOMER_NDA_NONE') ?></p>
 <?php endif; ?>
 
-<p style="font-weight: normal; font-size: 12px;margin-top:10px;"><?php echo JText::_('COM_MEI_CUSTOMER_PDF_ONLY'); ?></p>
+<p style="font-weight: normal; font-size: 12px;margin-top:10px;"><img src="/images/icons/pdf.png"> <?php echo JText::_('COM_MEI_CUSTOMER_PDF_ONLY'); ?></p>
