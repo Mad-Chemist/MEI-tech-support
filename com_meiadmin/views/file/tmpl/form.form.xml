@@ -84,5 +84,6 @@
                required="false"
                size="8"
                 />
+            <field name="deny_access" type="text" />
     </fieldset>
 </form>

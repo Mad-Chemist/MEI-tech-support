@@ -114,10 +114,12 @@ function setUpAccordion() {
 function setUpMultiSelect() {
 	var check = jQuery('body.com_meiadmin.view-file.task-edit form#adminForm');
 	if (check.length === 1) {
-			var vbChan = [vLanguage[cvlang][4]['gaming'], vLanguage[cvlang][4]['retail'], vLanguage[cvlang][4]['transportation'],vLanguage[cvlang][4]['vending'],vLanguage[cvlang][4]['financial']], vbId = [3,4,7,8,9], vbVal = jQuery('#channel').val(), vbOpts; //channel vars
+			var vbChan = [vLanguage[cvlang][4]['gaming'], vLanguage[cvlang][4]['retail'], vLanguage[cvlang][4]['transportation'],vLanguage[cvlang][4]['vending'],vLanguage[cvlang][4]['financial']], vbId = [3,4,7,8,9], vbVal = jQuery('#channel').val(), vbOpts = ""; //channel vars
 			var vbReg = ['Americas','EMEA','APR'], vbRid = [1,2,3], vbRval = jQuery('#region').val(), vbRopts; //region vars
 			remakeSubmit();
 			setMultiselectUp();
+			//also initiate multi select drags
+			initiateCustomerSwapping();
 	}
 
 	function setMultiselectUp() {
@@ -125,39 +127,124 @@ function setUpMultiSelect() {
 		jQuery.each(vbId, function(index,value) { 
 			vbOpts+= (vbVal.indexOf(value) != -1) ? '<option value="'+value+'" selected="selected">'+vbChan[index]+'</option>' :'<option value="'+value+'">'+vbChan[index]+'</option>'; 
 		});
-		jQuery('#oldc').after('<select id="channel" name="channel" multiple required>'+vbOpts+'</select>');
+		jQuery('#oldc').after('<select id="channel2" name="channel2" multiple required>'+vbOpts+'</select>');
 		jQuery('#region').attr({'id':'oldr','name':'oldr'});
+
+		vbRopts = "";
 		jQuery.each(vbRid, function(index,value) { 
 			vbRopts+= (vbRval.indexOf(value) != -1) ? '<option value="'+value+'" selected="selected">'+vbReg[index]+'</option>' :'<option value="'+value+'">'+vbReg[index]+'</option>'; 
 		});
 
-		jQuery('#oldr').after('<select id="region" name="region" multiple required>'+vbRopts+'</select>');
+		jQuery('#oldr').after('<select id="region2" name="region2" multiple required>'+vbRopts+'</select>');
 
 		jQuery('#oldc, #oldr').remove();
-	}
-	function trickSelect() {
-		var chanVal = jQuery('select#channel').val(), regVal = jQuery('select#region').val();
-		chanVal = chanVal.toString().split(',').join('',''), regVal = regVal.toString().split(',').join('','');
-		jQuery('select#channel').attr('id','channel2');
-		jQuery('select#region').attr('id','region2');
 
-		check.append('<input type="hidden" id="channel" value="'+chanVal+'"><input type="hidden" id="region" value="'+regVal+'">');
+		check.append('<input type="text" id="channel"  name="channel" style="display:none;"><input type="text" id="region"  name="region" style="display:none;">');
+	}
+	function updateSelectValues() {
+		var chanVal = jQuery('select#channel2').val(), regVal = jQuery('select#region2').val();
+		if (null== regVal) regVal = "";
+		if (null== chanVal) chanVal = "";
+		chanVal = chanVal.toString().split(',').join('',''), regVal = regVal.toString().split(',').join('','');
+		jQuery('#channel').val(chanVal);
+		jQuery('#region').val(regVal);
 	}
 	function remakeSubmit() {
 		Joomla.submitform = function (a,b){
-			var confirmCheck = confirm(vLanguage[cvlang][2]['confirm']);
-			if (confirmCheck == false) return;
-			var chanVal = jQuery('select#channel').val(), regVal = jQuery('select#region').val();
-			chanVal = chanVal.toString().split(',').join('',''), regVal = regVal.toString().split(',').join('','');
-			jQuery('select#channel').attr({'id':'channel2','name':'channel2[]'});
-			jQuery('select#region').attr({'id':'region2','name':'region2[]'});
-
-			check.append('<input type="hidden" id="channel" value="'+chanVal+'" name="channel"><input type="hidden" id="region" value="'+regVal+'" name="region">');
-
+			updateNewCustomerValues();
+			updateSelectValues();
 			"undefined"===typeof b&&(b=document.getElementById("adminForm")); 
 			"undefined"!==typeof a&&(b.task.value=a); 
 			if("function"==typeof b.onsubmit)b.onsubmit();
-			"function"==typeof b.fireEvent&&b.fireEvent("submit");b.submit();
+			"function"==typeof b.fireEvent&&b.fireEvent("submit");
+			if (a != "cancel") {
+				var confirmCheck = confirm(vLanguage[cvlang][2]['confirm']);
+				if (confirmCheck == false) return;
+			}
+			b.submit();
 		} 
 	}
+}
+
+
+
+function initiateCustomerSwapping() {
+	//add drag and drop containers to body
+	jQuery('head').append('<script src="/templates/meisupport/js/jquery-ui-1.10.4.custom.min.js"></script>');
+	jQuery('#fileAccessFields').append('<h3>Customer Access:</h3> <div id="sort-access"> <label> <span id="help" title="'+vLanguage[cvlang][5]['help']+'">?</span> '+vLanguage[cvlang][5]['search']+' <input type="text" id="customer-search-box"></label> <span>'+vLanguage[cvlang][5]['allowed']+'</span> <ul id="allowed-customer-access" class="connectedSortable"></ul> <span>'+vLanguage[cvlang][5]['unassigned']+'</span> <ul id="all-customer-access" class="connectedSortable"></ul> <span>'+vLanguage[cvlang][5]['denied']+'</span> <ul id="no-customer-access" class="connectedSortable"></ul> <div style="clear:both;"></div> </div> ');	
+	relocateAllowedCustomers();
+	relocateDeniedCustomers();
+	relocateUnassignedCustomers();
+	removeOldContainers();
+	setNewHiddenContainers();
+	updateNewCustomerValues();
+
+	jQuery( "#allowed-customer-access, #all-customer-access, #no-customer-access" ).sortable({
+      connectWith: ".connectedSortable"
+    }).disableSelection();
+
+    searchCustomers();
+}
+
+function relocateAllowedCustomers() {
+	//moves selected customers to selected customer's container
+	jQuery("#access_account option:selected" ).each(function() {
+	     var tVal = jQuery(this).val(), tText = jQuery(this).text();
+	     jQuery(this).remove();
+	     jQuery('#allowed-customer-access').append('<li value="'+tVal+'" inner="'+tText.toLowerCase()+'">'+tText+'</li>');
+
+	});
+}
+function relocateDeniedCustomers() {
+	//moves denied access to deny container
+	var dAcc = jQuery('#deny_access').val().split(','), dAccI = 0;
+	while (dAccI < dAcc.length) {
+		var this1 = jQuery("#access_account option[value="+dAcc[dAccI]+"]" );
+		jQuery('#no-customer-access').append('<li value="'+dAcc[dAccI]+'" inner="'+this1.text().toLowerCase()+'">'+this1.text()+'</li>');
+		this1.remove();
+		dAccI++;
+	}
+}
+function relocateUnassignedCustomers() {
+	//moves unselected values to all customers container
+	jQuery("#access_account option" ).each(function() {
+	     var tVal = jQuery(this).val(), tText = jQuery(this).text();
+	     jQuery(this).remove();
+	     jQuery('#all-customer-access').append('<li value="'+tVal+'" inner="'+tText.toLowerCase()+'">'+tText+'</li>');
+
+	});
+}
+
+function removeOldContainers() {
+	//removes the old containers in preparation to set new hidden containers up
+	jQuery("#access_account").parents('.control-group').remove();
+	jQuery("#deny_access").parents('.control-group').remove();
+}
+
+function setNewHiddenContainers() {
+	//appends hidden fields with proper id's
+	jQuery('#fileAccessFields').append("<input type='text' style='display:none;' name='access_account' id='access_account'><input type='text' style='display:none;'  name='deny_access' id='deny_access'>");
+}
+
+function updateNewCustomerValues() {
+	//updates the hidden fields
+	var updArr = [];
+	jQuery('#allowed-customer-access li').each(function() { 
+		updArr.push(jQuery(this).val());
+	})
+	jQuery('#access_account').val(updArr.join());
+	var updArr = [];
+	jQuery('#no-customer-access li').each(function() { 
+		updArr.push(jQuery(this).val());
+	})
+	jQuery('#deny_access').val(updArr.join());	
+}
+
+
+function searchCustomers() {
+	jQuery('#customer-search-box').keyup(function(){
+		jQuery('ul.connectedSortable li').hide();
+		jQuery('ul.connectedSortable li[inner*="'+jQuery('#customer-search-box').val().toLowerCase()+'"]').show();
+		if (jQuery(this).val() == "") 	jQuery('ul.connectedSortable li').show();
+	});
 }

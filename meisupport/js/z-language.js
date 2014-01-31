@@ -39,6 +39,13 @@ vLanguage['en-GB'] = [
 	'transportation':'Transportation',
 	'vending':'Vending',
 	'financial':'Financial services'
+},
+{
+	'allowed':'Customers granted access',
+	'unassigned':'Customers unassigned access',
+	'denied':'Customers Denied access',
+	'search':'Search',
+	'help':'Drag and drop customers between the access zones below.  You can use the search feature to the right to filter customer names.'
 }
 ],
 vLanguage['es-ES'] = [
@@ -80,6 +87,13 @@ vLanguage['es-ES'] = [
 	'transportation':'Transportación',
 	'vending':'Venta',
 	'financial':'Servicios financieros'
+},
+{
+	'allowed':'Los clientes les concede acceso',
+	'unassigned':'Los clientes de acceso sin asignar',
+	'denied':'Los clientes les niega el acceso',
+	'search':'Búsqueda',
+	'help':'Arrastre y suelte los clientes entre las zonas de acceso a continuación. Usted puede utilizar la función de búsqueda a la derecha para filtrar nombres de los clientes.'
 }
 ];	
 
