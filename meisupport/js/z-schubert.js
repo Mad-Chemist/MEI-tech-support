@@ -197,6 +197,8 @@ function relocateAllowedCustomers() {
 }
 function relocateDeniedCustomers() {
 	//moves denied access to deny container
+	/*checks value.  if value is null, doesnt add anything to no-access list.  Fixes the bug of always having one li added*/
+	if (jQuery('#deny_access').val() == "") return;
 	var dAcc = jQuery('#deny_access').val().split(','), dAccI = 0;
 	while (dAccI < dAcc.length) {
 		var this1 = jQuery("#access_account option[value="+dAcc[dAccI]+"]" );
