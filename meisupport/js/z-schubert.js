@@ -170,7 +170,7 @@ function setUpMultiSelect() {
 
 function initiateCustomerSwapping() {
 	//add drag and drop containers to body
-	jQuery('head').append('<script src="/templates/meisupport/js/jquery-ui-1.10.4.custom.min.js"></script>');
+	jQuery('head').append('<script src="/templates/meisupport/js/jquery-ui-1.10.4.custom.min.js"></script><script src="/templates/meisupport/js/jquery-ui.touch-punch.min.js"></script>');
 	jQuery('#fileAccessFields').append('<h3>Customer Access:</h3> <div id="sort-access"> <label> <span id="help" title="'+vLanguage[cvlang][5]['help']+'">?</span> '+vLanguage[cvlang][5]['search']+' <input type="text" id="customer-search-box"></label> <span>'+vLanguage[cvlang][5]['allowed']+'</span> <ul id="allowed-customer-access" class="connectedSortable"></ul> <span>'+vLanguage[cvlang][5]['unassigned']+'</span> <ul id="all-customer-access" class="connectedSortable"></ul> <span>'+vLanguage[cvlang][5]['denied']+'</span> <ul id="no-customer-access" class="connectedSortable"></ul> <div style="clear:both;"></div> </div> ');	
 	relocateAllowedCustomers();
 	relocateDeniedCustomers();
