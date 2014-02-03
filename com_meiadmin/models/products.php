@@ -17,7 +17,7 @@ class MeiadminModelProducts extends BBDFOFModel
     public function getFiles()
     {
         if (!isset($this->id) || !$this->id) return array();
-        $finput = new BBDFOFInput(array('fk_product_id' => $this->id, 'option' => 'com_meiadmin', 'limitStart' => 0, 'limit' => 200, 'id' => 0));
+        $finput = new BBDFOFInput(array('fk_product_id' => $this->id, 'option' => 'com_meiadmin', 'limitStart' => 0, 'limit' => 10000, 'id' => 0)); /* disabling the limit stil defaults to 200 somewhere.  Setting the limit to 10000 should resolve this issue until they reach 10k files*/
         $filesModel = parent::getAnInstance('files', 'MeiadminModel', array('input' => $finput));
         return $this->_organizeAndSetUrl($filesModel->getItemList());
     }
