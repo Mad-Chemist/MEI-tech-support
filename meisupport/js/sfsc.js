@@ -1,5 +1,6 @@
 var mylat, mylong, i;
 jQuery(document).ready(function() {
+	jQuery('body').addClass("loading-bar trans1");
 	if (typeof(Number.prototype.toRad) === "undefined") {
 	  Number.prototype.toRad = function() {
 	    return this * Math.PI / 180;
@@ -12,9 +13,11 @@ function distanceSetUp() {
 		navigator.geolocation.getCurrentPosition(function(position) {
 			mylat= position.coords.latitude, mylong = position.coords.longitude;
 			output();
+			jQuery('body').removeClass('loading-bar');
 		},
 		function() {
 			compatDistanceSetup();
+			jQuery('body').removeClass('loading-bar');
 		});
 	}
 
