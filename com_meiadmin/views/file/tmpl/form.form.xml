@@ -80,7 +80,7 @@
                key_field="id"
                value_field="value"
                multiple="true"
-               query="SELECT access_account AS id, CONCAT(company, ' - ', cust_user_id) AS value FROM 44aae_meiadmin_customers WHERE 1"
+               query="SELECT access_account AS id, CONCAT(company, ' - ', cust_user_id) AS value FROM #__meiadmin_customers WHERE 1"
                required="false"
                size="8"
                 />

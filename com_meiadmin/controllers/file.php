@@ -8,6 +8,20 @@ class MeiadminControllerFile extends BBDFOFController
     protected $_tmpFileUploadInfo = array();
     protected $_versionModel = null;
 
+    public function execute($task)
+    {
+        if (!$this->onBeforeExecute()){
+            $this->setRedirect(JUri::base(), JText::_('JLIB_APPLICATION_ERROR_ACCESS_FORBIDDEN'), 'error');
+            $this->redirect();
+        }
+        return parent::execute($task);
+    }
+
+    protected function onBeforeExecute()
+    {
+        return $this->checkACL('product.admin');
+    }
+
     public function onAfterApply()
     {
         return $this->_storeVersion();

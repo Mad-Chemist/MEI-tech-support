@@ -38,15 +38,19 @@ class MeiadminControllerCustomer extends BBDFOFController
         try{
             parent::$method();
         }catch (Exception $e){
-            $this->_displayErrorMessage($e->getMessage, null, 'edit');
+            $message = '';
+            if ($uid = $this->input->get('savedUserId', false)){
+                $model = $this->getThisModel();
+                $message = $model->checkCustomerExistsOnException($uid) . '<br />';
+            }
+            $message .= $e->getMessage();
+            $this->_displayErrorMessage($message, null, 'edit');
         }
     }
 
     protected function _displayErrorMessage($message, $layout = null, $task = null)
     {
-        $model = $this->getThisModel();
-        if (!$model->getId()) $model->setIDsFromRequest();
-        $id = $model->getId();
+        $id = $this->input->get('meiadmin_customer_id', false);
         $url = $this->_loadUrl($id, $layout, $task);
         $this->setRedirect($url, $message, 'error');
     }

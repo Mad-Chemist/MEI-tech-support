@@ -101,6 +101,7 @@ class MeiadminModelCustomers extends BBDFOFModel
         $user = $this->_saveUserData($data);
         $this->_assignAccountNumber($data);
         if ($user) {
+            $this->_setUserIdInCaseOfException($user);
             $userGroups = new MeiadminUserGroups(array(
                 'user'          => $user,
                 'input'         => $data,
@@ -118,6 +119,11 @@ class MeiadminModelCustomers extends BBDFOFModel
         $data['access_account'] = $data['fk_user_id'];
     }
 
+    protected function _setUserIdInCaseOfException($user)
+    {
+        $this->input->set('savedUserId', $user->id);
+    }
+
     protected function _filterForm(&$data)
     {
         $form = $form = $this->getForm($data, false, 'form.form');
@@ -127,19 +133,19 @@ class MeiadminModelCustomers extends BBDFOFModel
     protected function _updateCustomerSubscriptions($data)
     {
         $submittedSubscriptions = $data['products'];
-        $currentSubscriptions = $this->_loadSubscriptions($data);
+        $currentSubscriptions = $this->_loadSubscriptions($data['fk_user_id']);
         $subscriptionsToAdd = array_diff($submittedSubscriptions, $currentSubscriptions['products']);
         if (!empty($subscriptionsToAdd)) $this->_addSubscriptions($subscriptionsToAdd, $data['fk_user_id']);
         $subscriptionsToDelete = array_diff($currentSubscriptions['products'], $submittedSubscriptions);
         if (!empty($subscriptionsToDelete)) $this->_deleteSubscriptions($subscriptionsToDelete, $currentSubscriptions);
     }
 
-    protected function _loadSubscriptions($data)
+    protected function _loadSubscriptions($uid)
     {
         $query = $this->_db->getQuery(true);
         $query->select('id, fk_product_id')
             ->from('#__meiadmin_customer_subscriptions')
-            ->where('fk_user_id = '.$this->_db->quote($data['fk_user_id']));
+            ->where('fk_user_id = '.$this->_db->quote($uid));
         $this->_db->setQuery($query);
         $subscriptions = $this->_db->loadObjectList('fk_product_id');
         $subscriptions['products'] = array_keys($subscriptions);
@@ -177,23 +183,59 @@ class MeiadminModelCustomers extends BBDFOFModel
         unset($input['id']);
         $user = JFactory::getUser($userId);
         if (!$user->id) $this->_createUser($user, $input);
-        $this->_saveUser($user, $input, $password);
+        $this->_insertCleanPasswordForSave($password, $input);
+        $this->_saveUser($user, $input);
         return $user;
     }
 
     protected function _createUser(&$user, &$input)
     {
-        if (!$user->bind($input)) throw new Exception(JText::_('COM_MEIADMIN_CUSTOMER_SAVE_ERROR'));
-        if (!$user->save()) throw new Exception(JText::_('COM_MEIADMIN_CUSTOMER_EMIAL_ALREADY_REGISTERED'));
+        $this->_saveUser($user, $input);
         $input['fk_user_id'] = $user->id;
     }
 
-    protected function _saveUser(&$user, &$input, $password)
+    protected function _insertCleanPasswordForSave(&$password, &$input)
     {
         $input['password'] = $password;
         $input['password2'] = $password;
-        if (!$user->bind($input)) throw new Exception(JText::_('COM_MEIADMIN_CUSTOMER_SAVE_ERROR'));
-        if (!$user->save()) throw new Exception(JText::_('COM_MEIADMIN_CUSTOMER_EMIAL_ALREADY_REGISTERED'));
+    }
+
+    protected function _saveUser(&$user, &$input)
+    {
+        if (!$user->bind($input)) throw new Exception(JText::_('COM_MEIADMIN_CUSTOMER_BIND_ERROR'));
+        if (!$user->save()){
+            $this->_checkForRegisteredUsername($user);
+            $this->_checkForRegisteredEmail($user);
+            throw new Exception(JText::_('COM_MEIADMIN_CUSTOMER_SAVE_ERROR'));
+        }
+    }
+
+    protected function _checkForRegisteredUsername($user)
+    {
+        $this->_db->setQuery('SELECT id FROM #__users WHERE username = '.$this->_db->quote($user->username));
+        if ($this->_db->loadResult() != $user->id) throw new Exception(JText::_('COM_MEIADMIN_CUSTOMER_USERNAME_ALREADY_REGISTERED'));
+    }
+
+    protected function _checkForRegisteredEmail($user)
+    {
+        $this->_db->setQuery('SELECT id FROM #__users WHERE email = '.$this->_db->quote($user->email));
+        if ($this->_db->loadResult() != $user->id) throw new Exception(JText::_('COM_MEIADMIN_CUSTOMER_EMIAL_ALREADY_REGISTERED'));
+    }
+
+    public function checkCustomerExistsOnException($uid)
+    {
+        if (!$this->_loadCustomerWithUserId($uid)){
+            $user = JUser::getInstance($uid);
+            $user->delete();
+            return JText::_('COM_MEIADMIN_CUSTOMER_CREATION_ERROR');
+        }
+        return false;
+    }
+
+    protected function _loadCustomerWithUserId($uid)
+    {
+        $this->_db->setQuery('SELECT meiadmin_customer_id FROM #__meiadmin_customers WHERE fk_user_id = '.$this->_db->quote($uid));
+        return $this->_db->loadResult();
     }
 
     public function publish($publish = 1, $user = null){
@@ -212,7 +254,40 @@ class MeiadminModelCustomers extends BBDFOFModel
 
     protected function onBeforeDelete(&$id, &$table)
     {
+        if (!$this->_deleteCustomerUserEntry($id)) return false;
+        $subscriptions = $this->_loadCustomerSubscriptionIds($id);
+        $subscriptionList = "('" . implode("', '", $subscriptions) . "')";
+        if (!$this->_deleteCustomerSubscriptions($subscriptionList)) return false;
+        if (!$this->_deleteCustomerExclusions($subscriptionList)) return false;
+        return true;
+    }
+
+    protected function _deleteCustomerUserEntry($id)
+    {
         $this->_db->setQuery('DELETE u.* FROM #__users AS u INNER JOIN #__meiadmin_customers AS c ON (u.id = c.fk_user_id) WHERE c.meiadmin_customer_id = ' . $this->_db->quote($id));
+        return $this->_db->execute();
+    }
+
+    protected function _loadCustomerSubscriptionIds($id)
+    {
+        $query = $this->_db->getQuery(true);
+        $query->select('s.id')
+            ->from('#__meiadmin_customer_subscriptions AS s')
+            ->leftJoin('#__meiadmin_customers AS c ON (s.fk_user_id = c.fk_user_id)')
+            ->where('c.meiadmin_customer_id = '.$this->_db->quote($id));
+        $this->_db->setQuery($query);
+        return array_keys($this->_db->loadObjectList('id'));
+    }
+
+    protected function _deleteCustomerSubscriptions($subscriptionList)
+    {
+        $this->_db->setQuery('DELETE FROM #__meiadmin_customer_subscriptions WHERE id IN '.$subscriptionList);
+        return $this->_db->execute();
+    }
+
+    protected function _deleteCustomerExclusions($subscriptionList)
+    {
+        $this->_db->setQuery('DELETE FROM #__meiadmin_customer_exclusions WHERE fk_subscription_id IN '.$subscriptionList);
         return $this->_db->execute();
     }
 }

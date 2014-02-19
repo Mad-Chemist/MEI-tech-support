@@ -53,14 +53,13 @@ class MeiadminModelFile_Versions extends BBDFOFModel
     protected function _getSlugsAssociatedWithFile()
     {
         $query = $this->_db->getQuery(true);
-        $query->select("fa.slug AS 'FamilySlug', p.slug AS 'ProductSlug', fi.slug AS 'FileSlug'")
+        $query->select("p.slug AS 'ProductSlug', fi.slug AS 'FileSlug'")
             ->from("#__meiadmin_files AS fi")
             ->innerJoin("#__meiadmin_products AS p ON (fi.fk_product_id = p.meiadmin_product_id)")
-            ->innerJoin("#__meiadmin_categories AS fa ON(p.cat_id = fa.meiadmin_category_id)")
             ->where("fi.meiadmin_file_id = " . $this->_db->quote($this->fk_file_id));
         $this->_db->setQuery($query);
         $result = $this->_db->loadAssoc();
-        if(!$result || count($result) < 3) throw new Exception(JText::_('COM_MEIADMIN_FILE_DIRECTORY_SLUG_ERROR'));
+        if(!$result || count($result) < 2) throw new Exception(JText::_('COM_MEIADMIN_FILE_DIRECTORY_SLUG_ERROR'));
         return $result;
     }
 

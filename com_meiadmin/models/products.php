@@ -5,6 +5,8 @@ defined('_JEXEC') or die();
 class MeiadminModelProducts extends BBDFOFModel
 {
     protected $_buildMediaFlag = false;
+    protected $_deletePath;
+    protected $_entriesToDelete;
 
     public function &getItem($id = null)
     {
@@ -55,7 +57,7 @@ class MeiadminModelProducts extends BBDFOFModel
     {
         $temp = array();
         foreach ($fileList as $listItem) {
-            $listItem->url = JUri::base() . '/index.php?option=com_meiadmin&view=file&task=edit&pid=' . $this->id . '&id=' . $listItem->meiadmin_file_id . $this->_getItemId();
+            $listItem->url = JUri::base() . 'index.php?option=com_meiadmin&view=file&task=edit&pid=' . $this->id . '&id=' . $listItem->meiadmin_file_id . $this->_getItemId();
             $temp[$listItem->section][$listItem->type][] = $listItem;
         }
         return $temp;
@@ -126,13 +128,12 @@ class MeiadminModelProducts extends BBDFOFModel
     protected function _getSlugsAssociatedWithFile($pid)
     {
         $query = $this->_db->getQuery(true);
-        $query->select("fa.slug AS 'FamilySlug', p.slug AS 'ProductSlug'")
+        $query->select("p.slug AS 'ProductSlug'")
             ->from("#__meiadmin_products AS p")
-            ->innerJoin("#__meiadmin_categories AS fa ON(p.cat_id = fa.meiadmin_category_id)")
             ->where("p.meiadmin_product_id = " . $this->_db->quote($pid));
         $this->_db->setQuery($query);
         $result = $this->_db->loadAssoc();
-        if (!$result || count($result) < 2) throw new Exception(JText::_('COM_MEIADMIN_FILE_DIRECTORY_SLUG_ERROR'));
+        if (!$result || count($result) < 1) throw new Exception(JText::_('COM_MEIADMIN_FILE_DIRECTORY_SLUG_ERROR'));
         return $result;
     }
 
@@ -167,7 +168,7 @@ class MeiadminModelProducts extends BBDFOFModel
     protected function onBeforeDelete(&$id, &$table)
     {
         $table->load($id);
-        if ($table->cat_id != '' && $table->slug != '') $this->_loadDeletePath($table->cat_id, $table->slug);
+        if ($table->slug != '') $this->_loadDeletePath($table->slug);
         if ($this->_fileToDelete()) $this->_loadDatabaseEntriesToDelete($id);
         return true;
     }
@@ -180,10 +181,9 @@ class MeiadminModelProducts extends BBDFOFModel
         $this->_deleteEntries();
     }
 
-    protected function _loadDeletePath($categoryId, $productSlug)
+    protected function _loadDeletePath($productSlug)
     {
-        $category = $this->_loadCategorySlug($categoryId);
-        $this->_deletePath = dirname(JPATH_BASE) . '/productdownloads/' . $category . '/' .$productSlug;
+        $this->_deletePath = dirname(JPATH_BASE) . '/productdownloads/' .$productSlug;
         if (!is_dir($this->_deletePath)) $this->_deletePath = null;
     }
 
