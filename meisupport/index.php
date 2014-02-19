@@ -43,7 +43,7 @@ $user = JFactory::getUser(); /*Add current user information*/
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="<?php echo $this->language; ?>" lang="<?php echo $this->language; ?>" dir="<?php echo $this->direction; ?>">
 <head>
-	<meta name="viewport" content="width=device-width, user-scalable=false;">
+	<meta name="viewport" content="width=device-width, user-scalable=false">
   <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
   <link rel="apple-touch-icon" sizes="57x57" href="/templates/meisupport/apple/apple-touch-icon-57x57.png" />
   <link rel="apple-touch-icon" sizes="72x72" href="/templates/meisupport/apple/apple-touch-icon-72x72.png" />
