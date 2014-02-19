@@ -86,7 +86,7 @@ function setUpAccordion() {
 			//searches when typed into:
 			jQuery('.firm-search').keyup(function(){
 				jQuery(this).parents('table').find('tr:not(.firmware-search, .file-table-head)').hide();
-				jQuery(this).parents('table').find('tr[class*='+jQuery(this).val().split(" ").join("-")+']:not(.firmware-search, .file-table-head)').show();
+				jQuery(this).parents('table').find('tr[class*='+jQuery(this).val().split(" ").join("-").toLowerCase()+']:not(.firmware-search, .file-table-head)').show();
 
 				if (jQuery(this).val() == "") 	jQuery(this).parents('table').find('tr:not(.firmware-search, .file-table-head)').show();
 			});
