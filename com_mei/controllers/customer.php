@@ -8,7 +8,8 @@ class MeiControllerCustomer extends BBDFOFController
     {
         parent::__construct($config);
         JHtml::_('bootstrap.framework');
-        JHtml::script(JUri::base() . 'media/com_mei/js/customer.js');
+        /*This file doesn't exist.  I have no idea why it has been linked.  I've commented it out to avoid the 404 error in console*/
+        /*JHtml::script(JUri::base() . 'media/com_mei/js/customer.js');*/
     }
 
     public function onBeforeSave()
