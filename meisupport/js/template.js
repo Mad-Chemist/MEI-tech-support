@@ -9,7 +9,7 @@
 		$(".btn-group label:not(.active)").click(function()
 		{
 			var label = $(this);
-			var input = $('#' + label.attr('for'));
+			var input = $('input[id="'+label.attr('for')+'"]');
 
 			if (!input.prop('checked')) {
 				label.closest('.btn-group').find("label").removeClass('active btn-success btn-danger btn-primary');
@@ -26,11 +26,11 @@
 		$(".btn-group input[checked=checked]").each(function()
 		{
 			if ($(this).val() == '') {
-				$("label[for=" + $(this).attr('id') + "]").addClass('active btn-primary');
+				$("label[for='" + $(this).attr('id') + "']").addClass('active btn-primary');
 			} else if ($(this).val() == 0) {
-				$("label[for=" + $(this).attr('id') + "]").addClass('active btn-danger');
+				$("label[for='" + $(this).attr('id') + "']").addClass('active btn-danger');
 			} else {
-				$("label[for=" + $(this).attr('id') + "]").addClass('active btn-success');
+				$("label[for='" + $(this).attr('id') + "']").addClass('active btn-success');
 			}
 		});
 				
