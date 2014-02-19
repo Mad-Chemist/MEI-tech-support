@@ -4,6 +4,7 @@
         validate="true"
         type="edit"
         jsfiles="media://system/js/mootools-more.js"
+        name="exclusions"
         >
     <fieldset name="customerSubscriptions" label="COM_MEI_CUSTOMER_FILE_SUBSCRIPTIONS">
         <field type="radio" name="general" default="1" class="radio btn-group" label="General Documentation" filter="int">
@@ -57,7 +58,7 @@
         <field name="submit" type="button"
                text="COM_MEI_CUSTOMER_BUTTON_SAVE_EXCLUSIONS"
                class="mei-title-button"
-               onclick="Joomla.submitbutton('save')"
+               onclick="Joomla.submitbuttonExclusions('save')"
                 />
         <field type="menuitem" />
         <field type="hidden" name="fk_user_id" default="0"/>

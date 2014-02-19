@@ -4,6 +4,7 @@
         validate="true"
         type="edit"
         jsfiles="media://system/js/mootools-more.js"
+        name="attributes"
         >
     <fieldset name="customerAttributes" label="COM_MEI_CUSTOMER_INFORMATION">
         <field name="email" type="email"
@@ -44,7 +45,7 @@
         <field name="submit" type="button"
                text="COM_MEI_CUSTOMER_BUTTON_SAVE_ATTRIBUTES"
                class="mei-title-button bttn"
-               onclick="Joomla.submitbutton('save')"
+               onclick="Joomla.submitbuttonAttributes('save')"
                 />
         <field type="menuitem" />
         <field type="hidden" name="fk_user_id" default="0" />

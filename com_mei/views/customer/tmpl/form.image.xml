@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <form
         lessfiles="media://com_meiadmin/css/product.less||media://com_meiadmin/css/product.css"
-        validate="true"
         type="edit"
+        validate="true"
         enctype="multipart/form-data"
+        name="image"
         >
     <fieldset name="customerImage" label="COM_MEI_CUSTOMER_IMAGE">
         <field type="file"
@@ -14,7 +15,7 @@
         <field name="submit" type="button"
                text="COM_MEI_CUSTOMER_BUTTON_SAVE_IMAGE"
                class="mei-title-button bttn"
-               onclick="Joomla.submitbutton('save')"
+               onclick="Joomla.submitbuttonImage('save')"
                 />
         <field type="menuitem" />
         <field type="hidden" name="fk_user_id" default="0"/>

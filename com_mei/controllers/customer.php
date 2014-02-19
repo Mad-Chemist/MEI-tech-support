@@ -13,19 +13,16 @@ class MeiControllerCustomer extends BBDFOFController
 
     public function onBeforeSave()
     {
-        // TODO: Customer needs to be able to save account profile
         return true;
     }
 
     public function onBeforeAdd()
     {
-        // TODO: Customer needs to be able to view account profile
         return true;
     }
 
     public function onBeforeEdit()
     {
-        // TODO: Customer needs to be able to edit account profile
         return true;
     }
 
@@ -85,7 +82,11 @@ class MeiControllerCustomer extends BBDFOFController
                 $this->setRedirect(JUri::base() . 'index.php');
             }
         }catch (Exception $e){
-            $this->_displayErrorMessage($e, $this->_getLayout(), null);
+            if (!$setExpiration) {
+                $this->_redirectToEdit($model, $e->getMessage(), 'error');
+            } else {
+                $this->setRedirect(JUri::base().'index.php', $e->getMessage(), 'error');
+            }
         }
     }
 
@@ -114,10 +115,10 @@ class MeiControllerCustomer extends BBDFOFController
         return 'edit';
     }
 
-    protected function _redirectToEdit($model, $message = '')
+    protected function _redirectToEdit($model, $message = '', $error = null)
     {
         $layout = ($this->_getLayout() != 'edit') ? $this->_getLayout() : 'form';
         $id = $model->getId();
-        $this->setRedirect($this->_loadUrl($id, $layout), $message);
+        $this->setRedirect($this->_loadUrl($id, $layout), $message, $error);
     }
 }

@@ -81,16 +81,16 @@ defined('_JEXEC') or die;
     }
 
     /* a links */
-    .anchor-links {
-        display: block;
-        width: 100%;
-        text-align: center;
-    }
-    .anchor-links a {
-        padding: 5px 10px;
-        font-size: 15px;
-        display: inline-block;
-    }
+.anchor-links {
+    display: block;
+    width: 100%;
+    text-align: center;
+}
+.anchor-links a {
+    padding: 5px 10px;
+    font-size: 15px;
+    display: inline-block;
+}
     /* attributes */
     #customerAttributes .control-label {
     width: 115px !important;

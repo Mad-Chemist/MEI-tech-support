@@ -5,6 +5,7 @@
         type="edit"
         jsfiles="media://system/js/mootools-more.js"
         enctype="multipart/form-data"
+        name="nda"
         >
     <fieldset name="signedNDA" label="COM_MEI_CUSTOMER_NDA">
         <field name="nda" type="file"
@@ -17,7 +18,7 @@
         <field name="submit" type="button"
                text="COM_MEI_CUSTOMER_BUTTON_SAVE_NDA"
                class="mei-title-button bttn"
-               onclick="Joomla.submitbutton('save')"
+               onclick="Joomla.submitbuttonNda('save')"
                 />
         <field type="menuitem" />
         <field type="hidden" name="fk_user_id" default="0"/>

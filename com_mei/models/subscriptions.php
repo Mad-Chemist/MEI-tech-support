@@ -32,14 +32,21 @@ class MeiModelSubscriptions extends BBDFOFModel
     protected function _loadSubscriptions()
     {
         $query = $this->_db->getQuery(true);
-        $query->select("DISTINCT f.type, f.section, f.modified_on, p.title, s.id AS 'subid'")
-                ->from('#__meiadmin_files as f')
-                ->innerJoin('#__meiadmin_products as p ON (f.fk_product_id = p.meiadmin_product_id)')
-                ->innerJoin('#__meiadmin_customer_subscriptions as s ON (s.fk_product_id = p.meiadmin_product_id)')
-                ->where('s.fk_user_id = '.$this->_db->quote($this->_user->id))
-                ->order('f.modified_on DESC');
+        $subQuery = $this->_db->getQuery(true);
+        $this->_loadSubscriptionsSubQuery($subQuery);
+        $query->select('*')->from('('.$subQuery.') AS sub')->group('subid, type');
         $this->_db->setQuery($query);
         $this->_subscriptions = $this->_db->loadObjectList();
+    }
+
+    protected function _loadSubscriptionsSubQuery(&$subQuery)
+    {
+        $subQuery->select("DISTINCT f.type, f.section, f.modified_on, p.title, s.id AS 'subid'")
+            ->from('#__meiadmin_files as f')
+            ->innerJoin('#__meiadmin_products as p ON (f.fk_product_id = p.meiadmin_product_id)')
+            ->innerJoin('#__meiadmin_customer_subscriptions as s ON (s.fk_product_id = p.meiadmin_product_id)')
+            ->where('s.fk_user_id = '.$this->_db->quote($this->_user->id))
+            ->order('f.modified_on DESC');
     }
 
     /* Array_walk would probably work better here, but too busy to think through */
