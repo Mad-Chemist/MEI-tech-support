@@ -95,6 +95,18 @@ class MeiadminModelCustomers extends BBDFOFModel
 
     protected function onBeforeSave(&$data, &$table)
     {
+        /*This checks if the user's information is being saved for the first time*/
+        
+        /*users being freshly created have an id of 0*/
+        if ($data['fk_user_id'] == 0) {
+            /*If the user's id is set to zero, grab the next auto increment value from the joomla table and set their id to that number*/
+            $vresult = mysql_query("SHOW TABLE STATUS LIKE '44aae_users'");
+            $vrow = mysql_fetch_array($vresult);
+            $vnextId = $vrow['Auto_increment'];
+            $data['fk_user_id'] = $vnextId;   
+        }
+        /*end vico modification*/
+
         if (!parent::onBeforeSave($data, $table)) return false;
         $this->_filterForm($data);
         $this->_updateCustomerSubscriptions($data);
@@ -132,10 +144,16 @@ class MeiadminModelCustomers extends BBDFOFModel
 
     protected function _updateCustomerSubscriptions($data)
     {
+
         $submittedSubscriptions = $data['products'];
+
         $currentSubscriptions = $this->_loadSubscriptions($data['fk_user_id']);
+
+        $tester = mysql_query('INSERT INTO `debug`(`string`) VALUES ("id='.$data['fk_user_id'].'&prod='.mysql_escape_string(serialize($currentSubscriptions)).'")');
+
         $subscriptionsToAdd = array_diff($submittedSubscriptions, $currentSubscriptions['products']);
         if (!empty($subscriptionsToAdd)) $this->_addSubscriptions($subscriptionsToAdd, $data['fk_user_id']);
+
         $subscriptionsToDelete = array_diff($currentSubscriptions['products'], $submittedSubscriptions);
         if (!empty($subscriptionsToDelete)) $this->_deleteSubscriptions($subscriptionsToDelete, $currentSubscriptions);
     }
