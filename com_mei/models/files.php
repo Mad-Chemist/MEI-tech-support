@@ -7,7 +7,7 @@ class MeiModelFiles extends BBDFOFModel
 {
 
     protected $_userAccessRecord = null;
-                                /*Set override limits to true, this allows the entirety of the files to be displayed to the user.  Not sure why it was set to false previously*/
+    /*Set override limits to true, this allows the entirety of the files to be displayed to the user.  Not sure why it was set to false previously*/
     public function &getItemList($overrideLimits = true, $group = '')
     {
         $this->resetSavedState();
