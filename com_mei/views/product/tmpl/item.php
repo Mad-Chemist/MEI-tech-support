@@ -49,9 +49,11 @@ $GLOBALS['PERMV'] = true;
     $productId = $jinput->get('id', 0, 'alnum');
 
     $inputvars = array(
-        'limit'            => 10,
+        'limit'         => 10,
         'limitstart'    => 0,
         'fk_product_id' => $productId,
+        /*by adding this enabled check, it will prevent showing files that have been disabled.*/
+        'enabled'       => 1,
         'format' => 'html'
     );
 
