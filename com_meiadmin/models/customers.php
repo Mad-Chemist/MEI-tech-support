@@ -149,8 +149,6 @@ class MeiadminModelCustomers extends BBDFOFModel
 
         $currentSubscriptions = $this->_loadSubscriptions($data['fk_user_id']);
 
-        $tester = mysql_query('INSERT INTO `debug`(`string`) VALUES ("id='.$data['fk_user_id'].'&prod='.mysql_escape_string(serialize($currentSubscriptions)).'")');
-
         $subscriptionsToAdd = array_diff($submittedSubscriptions, $currentSubscriptions['products']);
         if (!empty($subscriptionsToAdd)) $this->_addSubscriptions($subscriptionsToAdd, $data['fk_user_id']);
 
