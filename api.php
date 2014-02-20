@@ -7,7 +7,10 @@
 
 	$userID = $_GET['user'];
 	if (is_numeric($userID)) {
-		$getMyProd = mysql_query('SELECT `products` FROM `44aae_meiadmin_customers` WHERE `fk_user_id`="'.$userID.'"'); //grabs product id assigned to user
+		/*	$getMyProd = mysql_query('SELECT `products` FROM `44aae_meiadmin_customers` WHERE `fk_user_id`="'.$userID.'"'); //grabs product id assigned to user*/
+		/*John changed the place that these records were stoerd without telling anyone and without any reason or rhyme.  Below is the new SQL query to retrieve assigend products*/
+		$getMyProd = mysql_query("SELECT GROUP_CONCAT(`fk_product_id` separator  ',') AS 'products' FROM `44aae_meiadmin_customer_subscriptions`  WHERE `fk_user_id`=".$userID." GROUP BY `fk_user_id`");
+
 		$getMyProd = mysql_fetch_assoc($getMyProd);
 		$getMyProd = $getMyProd['products'];
 		if (strlen($getMyProd) > 0) { //if array isn't empty, continue
