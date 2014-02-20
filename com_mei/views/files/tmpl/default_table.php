@@ -1,6 +1,7 @@
 <?php  
 
-  include_once "file-icon.php";  
+  include_once "file-icon.php";
+  include_once "file-access-filter.php";    
   $tHeadEcho = '';
   $tHeadEcho.= '<h4 class="typeTitle">'. JText::_('COM_MEI_TYPE_TITLE_' . strtoupper($this->type)).'</h4>';
   $tHeadEcho.= '<div class="file_table span11">';
@@ -13,7 +14,7 @@
 
   foreach($this->tableFiles as $file) : 
     $tArr=split(',',$file->deny_access);
-    if (!$GLOBALS['PERMV'] || $GLOBALS['admin'] == true || (strpos($file->channel,$GLOBALS['chanV']) !== false && strpos($file->region,$GLOBALS['regV']) !== false &&  !in_array($GLOBALS['user'],$tArr) ) ) { 
+    if (checkAccessLevelsForFile($file, $tArr)) { 
       $filesEcho.=  '<tr  class="'.strtolower(str_replace(" ", "-", $file->title)).'">';
       $filesEcho.=  '<td>'.retrieveEXT($file->meiadmin_file_id, $file->current_version).'<a href="'.$file->url.'">'.$file->title.'</a></td>';
       $filesEcho.=  '<td>'.$file->current_version.'</td>';
@@ -22,5 +23,8 @@
     } 
   endforeach; 
   if (strlen($filesEcho) > 0)   echo $tHeadEcho.$filesEcho.'</table></div>';
+
+
+
 
 ?>

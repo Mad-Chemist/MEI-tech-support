@@ -4,16 +4,27 @@ defined('_JEXEC') or die();
 $userV3 =& JFactory::getUser();
 $userId = $userV3->get( 'id' );
 if ($userId > 100) { 
-    $userAccess      =   mysql_query('SELECT  `fk_region_id`, `fk_channel_id` FROM  `44aae_meiadmin_customers` WHERE  `fk_user_id` = '.$userId.' LIMIT 0,1');
+    $userAccess =   mysql_query('SELECT  `fk_region_id`, `fk_channel_id`, `access_nda`, `access_level2`, `access_oem`, `access_asc`, `access_dist` FROM  `44aae_meiadmin_customers` WHERE  `fk_user_id` = '.$userId.' LIMIT 0,1');
     if ($userAccess) {
         while ($row  =   mysql_fetch_array($userAccess) ){ 
             $GLOBALS['regV'] = $row[0];
             $GLOBALS['chanV'] = $row[1];
+
+            /*get access levels of users and set to global var to be used when displaying files*/
+            $GLOBALS['accessV']= array(
+                $row[2],
+                $row[3],
+                $row[4],
+                $row[5],
+                $row[6]
+            );
         }
     }
     else {
         $GLOBALS['regV'] = '1';
         $GLOBALS['chanV'] = '3';
+
+        $GLOBALS['accessV']= array(0,0,0,0,0);
     }
 }
 else {

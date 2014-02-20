@@ -40,9 +40,12 @@ class MeiModelFiles extends BBDFOFModel
             $GLOBALS['admin'] = true;
             return true; 
         } else $GLOBALS['admin'] = false;
-        $this->_userAccessRecord = $customerModel->getAccessRecord();
+
+        /*commented out the previous pre-sorting*/
+        /*eventually would like to move all sorting to this area, currently being handled in /default_table.php*/
+        /*$this->_userAccessRecord = $customerModel->getAccessRecord();
         $where = $this->_buildAccessWhere();
-        $query->where($where);
+        $query->where($where);*/
     }
 
     protected function _buildAccessWhere()
