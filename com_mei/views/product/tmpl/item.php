@@ -35,13 +35,11 @@ $GLOBALS['PERMV'] = true;
         <div style="clear:both;"></div>
     </div>
 </div>
+
 <!-- Vico wrote this in to break products page in two -->
 </div></div></div>
-<div class="body rounded">
-<div><div><div>
 <!-- // Vico wrote this in to break products page in two -->
-    <div id="meiProductFiles">
-
+    
     <?php
 
     $jinput = JFactory::getApplication()->input;
@@ -62,11 +60,8 @@ $GLOBALS['PERMV'] = true;
     ob_start();
     BBDFOFDispatcher::getTmpInstance('com_mei', 'files', array('input' => $input))->dispatch();
     $content = ob_get_clean();
-    echo $content;
 
+    if (strlen($content) > 30)  echo '<div class="body rounded"><div><div><div><div id="meiProductFiles">'.$content.'</div> </div>';
+    /*regardless of whether or no the file structure is actually left blank, the code still outputs <div class=mei-32..... which is about 30 characters*/
     ?>
 
-    </div>
-
-
-</div>
