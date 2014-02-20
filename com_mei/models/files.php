@@ -35,7 +35,11 @@ class MeiModelFiles extends BBDFOFModel
 
     protected function _addAccessWhere(&$query){
         $customerModel = parent::getAnInstance('customers', 'MeiadminModel');
-        if ($customerModel->hasSpecialAccess()) return true;
+        if ($customerModel->hasSpecialAccess()) {
+            /*if user is admin, set variable to reference when filtering region / channel */
+            $GLOBALS['admin'] = true;
+            return true; 
+        } else $GLOBALS['admin'] = false;
         $this->_userAccessRecord = $customerModel->getAccessRecord();
         $where = $this->_buildAccessWhere();
         $query->where($where);

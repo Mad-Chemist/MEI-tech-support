@@ -13,7 +13,7 @@
 
   foreach($this->tableFiles as $file) : 
     $tArr=split(',',$file->deny_access);
-    if (!$GLOBALS['PERMV'] || (strpos($file->channel,$GLOBALS['chanV']) !== false && strpos($file->region,$GLOBALS['regV']) !== false &&  !in_array($GLOBALS['user'],$tArr) ) ) { 
+    if (!$GLOBALS['PERMV'] || $GLOBALS['admin'] == true || (strpos($file->channel,$GLOBALS['chanV']) !== false && strpos($file->region,$GLOBALS['regV']) !== false &&  !in_array($GLOBALS['user'],$tArr) ) ) { 
       $filesEcho.=  '<tr  class="'.strtolower(str_replace(" ", "-", $file->title)).'">';
       $filesEcho.=  '<td>'.retrieveEXT($file->meiadmin_file_id, $file->current_version).'<a href="'.$file->url.'">'.$file->title.'</a></td>';
       $filesEcho.=  '<td>'.$file->current_version.'</td>';
