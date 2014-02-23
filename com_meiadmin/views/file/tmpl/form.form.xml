@@ -75,6 +75,10 @@
             <option value="1">COM_MEIADMIN_YES</option>
             <option value="0">COM_MEIADMIN_NO</option>
         </field>
+        <field type="radio" name="public" default="0" class="radio btn-group" label="COM_MEIADMIN_PUBLIC_ACCESS">
+            <option value="1">COM_MEIADMIN_YES</option>
+            <option value="0">COM_MEIADMIN_NO</option>
+        </field>
         <field name="access_account" type="sql"
                label="COM_MEIADMIN_ACCESS_ACCOUNT"
                key_field="id"
