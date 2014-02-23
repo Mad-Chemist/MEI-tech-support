@@ -6,7 +6,7 @@
         $allowedAccess  =   split(',',$file->access_account);
         $deniedAccess   =   split(',',$file->deny_access);
 
-        if (!$GLOBALS['PERMV'] /*|| $GLOBALS['admin'] == true*/)                return true;
+        if (!$GLOBALS['PERMV'] || $GLOBALS['admin'] == true)                return true;
 
         /*check if user is granted access*/
         elseif (in_array($GLOBALS['user'],$allowedAccess))                      return true;
