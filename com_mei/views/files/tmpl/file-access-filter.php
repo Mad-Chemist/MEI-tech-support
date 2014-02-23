@@ -16,6 +16,7 @@
 
         /*check channel*/
         elseif (strpos($file->channel,$GLOBALS['chanV']) === false)             return false;
+        
         /*check region*/
         elseif (strpos($file->region,$GLOBALS['regV']) === false)               return false;
 
@@ -24,16 +25,12 @@
 
         /*if file is not public, use "AND" to determine access criteria*/
         elseif ($file->public === 0) {
-            /*check if NDA matches*/
             if ($file->access_nda == 1 && $GLOBALS['accessV'][0] == 0)          return false; 
-            /*check if level2 matches*/
             elseif ($file->access_level2 == 1 && $GLOBALS['accessV'][1] == 0)   return false; 
-            /*check if oem matches*/
             elseif ($file->access_oem == 1 && $GLOBALS['accessV'][2] == 0)      return false;
-            /*check if asc matches*/
             elseif ($file->access_asc == 1 && $GLOBALS['accessV'][3] == 0)      return false;
-            /*check if dist matches*/
             elseif ($file->access_dist == 1 && $GLOBALS['accessV'][4] == 0)     return false;
+
             /*if all tests pass, return file*/
             else                                                                return true;
         }
@@ -43,20 +40,13 @@
         elseif ($file->public === 1) {
             
             /*if file is public and no access is set, offer file*/
-            if ($file->access_nda == 0 || $file->access_level2 == 0 || $file->access_oem == 0 $file->access_asc == 0 || $file->access_dist == 0)
-                                                                                return true;
+            if ($file->access_nda == 0 && $file->access_level2 == 0 && $file->access_oem == 0 && $file->access_asc == 0 && $file->access_dist == 0) return true;
 
-            /*check if NDA matches*/
             elseif ($file->access_nda == 1 && $GLOBALS['accessV'][0] == 1)      return true; 
-            /*check if level2 matches*/
             elseif ($file->access_level2 == 1 && $GLOBALS['accessV'][1] == 1)   return true; 
-            /*check if oem matches*/
             elseif ($file->access_oem == 1 && $GLOBALS['accessV'][2] == 1)      return true;
-            /*check if asc matches*/
             elseif ($file->access_asc == 1 && $GLOBALS['accessV'][3] == 1)      return true;
-            /*check if dist matches*/
             elseif ($file->access_dist == 1 && $GLOBALS['accessV'][4] == 1)     return true;
-
 
             /*if all tests pass, return false*/
             else                                                                return false;
