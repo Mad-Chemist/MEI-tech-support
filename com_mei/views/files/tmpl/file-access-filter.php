@@ -24,8 +24,13 @@
 
 
         /*if file is not public, use "AND" to determine access criteria*/
-        elseif ($file->public === 0) {
-            if ($file->access_nda == 1 && $GLOBALS['accessV'][0] == 0)          return false; 
+        elseif ($file->public == 0) {
+
+            /*if file has no access and isn't made public, don't display file*/
+            if ($file->access_nda == 0 && $file->access_level2 == 0 && $file->access_oem == 0 && $file->access_asc == 0 && $file->access_dist == 0) return false;
+
+
+            elseif ($file->access_nda == 1 && $GLOBALS['accessV'][0] == 0)      return false; 
             elseif ($file->access_level2 == 1 && $GLOBALS['accessV'][1] == 0)   return false; 
             elseif ($file->access_oem == 1 && $GLOBALS['accessV'][2] == 0)      return false;
             elseif ($file->access_asc == 1 && $GLOBALS['accessV'][3] == 0)      return false;
@@ -35,9 +40,8 @@
             else                                                                return true;
         }
 
-
         /*if file is public, use "OR" to determine access criteria*/
-        elseif ($file->public === 1) {
+        elseif ($file->public == 1) {
             
             /*if file is public and no access is set, offer file*/
             if ($file->access_nda == 0 && $file->access_level2 == 0 && $file->access_oem == 0 && $file->access_asc == 0 && $file->access_dist == 0) return true;
