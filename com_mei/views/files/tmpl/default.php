@@ -1,7 +1,6 @@
 <?php
 
 defined('_JEXEC') or die();
-$GLOBALS['user'] = JFactory::getUser()->id;
 $this->sectionHeading = 'COM_MEI_DOCUMENTS';
 $this->sectionFiles = (array_key_exists('documentation', $this->items)) ? $this->items['documentation'] : '';
 if( '' != $this->sectionFiles )

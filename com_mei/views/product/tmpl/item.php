@@ -3,6 +3,7 @@ defined('_JEXEC') or die();
 /*schubert*/
 $userV3 =& JFactory::getUser();
 $userId = $userV3->get( 'id' );
+$GLOBALS['user'] = $userId;
 if ($userId > 100) { 
     $userAccess =   mysql_query('SELECT  `fk_region_id`, `fk_channel_id`, `access_nda`, `access_level2`, `access_oem`, `access_asc`, `access_dist` FROM  `44aae_meiadmin_customers` WHERE  `fk_user_id` = '.$userId.' LIMIT 0,1');
     if ($userAccess) {
@@ -23,16 +24,21 @@ if ($userId > 100) {
     else {
         $GLOBALS['regV'] = '1';
         $GLOBALS['chanV'] = '3';
-
         $GLOBALS['accessV']= array(0,0,0,0,0);
+        $GLOBALS['user'] =0;
+        $GLOBALS['unlogged'] =1;
     }
 }
 else {
     $GLOBALS['regV'] = '1';
     $GLOBALS['chanV'] = '3';
+    $GLOBALS['accessV']= array(0,0,0,0,0);
+    $GLOBALS['user'] =0;
+    $GLOBALS['unlogged'] =1;
 }
 $GLOBALS['PERMV'] = true;
 /*schubert*/
+
 ?>
 <div id="meiProduct">
     <div id="meiProductDescription">
