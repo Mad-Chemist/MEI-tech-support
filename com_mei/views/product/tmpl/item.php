@@ -10,7 +10,7 @@ if ($userId > 100) {
         while ($row  =   mysql_fetch_array($userAccess) ){ 
             $GLOBALS['regV'] = $row[0];
             $GLOBALS['chanV'] = $row[1];
-
+            
             /*get access levels of users and set to global var to be used when displaying files*/
             $GLOBALS['accessV']= array(
                 $row[2],

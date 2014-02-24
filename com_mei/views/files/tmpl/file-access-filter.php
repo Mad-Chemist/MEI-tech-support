@@ -6,20 +6,17 @@
         $allowedAccess  =   split(',',$file->access_account);
         $deniedAccess   =   split(',',$file->deny_access);
 
-        if (!$GLOBALS['PERMV'] || $GLOBALS['admin'] == true)                    return true;
+        if (!$GLOBALS['PERMV'] || $GLOBALS['admin'] == true)                        return true;
 
-        /*check to see if user is logged in, */
-        elseif (!$GLOBALS['unlogged']) {
-            
-            /*check if user is granted access*/
-            if (in_array($GLOBALS['user'],$allowedAccess))                      return true;
 
-            /*check if user is blocked*/
-            elseif (in_array($GLOBALS['user'],$deniedAccess))                   return false;
-        }
+        /*check if user is granted access*/
+        elseif (!$GLOBALS['unlogged'] && in_array($GLOBALS['user'],$allowedAccess)) return true;
+
+        /*check if user is blocked*/
+        elseif (!$GLOBALS['unlogged'] && in_array($GLOBALS['user'],$deniedAccess))  return false;
 
         /*check channel*/
-        elseif (strpos($file->channel,$GLOBALS['chanV']) === false)             return false;
+        elseif (strpos($file->channel,$GLOBALS['chanV']) == false)             return false;
         
         /*check region*/
         elseif (strpos($file->region,$GLOBALS['regV']) === false)               return false;
