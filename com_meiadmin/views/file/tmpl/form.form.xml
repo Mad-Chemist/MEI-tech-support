@@ -50,7 +50,8 @@
         <field type="file"
                label="COM_MEIADMIN_FILE_UPLOAD"
                description="COM_MEIADMIN_FILE_UPLOAD_DESC" name="newVersion" />
-        <field type="text" name="initialVersion" default="" label="COM_MEIADMIN_FILE_FIELD_INITIALVERSION" />
+        <!-- <field type="text" name="initialVersion" default="" label="COM_MEIADMIN_FILE_FIELD_INITIALVERSION" /> -->
+        <field type="text" label="COM_MEIADMIN_CUSTOM_VERSION" name="custom_version" />
         <field name="fk_product_id" type="hidden" value="[ITEM:fk_product_id]" emptylabel="1" />
         <field type="menuitem" />
     </fieldset>
