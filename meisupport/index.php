@@ -122,7 +122,7 @@ $user = JFactory::getUser(); /*Add current user information*/
   </div>
  <?php endif; ?>
   <footer class="footer"  id="footer" role="contentinfo">
-    <jdoc:include type="modules" name="footer" style="none" /> MEIgroup.com <span>&copy; <?php echo $sitename; ?> <?php echo date('Y');?></span>
+    <jdoc:include type="modules" name="footer" style="none" /> <span>&copy; <?php echo $sitename; ?> <?php echo date('Y');?></span>
 </footer>
 <jdoc:include type="modules" name="debug" style="none" />
 </body>
