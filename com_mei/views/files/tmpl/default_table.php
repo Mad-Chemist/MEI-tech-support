@@ -16,7 +16,11 @@
     if (checkAccessLevelsForFile($file)) { 
       $filesEcho.=  '<tr  class="'.strtolower(str_replace(" ", "-", $file->title)).'">';
       $filesEcho.=  '<td>'.retrieveEXT($file->meiadmin_file_id, $file->current_version).'<a href="'.$file->url.'">'.$file->title.'</a></td>';
-      $filesEcho.=  '<td>'.$file->current_version.'</td>';
+
+      
+      
+      $fileVersion = ($file->custom_version != NULL) ? $file->custom_version : $file->current_version;
+      $filesEcho.=  '<td>'.$fileVersion.'</td>';
       $modified = new JDate($file-> modified_on);
       $filesEcho.=  '<td>'.$modified->format('M d, Y h:i A').'</td></tr>';
     } 
