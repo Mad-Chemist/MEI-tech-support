@@ -1,4 +1,4 @@
-var mylat, mylong, i;
+var mylat, mylong, i, checkIndustry =0, tmpHold = [];
 jQuery(document).ready(function() {
 	jQuery('body').addClass("loading-bar trans1");
 	if (typeof(Number.prototype.toRad) === "undefined") {
@@ -28,21 +28,30 @@ function distanceSetUp() {
 	function output() { 
 		pagealert(vLanguage[cvlang][2]['success'],{'class':' fa-a fa-a-mapm','theme':'green','delay':3000});
 		jQuery('#service-centers').empty();
+		tmpHold = [];
+		checkIndustry = parseInt(jQuery('#channelselect').val());
 		i =0;
+		var y =0;
 		while( i<vLocations.length) {
-			var closeness = calculateDistance(mylat,vLocations[i]['location'][0],mylong,vLocations[i]['location'][1]);
-			vLocations[i]['closeness'] = closeness;
+			if (checkIndustry > 0 && vLocations[i]['industry'].toString().indexOf(checkIndustry) == -1) {}
+
+			else {
+				var closeness = calculateDistance(mylat,vLocations[i]['location'][0],mylong,vLocations[i]['location'][1]);
+				tmpHold.push(vLocations[i]);
+				tmpHold[y]['closeness'] = closeness;
+				y++;
+			}
 			i++;
 		}
 		i=0;
-		vLocations.sort(function(a, b){ return a.closeness - b.closeness });
-		while(i<vLocations.length && i<5) {
+		tmpHold.sort(function(a, b){ return a.closeness - b.closeness });
+		while(i<tmpHold.length && i<5) {
 			nicelyShowCenters();
 			i++;
 		}
-		if (i<vLocations.length) {
+		if (i<tmpHold.length) {
 			jQuery('#service-centers').append('<div id="more-than-5"></div><a id="show-more-centers" onclick="showMoreSC()" class="bttn" style="display:inline-block;"><img src="/images/plus.png" width="10px" style="margin-bottom: 3px;"> '+vLanguage[cvlang][1]['more']+'</a>');
-			while(i<vLocations.length) {
+			while(i<tmpHold.length) {
 				nicelyShowCenters(1);
 				i++;
 			}
@@ -66,19 +75,20 @@ function distanceSetUp() {
 
 function nicelyShowCenters(maxed) {
 	maxed = (maxed === 1) ?  jQuery('#more-than-5') :  jQuery('#service-centers');
-	var opts = (vLocations[i]['options'].length !== 0) ? showCenterOptions() : "";
-	maxed.append('<div class="service-centers"> <div class="service-center" > <div class="scnumber">'+ (i+1) + opts +'</div> <div class="scinformation" itemscope itemtype="http://schema.org/LocalBusiness"> <div> <span class="center-heading">'+vLanguage[cvlang][1]['name']+':</span> <span itemprop="name">'+vLocations[i]['name']+'</span> </div> <div> <span class="center-heading">'+vLanguage[cvlang][1]['address']+':</span> <span itemprop="address">'+vLocations[i]['address']+'</span> </div> <div> <span class="center-heading">'+vLanguage[cvlang][1]['phone']+':</span> <span>'+showPhoneNumber()+'</span> </div> <div> <span class="center-heading">'+vLanguage[cvlang][1]['fax']+':</span> <span itemprop="faxNumber">'+vLocations[i]['fax']+'</span> </div> <div> <span class="center-heading">'+vLanguage[cvlang][1]['email']+':</span> <span> <a href="mailto:'+vLocations[i]['email']+'" itemprop="email">'+vLocations[i]['email']+'</a> </span> </div> <div> <span class="center-heading">'+vLanguage[cvlang][1]['web']+':</span> <span> <a href="http://'+vLocations[i]['web']+'" target="_blank" itemprop="url">'+vLocations[i]['web']+'</a> </span> </div> </div> <div class="google-map"> <a href="'+vLocations[i]['map']+'" target="_blank" title="'+vLanguage[cvlang][1]['map']+'"> <img src="/images/service-centers/gmap-'+vLocations[i]['id']+'.jpg"></a> </div> <div style="clear:both;"></div> </div> </div> ');
+	/*Removed per request; Stephen said this isn't needed*/
+	/*var opts = (vLocations[i]['options'].length !== 0) ? showCenterOptions() : "";*/
+	maxed.append('<div class="service-centers"> <div class="service-center" > <div class="scnumber">'+ (i+1) + /*opts +*/'</div> <div class="scinformation" itemscope itemtype="http://schema.org/LocalBusiness"> <div> <span class="center-heading">'+vLanguage[cvlang][1]['name']+':</span> <span itemprop="name">'+tmpHold[i]['name']+'</span> </div> <div> <span class="center-heading">'+vLanguage[cvlang][1]['address']+':</span> <span itemprop="address">'+tmpHold[i]['address']+'</span> </div> <div> <span class="center-heading">'+vLanguage[cvlang][1]['phone']+':</span> <span>'+showPhoneNumber()+'</span> </div> <div> <span class="center-heading">'+vLanguage[cvlang][1]['fax']+':</span> <span itemprop="faxNumber">'+tmpHold[i]['fax']+'</span> </div> <div> <span class="center-heading">'+vLanguage[cvlang][1]['email']+':</span> <span> <a href="mailto:'+tmpHold[i]['email']+'" itemprop="email">'+tmpHold[i]['email']+'</a> </span> </div> <div> <span class="center-heading">'+vLanguage[cvlang][1]['web']+':</span> <span> <a href="http://'+tmpHold[i]['web']+'" target="_blank" itemprop="url">'+tmpHold[i]['web']+'</a> </span> </div> </div> <div class="google-map"> <a href="'+tmpHold[i]['map']+'" target="_blank" title="'+vLanguage[cvlang][1]['map']+'"> <img src="/images/service-centers/gmap-'+tmpHold[i]['id']+'.jpg"></a> </div> <div style="clear:both;"></div> </div> </div> ');
 }
-function showCenterOptions() {
+/*function showCenterOptions() {
 	var opts = "";
 	if (typeof vLocations[i]['options']['manager'] !== 'undefined') opts+= "<img src='/images/service-centers/manager-ico.png' title='"+vLanguage[cvlang][0]['manager']+"' >";
 	if (typeof vLocations[i]['options']['oem'] !== 'undefined') opts+= "<img src='/images/service-centers/oem-ico.png' title='"+vLanguage[cvlang][0]['oem']+"' >";
 	if (typeof vLocations[i]['options']['warranty'] !== 'undefined') opts+= "<img src='/images/service-centers/warranty-ico.png' title='"+vLanguage[cvlang][0]['warranty']+"' >";	
 	return "<span>"+opts+"</span>";
-}
+}*/
 function showPhoneNumber() {
 	var vphones = "";
-	vLocations[i]['phone'].forEach(function(index) {
+	tmpHold[i]['phone'].forEach(function(index) {
 		vphones += (vphones == "") ? '<a href="tel:'+index+'" itemprop="telephone">'+index+'</a>' : ', <a href="tel:'+index+'" itemprop="telephone">'+index+'</a>';
 	});
 	return vphones;
@@ -104,7 +114,7 @@ function queryAddress(address) {
 			dataType: 'json',
 			success: function(data) {
 				var tempsave = data;
-				console.log(tempsave);
+				/*console.log(tempsave);*/
 				if (tempsave['status'] === "OK") {
 					mylong = tempsave['results'][0]['geometry']['location']['lng'], mylat = tempsave['results'][0]['geometry']['location']['lat'];
 					output();

@@ -171,6 +171,15 @@ tr td span .firm-search {padding: 5px 10px !important; margin: 5px !important; h
 #loading img {height: 50px; }
 body.loading-bar {opacity: 0.4; pointer-events: none; }
 
+
+/* IMPORTANT */
+/* BELOW SNIPPET HIDES THE UNUSED SERVICE CENTER OPTIONS */
+#channelselect option[value="7"], #channelselect option[value="8"], #channelselect option[value="9"] {
+    display: none;
+}
+/* 7 == TRANSPORTATION, 8 == VENDING, 9 == FINANCIAL */
+
+
 .service-center {position:relative; margin: 10px 0px 20px; padding: 10px 0px; width:100%; display:block; border: 1px solid #DDD; background: #F5F5F5; background: -moz-linear-gradient(top, #FAFAFA 0%, #F5F5F5 100%); background: -webkit-linear-gradient(top, #FAFAFA 0%, #F5F5F5 100%); background: -o-linear-gradient(top, #FAFAFA 0%, #F5F5F5 100%); background: linear-gradient(to bottom, #FAFAFA 0%, #F5F5F5 100%); -webkit-border-radius:5px; -moz-border-radius:5px; border-radius: 5px; box-shadow: 0 1px 0 #FFF inset; text-shadow: 0 1px 0 #FFF; box-shadow: 0 2px 5px rgba(77, 77, 77, 0.49); font-size: 15px; }
 #service-centers span.center-heading {font-weight: bold; }
 .service-centers {margin: 10px 0px; }
