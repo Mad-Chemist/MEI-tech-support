@@ -86,7 +86,7 @@ class MeiadminFileMailCoordinator
 
     protected function _prepareContent()
     {
-        return <<<CONTENTS
+/*        return <<<CONTENTS
 Hello,
 
 This is a notice to inform you that the product "$this->_productTitle" has an updated file "$this->_fileTitle" ($this->_fileName).
@@ -95,6 +95,8 @@ Sincerely,
 
 Site Administrators
 
-CONTENTS;
+CONTENTS;*/
+
+return "Hello,<br><br>This is a notice to inform you that the product, <strong>".$this->_productTitle."</strong>, has an updated file: <strong>".$this->_fileTitle."</strong> (<strong>".$this->_fileName."</strong>).<br><br>Sincerely, <br> Site Administrators";
     }
 }
