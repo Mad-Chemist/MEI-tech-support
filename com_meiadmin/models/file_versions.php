@@ -25,7 +25,8 @@ class MeiadminModelFile_Versions extends BBDFOFModel
                 'fk_file_id' => $this->fk_file_id,
                 'version' => $this->version,
                 'filename' => $fileName,
-                'path' => $path . $fileName));
+                'path' => $path . $fileName,
+                'custom_version' => $this->custom_version));
         }
         throw new Exception(JText::_('COM_MEIADMIN_FILE_UPLOAD_ERROR'));
     }
