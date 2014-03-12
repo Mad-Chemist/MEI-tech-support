@@ -45,7 +45,7 @@ if(!empty($versions)):
 
         <tr>
             <td>
-                <?php echo $version->version; ?>
+                <?php echo ($version->custom_version != NULL) ? $version->custom_version : $version->version; ?>
             </td>
             <td>
                 <?php
