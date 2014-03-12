@@ -26,11 +26,13 @@ class MeiadminModelFiles extends BBDFOFModel
 
     public function promote($versionId)
     {
-        $version = $this->_lookupVersion($versionId);
+        $version        = $this->_lookupVersion($versionId);
+        $customVersion  = $this->_lookupCustomVersion($versionId);
         if(!$version) return false;
         $table = $this->getTable();
         $table->load($this->id);
         $table->current_version = $version;
+        $table->custom_version = $customVersion;
         return $table->store();
     }
 
@@ -38,6 +40,14 @@ class MeiadminModelFiles extends BBDFOFModel
     {
         $query = $this->_db->getQuery(true);
         $query->select('version')->from('#__meiadmin_file_versions')->where('meiadmin_file_version_id = ' . $this->_db->quote($versionId));
+        $this->_db->setQuery($query);
+        return $this->_db->loadResult();
+    }
+
+    protected function _lookupCustomVersion($versionId)
+    {
+        $query = $this->_db->getQuery(true);
+        $query->select('custom_version')->from('#__meiadmin_file_versions')->where('meiadmin_file_version_id = ' . $this->_db->quote($versionId));
         $this->_db->setQuery($query);
         return $this->_db->loadResult();
     }
