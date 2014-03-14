@@ -164,7 +164,7 @@ tr td span .firm-search {padding: 5px 10px !important; margin: 5px !important; h
 .btn.jmodedit {max-width: 100px; }
 
 /*hide alerts*/
-#system-message-container {display: none !important; }
+/* #system-message-container {display: none !important; } */
 
 /* service centers */
 #loading {width: 100%; text-align: center; }

@@ -46,7 +46,7 @@ class MeiModelPassword extends BBDFOFModel
         $interval = $this->_customerRow->password_expiration_interval;
         $expiration = $this->_getPasswordExpiration($interval);
         $this->_customerRow->password_expiration = $expiration;
-        if (! $this->_customerRow->store()) throw new Exception(JText::_('COM_MEI_CUSTOMER_SAVE_FAILED'));
+        if (!$this->_customerRow->store()) throw new Exception(JText::_('COM_MEI_CUSTOMER_SAVE_FAILED'));
     }
 
     public function getTable($name = 'Customers', $prefix = 'MeiadminTable', $options = array())
