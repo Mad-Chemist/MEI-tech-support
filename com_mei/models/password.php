@@ -58,9 +58,19 @@ class MeiModelPassword extends BBDFOFModel
     {
         $currentPasswordFromForm = $this->input->get('password');
         $newPasswordFromForm = $this->input->get('newPassword');
-        if(!$this->_verifyCurrentPassword($currentPasswordFromForm)) throw new Exception(JText::_('COM_MEI_CUSTOMER_INCORRECT_PASSWORD'));
-        if($this->_tryingToUseSamePassword($newPasswordFromForm)) throw new Exception(JText::_('COM_MEI_CUSTOMER_NEED_DIFFERENT_PASSWORD'));
+        /*below is where password reset && save is being held up*/
+        //if(!$this->_verifyCurrentPassword($currentPasswordFromForm)) throw new Exception(JText::_('COM_MEI_CUSTOMER_INCORRECT_PASSWORD'));
+        /*new code added below to correctly verify user information*/
+        if ($this->_verifyPWCorrect($currentPasswordFromForm,$this->_user->password,$this->_user->id) ) throw new Exception('wrong');
+        if ($this->_tryingToUseSamePassword($newPasswordFromForm)) throw new Exception(JText::_('COM_MEI_CUSTOMER_NEED_DIFFERENT_PASSWORD'));
         $this->_saveCustomerPassword();
+    }
+
+    protected function _verifyPWCorrect($vNPW,$vDPW,$vID) {
+        /*passes through the following variables: password entered, password residing in database, and user id*/
+        $result = JUserHelper::verifyPassword($vNPW,$vDPW,$vID);
+        if ($result) return false;
+        else return true;
     }
 
     protected function _verifyCurrentPassword($passwordToVerify)
