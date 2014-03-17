@@ -73,8 +73,10 @@ class MeiControllerCustomer extends BBDFOFController
 
     public function changePassword($setExpiration = false)
     {
+
         $model = $this->getThisModel();
         $passwordModel = $this->getModel('password');
+
         try{
             $model->saveNewPassword($passwordModel, $setExpiration);
             if (!$setExpiration) {
@@ -86,10 +88,7 @@ class MeiControllerCustomer extends BBDFOFController
             if (!$setExpiration) {
                 $this->_redirectToEdit($model, $e->getMessage(), 'error');
             } else {
-                /*this is function executes when trying to reset pw*/
-                /*setExpiration is transferred correctly as "true"*/
-                /*ultimately, going to need to re-write this function to custom save & update PW in DB*/
-                $this->setRedirect(JUri::base().'index.php', $e->getMessage(), 'error');
+                $this->setRedirect(JUri::base().'index.php?', $e->getMessage(), 'error');
             }
         }
     }
