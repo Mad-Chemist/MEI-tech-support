@@ -8,7 +8,6 @@
 
         if (!$GLOBALS['PERMV'] || $GLOBALS['admin'] == true)                        return true;
 
-
         /*check if user is granted access*/
         elseif (!$GLOBALS['unlogged'] && in_array($GLOBALS['user'],$allowedAccess)) return true;
 
@@ -16,7 +15,7 @@
         elseif (!$GLOBALS['unlogged'] && in_array($GLOBALS['user'],$deniedAccess))  return false;
 
         /*check channel*/
-        elseif (strpos($file->channel,$GLOBALS['chanV']) == false)              return false;
+        elseif (strpos($file->channel,$GLOBALS['chanV']) === false)              return false;
         
         /*check region*/
         elseif (strpos($file->region,$GLOBALS['regV']) === false)               return false;
