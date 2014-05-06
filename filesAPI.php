@@ -1,8 +1,3 @@
-<!doctype html>
-<html lang="en">
-<head>
-	<meta charset="UTF-8">
-	<title>Files</title>
 	<style>
 	* { margin:0px; padding:0px; border:none; position:relative; z-index:1; }
 	html, body { width:100%; height:100%; font-family:helvetica; }
@@ -65,16 +60,8 @@ tr.floatingHeader > td {
 }
 
 	</style>
-</head>
-<body>
+
 	<?php
-	//header('Content-type: application/json');
-	include('configuration.php');
-	$jc = new JConfig();
-	mysql_connect($jc->host, $jc->user, $jc->password) or die("Cannot connect to the database");
-	mysql_select_db($jc->db);
-
-
 	$getFiles = mysql_query(   "SELECT `44aae_meiadmin_products`.`title` AS 'Product Title', `44aae_meiadmin_files`.*, `44aae_meiadmin_file_versions`.*
 								FROM `44aae_meiadmin_files` 
 								INNER JOIN `44aae_meiadmin_products` 
@@ -83,7 +70,7 @@ tr.floatingHeader > td {
 								ON `44aae_meiadmin_files`.`meiadmin_file_id`=`44aae_meiadmin_file_versions`.`fk_file_id`  
 								WHERE `44aae_meiadmin_files`.`enabled`=1 
 								AND `44aae_meiadmin_files`.`current_version`=`44aae_meiadmin_file_versions`.`version` 
-								ORDER BY `44aae_meiadmin_files`.`meiadmin_file_id`"
+								ORDER BY `44aae_meiadmin_files`.`fk_product_id`"
 							);
 
 	$productID 	=	0;
@@ -115,33 +102,28 @@ tr.floatingHeader > td {
 	}
 	$htmlEcho.="</tbody></table>"; 
 	echo $htmlEcho;
-	//echo json_encode($rows);
-
-	// function addTableRow() {
-
-	// }
 ?>
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js" ></script>
 <script>
-	$(document).ready(function() {
+	jQuery(document).ready(function() {
 		initializeTable();
 	});
 
 	function initializeTable() {
-		$('body').append("<div id='hover-bar'><div id='hover-headings'></div></div>");
+		jQuery('body').append("<div id='hover-bar'><div id='hover-headings' style='display:none;'></div></div>");
 		addTableHoverHeadings();
-		$(window).resize(sizeTableHoverHeadings);
+		jQuery(window).resize(sizeTableHoverHeadings);
 	}
 	function addTableHoverHeadings() {
-		$('tr > th').each(function() {
-			$('#hover-bar #hover-headings').append('<div>'+$(this).text()+'</div>');
+		jQuery('tr > th').each(function() {
+			jQuery('#hover-bar #hover-headings').append('<div>'+jQuery(this).text()+'</div>');
 		});
 		sizeTableHoverHeadings();
 	}
 	function sizeTableHoverHeadings() {
 		var cur = 0;
-		$('tr > th').each(function() {
-			$('#hover-bar #hover-headings > div:nth('+cur+')').width($(this).outerWidth());
+		jQuery('tr > th').each(function() {
+			jQuery('#hover-bar #hover-headings > div:nth('+cur+')').width(jQuery(this).outerWidth());
 			cur++;
 		});
 	}
@@ -149,12 +131,12 @@ tr.floatingHeader > td {
 
 
 	function UpdateTableHeaders() {
-   $(".persist-area").each(function() {
+   jQuery(".persist-area").each(function() {
    
-       var el             = $(this),
+       var el             = jQuery(this),
            offset         = el.offset(),
-           scrollTop      = $(window).scrollTop(),
-           floatingHeader = $(".floatingHeader", this)
+           scrollTop      = jQuery(window).scrollTop(),
+           floatingHeader = jQuery(".floatingHeader", this)
        
        if ((scrollTop > offset.top) && (scrollTop < offset.top + el.height())) {
            floatingHeader.css({
@@ -169,12 +151,12 @@ tr.floatingHeader > td {
 }
 
 // DOM Ready      
-$(function() {
+jQuery(function() {
 
    var clonedHeaderRow;
 
-   $(".persist-area").each(function() {
-       clonedHeaderRow = $(".persist-header", this);
+   jQuery(".persist-area").each(function() {
+       clonedHeaderRow = jQuery(".persist-header", this);
        clonedHeaderRow
          .before(clonedHeaderRow.clone())
          .css("width", clonedHeaderRow.width())
@@ -182,16 +164,14 @@ $(function() {
          
    });
    
-   $(window)
+   jQuery(window)
     .scroll(UpdateTableHeaders)
     .trigger("scroll");
    
-$('.floatingHeader').css('top',$('#hover-bar').height());
-   $(window).resize(function() {
+jQuery('.floatingHeader').css('top',0);
+   jQuery(window).resize(function() {
 		/*Also, space the product heading*/
-		$('.floatingHeader').css('top',$('#hover-bar').height());
+		jQuery('.floatingHeader').css('top',jQuery('#hover-bar').height());
 	});
 });
 </script>
-</body>
-</html>

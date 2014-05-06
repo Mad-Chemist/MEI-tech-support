@@ -38,7 +38,7 @@ a {cursor:pointer;}
 .breadcrumb {background: inherit !Important; font-weight: bold; margin: 0px !important; }
 /*top navigation*/
 .nav { position:relative;}
-#nav .nav.menu li {float: left; margin-right: 25px; font-size: 18px; padding-top: 17px; padding-bottom: 20px; }
+#nav .nav.menu li {float: left; margin-right: 15px; font-size: 18px; padding-top: 17px; padding-bottom: 20px; }
 
 #nav ul.nav.menu li a {color: #000; text-shadow: 0 1px 0 #CACACA; }
 .nav > li > a:hover, .nav > li > a:focus {text-decoration:none; list-style:none; }
